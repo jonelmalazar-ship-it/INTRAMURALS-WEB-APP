@@ -12,7 +12,7 @@
             --bg-main: #05070a;
             --panel-bg: rgba(11, 15, 25, 0.85);
             --panel-border: rgba(255, 255, 255, 0.08);
-            --accent-cyan: #06b6d4;
+            --accent-color: #06b6d4;
             --accent-glow: rgba(6, 182, 212, 0.35);
             --accent-gold: #f59e0b;
             --accent-silver: #94a3b8;
@@ -26,89 +26,86 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-main); color: var(--text-primary); min-height: 100vh; position: relative; overflow-x: hidden; }
 
-        #bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 30%, var(--accent-glow) 0%, rgba(5, 7, 10, 0.95) 100%); z-index: -1; }
+        #bg-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: radial-gradient(circle at 50% 30%, var(--accent-glow) 0%, rgba(5, 7, 10, 0.95) 100%); 
+            z-index: -1; 
+        }
 
         .app-container { max-width: 1240px; margin: 0 auto; padding: 35px 20px; }
+        
+        /* Top Header Area */
         .header-brand { text-align: left; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .brand-container { display: flex; align-items: center; gap: 18px; }
         
-        /* Original School Logo Frame with Glowing Effect */
         .school-logo-img {
-            width: 52px;
-            height: 52px;
-            object-fit: contain;
-            border-radius: 8px;
-            filter: drop-shadow(0 0 12px var(--accent-cyan));
-            border: 1px solid rgba(6, 182, 212, 0.4);
-            background: rgba(11, 15, 25, 0.8);
-            padding: 2px;
+            width: 52px; height: 52px; object-fit: contain; border-radius: 50%;
+            filter: drop-shadow(0 0 12px var(--accent-color));
+            border: 1px solid var(--accent-color);
+            background: rgba(11, 15, 25, 0.8); padding: 2px;
         }
         
         .header-brand h1 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; display: flex; align-items: center; gap: 12px; }
-        .header-brand h1::before { content: ''; display: inline-block; width: 4px; height: 28px; background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan); }
+        .header-brand h1::before { content: ''; display: inline-block; width: 4px; height: 28px; background: var(--accent-color); box-shadow: 0 0 10px var(--accent-color); }
         .header-brand p { color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-top: 4px; }
 
+        .header-controls { display: flex; align-items: center; gap: 20px; }
+        .accent-picker { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-secondary); }
+        .dot-btn { width: 14px; height: 14px; border-radius: 50%; cursor: pointer; border: none; transition: transform 0.2s; }
+        .dot-btn:hover { transform: scale(1.2); }
+        .status-badge { border: 1px solid var(--accent-color); color: var(--accent-color); padding: 6px 14px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.05em; border-radius: 2px; background: rgba(6, 182, 212, 0.05); }
+
+        /* KPI Cards Grid */
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 30px; }
         .kpi-card { background: var(--panel-bg); border: 1px solid var(--panel-border); border-left: 3px solid var(--text-secondary); border-radius: 6px; padding: 20px; backdrop-filter: blur(12px); }
-        .kpi-card.active-leader { border-left-color: var(--accent-cyan); box-shadow: -5px 0 20px var(--accent-glow); }
+        .kpi-card.active-leader { border-left-color: var(--accent-color); box-shadow: -5px 0 20px var(--accent-glow); }
         .kpi-label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; letter-spacing: 0.1em; }
-        .kpi-value { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 800; color: #fff; margin-top: 6px; }
+        .kpi-value { font-family: var(--font-mono); font-size: 1.8rem; font-weight: 800; color: #fff; margin-top: 6px; }
 
+        /* Navigation Tabs */
         .nav-pipeline { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 15px; }
         .nav-btn { padding: 10px 20px; background: transparent; border: 1px solid transparent; color: var(--text-secondary); border-radius: 4px; cursor: pointer; font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; transition: all 0.2s ease; }
         .nav-btn:hover { color: #fff; border-color: var(--panel-border); }
-        .nav-btn.active { background: rgba(255, 255, 255, 0.05); color: var(--accent-cyan); border-color: var(--accent-cyan); box-shadow: 0 0 12px var(--accent-glow); }
+        .nav-btn.active { background: rgba(255, 255, 255, 0.05); color: var(--accent-color); border-color: var(--accent-color); box-shadow: 0 0 12px var(--accent-glow); }
 
         .tab-viewport { display: none; }
         .tab-viewport.active { display: block; animation: fadeIn 0.2s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        /* Glass Panel Styling */
         .glass-panel { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 8px; padding: 25px; margin-bottom: 25px; backdrop-filter: blur(16px); }
         .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 12px; }
-        .panel-header h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: #fff; text-transform: uppercase; }
+        .panel-header h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
 
+        /* Glowing Shield Faction Logo */
         .faction-cell { display: flex; align-items: center; gap: 16px; }
-        
-        /* Shield/Banner Frame with Glowing Effect */
         .faction-logo-wrapper {
-            width: 38px;
-            height: 48px;
-            background: rgba(11, 15, 25, 0.95);
+            width: 38px; height: 48px; background: rgba(11, 15, 25, 0.95);
             clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.85));
-            transition: transform 0.2s ease;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            filter: drop-shadow(0 0 10px var(--accent-color)); transition: transform 0.2s ease;
         }
+        .faction-logo-wrapper:hover { transform: scale(1.08); }
+        .faction-logo-img { width: 100%; height: 100%; object-fit: cover; }
 
-        .faction-logo-wrapper:hover {
-            transform: scale(1.08);
-            filter: drop-shadow(0 0 15px rgba(6, 182, 212, 1));
-        }
-
-        .faction-logo-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
+        /* Form Controls */
         .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
         label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.08em; }
         input, select { width: 100%; padding: 12px; border-radius: 4px; border: 1px solid var(--panel-border); background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 0.9rem; outline: none; }
+        input:focus, select:focus { border-color: var(--accent-color); }
 
         .btn-action { padding: 12px 20px; border-radius: 4px; border: none; font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-primary { background: var(--accent-cyan); color: #000; }
+        .btn-primary { background: var(--accent-color); color: #000; }
         .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid var(--panel-border); }
 
+        /* Data Tables */
         .data-table-wrapper { width: 100%; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th { padding: 12px; font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); border-bottom: 1px solid var(--panel-border); font-weight: 700; }
         td { padding: 14px 12px; border-bottom: 1px solid var(--panel-border); font-size: 0.9rem; }
 
         .progress-bar-container { width: 100%; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; margin-top: 6px; }
-        .progress-bar-fill { height: 100%; background: var(--accent-cyan); border-radius: 2px; transition: width 0.5s ease; box-shadow: 0 0 8px var(--accent-cyan); }
+        .progress-bar-fill { height: 100%; background: var(--accent-color); border-radius: 2px; transition: width 0.5s ease; box-shadow: 0 0 8px var(--accent-color); }
         .badge-rank { font-family: var(--font-mono); font-weight: 800; font-size: 0.85rem; color: var(--text-secondary); }
         .badge-gold { color: var(--accent-gold); font-family: var(--font-mono); font-weight: 700; }
         .badge-silver { color: var(--accent-silver); font-family: var(--font-mono); font-weight: 700; }
@@ -120,7 +117,7 @@
     <div id="bg-overlay"></div>
 
     <div class="app-container">
-        <!-- Header Section -->
+        <!-- Header Section matching screenshot -->
         <header class="header-brand">
             <div class="brand-container">
                 <img class="school-logo-img" src="./school-logo.png" onerror="this.onerror=null; this.src='./school.png.png';" alt="School Logo">
@@ -129,10 +126,19 @@
                     <p>Tournament Operations & Live Leaderboard Engine</p>
                 </div>
             </div>
-            <div style="color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.8rem;">System Status: Operational</div>
+            <div class="header-controls">
+                <div class="accent-picker">
+                    ACCENT
+                    <button class="dot-btn" style="background:#06b6d4;" onclick="changeAccent('#06b6d4', 'rgba(6, 182, 212, 0.35)')"></button>
+                    <button class="dot-btn" style="background:#f59e0b;" onclick="changeAccent('#f59e0b', 'rgba(245, 158, 11, 0.35)')"></button>
+                    <button class="dot-btn" style="background:#10b981;" onclick="changeAccent('#10b981', 'rgba(16, 185, 129, 0.35)')"></button>
+                    <button class="dot-btn" style="background:#a855f7;" onclick="changeAccent('#a855f7', 'rgba(168, 85, 247, 0.35)')"></button>
+                </div>
+                <div class="status-badge">SYSTEM STATUS: OPERATIONAL</div>
+            </div>
         </header>
 
-        <!-- KPI Summary Cards -->
+        <!-- KPI Grid Summary -->
         <section class="kpi-grid">
             <div class="kpi-card active-leader">
                 <div class="kpi-label">Tournament Leader</div>
@@ -151,10 +157,11 @@
         <!-- Navigation Tabs -->
         <nav class="nav-pipeline">
             <button class="nav-btn active" onclick="navigate('leaderboard', this)">Standings</button>
+            <button class="nav-btn" onclick="navigate('event-logs', this)">Event Logs</button>
             <button class="nav-btn" onclick="navigate('admin-console', this)">Console Auth</button>
         </nav>
 
-        <!-- Leaderboard Viewport -->
+        <!-- Tab 1: Overall Standings -->
         <main id="leaderboard" class="tab-viewport active">
             <section class="glass-panel">
                 <div class="panel-header">
@@ -178,9 +185,32 @@
             </section>
         </main>
 
-        <!-- Admin Console Viewport -->
+        <!-- Tab 2: Event Logs -->
+        <main id="event-logs" class="tab-viewport">
+            <section class="glass-panel">
+                <div class="panel-header">
+                    <h2>Completed Events Log</h2>
+                </div>
+                <div class="data-table-wrapper">
+                    <table class="logs-table">
+                        <thead>
+                            <tr>
+                                <th>Event Category</th>
+                                <th>Gold Medalist</th>
+                                <th>Silver Medalist</th>
+                                <th>Bronze Medalist</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-tbody">
+                            <tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">Loading logs...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Tab 3: Admin Console Auth & Form -->
         <main id="admin-console" class="tab-viewport">
-            <!-- Authentication Form -->
             <section id="auth-card" class="glass-panel" style="max-width: 380px; margin: 40px auto;">
                 <div class="panel-header">
                     <h2>Admin Authentication</h2>
@@ -192,20 +222,19 @@
                 <button class="btn-action btn-primary" style="width: 100%; margin-top: 10px;" onclick="authenticateAdmin()">Authenticate</button>
             </section>
 
-            <!-- Admin Controls (Original Interface with Upload Options) -->
             <div id="admin-controls" style="display: none;">
                 <section class="glass-panel">
                     <div class="panel-header">
-                        <h2>Record Event Result</h2>
+                        <h2>Record New Event Result</h2>
                     </div>
                     <form id="event-form" onsubmit="handleFormSubmit(event)">
                         <div class="form-group">
-                            <label>Event Name</label>
+                            <label>Event Name / Discipline</label>
                             <input type="text" id="event-name" required placeholder="e.g. Basketball Men Senior">
                         </div>
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
                             <div class="form-group">
-                                <label>Gold Medalist</label>
+                                <label>Gold Winner (10 Pts)</label>
                                 <select id="gold-winner" required>
                                     <option value="">Select Faction</option>
                                     <option value="Moniyan Empire">Moniyan Empire</option>
@@ -215,7 +244,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Silver Medalist</label>
+                                <label>Silver Winner (5 Pts)</label>
                                 <select id="silver-winner" required>
                                     <option value="">Select Faction</option>
                                     <option value="Moniyan Empire">Moniyan Empire</option>
@@ -225,7 +254,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Bronze Medalist</label>
+                                <label>Bronze Winner (2 Pts)</label>
                                 <select id="bronze-winner" required>
                                     <option value="">Select Faction</option>
                                     <option value="Moniyan Empire">Moniyan Empire</option>
@@ -235,16 +264,16 @@
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" class="btn-action btn-primary" style="margin-top: 15px;">Submit Event Results</button>
+                        <button type="submit" class="btn-action btn-primary" style="margin-top: 15px;">Publish Match Results</button>
                     </form>
                 </section>
 
                 <section class="glass-panel">
                     <div class="panel-header">
-                        <h2>System Maintenance</h2>
+                        <h2>Operations Maintenance</h2>
                     </div>
                     <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                        <button class="btn-action btn-secondary" onclick="window.print()">Export Official PDF</button>
+                        <button class="btn-action btn-secondary" onclick="window.print()">Export Printable PDF</button>
                     </div>
                 </section>
             </div>
@@ -254,13 +283,17 @@
     <script>
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
 
-        // Multi-fallback configuration para siguradong mag-load ang images sa lahat ng bisita
         const factionIcons = {
             "Moniyan Empire": { primary: "./moniyan.png", secondary: "./moniyan.png.jpg" },
             "Abyssal Domain": { primary: "./abyssal.png", secondary: "./abyss.png.jpg" },
             "Cadia Riverlands": { primary: "./cadia.png", secondary: "./cadia.png.jpg" },
             "Eruditio": { primary: "./eruditio.png", secondary: "./erudito.png.jpg" }
         };
+
+        function changeAccent(colorHex, glowRgba) {
+            document.documentElement.style.setProperty('--accent-color', colorHex);
+            document.documentElement.style.setProperty('--accent-glow', glowRgba);
+        }
 
         function navigate(tabId, btnElement) {
             document.querySelectorAll('.tab-viewport').forEach(el => el.classList.remove('active'));
@@ -293,7 +326,7 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             }).then(() => {
-                alert("Result successfully recorded!");
+                alert("Result recorded successfully!");
                 document.getElementById("event-form").reset();
                 setTimeout(syncDataEngine, 1500);
             }).catch(err => alert("Error saving data: " + err));
@@ -303,6 +336,7 @@
             fetch(API_ENDPOINT)
                 .then(res => res.json())
                 .then(data => {
+                    // Update Leaderboard
                     const standingsBody = document.querySelector(".standings-table tbody");
                     standingsBody.innerHTML = "";
 
@@ -323,6 +357,19 @@
                     if(data.events) {
                         document.getElementById("kpi-completed").innerText = data.events.length;
                         document.getElementById("kpi-medals").innerText = data.events.length * 3;
+
+                        // Populate Logs Tab
+                        const logsBody = document.getElementById("logs-tbody");
+                        logsBody.innerHTML = "";
+                        data.events.forEach(evt => {
+                            logsBody.innerHTML += `
+                                <tr>
+                                    <td><strong>${evt.name || evt.event}</strong></td>
+                                    <td class="badge-gold">${evt.gold}</td>
+                                    <td class="badge-silver">${evt.silver}</td>
+                                    <td class="badge-bronze">${evt.bronze}</td>
+                                </tr>`;
+                        });
                     }
 
                     standingsList.forEach((row, i) => {
