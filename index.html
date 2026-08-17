@@ -54,7 +54,6 @@
 
         .app-container { max-width: 1240px; margin: 0 auto; padding: 35px 20px; }
         
-        /* HEADER LOGO & BRANDING */
         .header-brand { 
             text-align: left; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); 
             padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; 
@@ -103,7 +102,6 @@
             transition: all 0.3s ease;
         }
 
-        /* METRIC CARDS */
         .kpi-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -121,7 +119,6 @@
         .kpi-label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; letter-spacing: 0.1em; }
         .kpi-value { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 800; color: #fff; margin-top: 6px; letter-spacing: -0.02em; }
 
-        /* PIPELINE NAV */
         .nav-pipeline { 
             display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 15px;
         }
@@ -150,7 +147,6 @@
         .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 12px; flex-wrap: wrap; gap: 10px; }
         .panel-header h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        /* FACTION LOGO STYLES */
         .faction-cell { display: flex; align-items: center; gap: 12px; }
         .faction-logo {
             width: 32px; height: 32px; object-fit: contain; border-radius: 50%;
@@ -163,7 +159,6 @@
             color: var(--text-secondary); border: 1px solid var(--panel-border);
         }
 
-        /* FORM CONTROLS */
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
         .form-group { display: flex; flex-direction: column; gap: 8px; }
         .form-group.full-width { grid-column: 1 / -1; }
@@ -189,7 +184,6 @@
         .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid var(--panel-border); }
         .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); }
 
-        /* DATA TABLES */
         .data-table-wrapper { width: 100%; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th { padding: 12px; font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); border-bottom: 1px solid var(--panel-border); font-weight: 700; letter-spacing: 0.08em; }
@@ -235,7 +229,6 @@
             </div>
         </header>
 
-        <!-- KPI STATS OVERVIEW -->
         <section class="kpi-grid">
             <div class="kpi-card active-leader">
                 <div class="kpi-label">Tournament Leader</div>
@@ -251,14 +244,12 @@
             </div>
         </section>
 
-        <!-- NAVIGATION PIPELINE -->
         <nav class="nav-pipeline">
             <button class="nav-btn active" onclick="navigate('leaderboard', this)">Standings</button>
             <button class="nav-btn" onclick="navigate('tally-sheet', this)">Event Logs</button>
             <button class="nav-btn" onclick="navigate('admin-console', this)">Console Auth</button>
         </nav>
 
-        <!-- STANDINGS TAB -->
         <main id="leaderboard" class="tab-viewport active">
             <section class="glass-panel">
                 <div class="panel-header">
@@ -282,7 +273,6 @@
             </section>
         </main>
 
-        <!-- TALLY LOGS TAB -->
         <main id="tally-sheet" class="tab-viewport">
             <section class="glass-panel">
                 <div class="panel-header">
@@ -308,7 +298,6 @@
             </section>
         </main>
 
-        <!-- ADMIN CONSOLE TAB -->
         <main id="admin-console" class="tab-viewport">
             <section id="auth-card" class="glass-panel" style="max-width: 380px; margin: 40px auto; text-align: left;">
                 <div class="panel-header">
@@ -316,13 +305,12 @@
                 </div>
                 <div class="form-group" style="margin-top: 10px;">
                     <label>Security Key</label>
-                    <input type="password" id="admin-pin" placeholder="••••" maxlength="6" style="letter-spacing: 0.3em; font-family: var(--font-mono); text-align: center;">
+                    <input type="password" id="admin-pin" placeholder="Enter Password" style="letter-spacing: 0.1em; font-family: var(--font-mono); text-align: center;">
                 </div>
                 <button class="btn-action btn-primary" style="width: 100%; margin-top: 20px;" onclick="authenticateAdmin()">Authenticate</button>
             </section>
 
             <div id="admin-controls" style="display: none;">
-                <!-- ADMIN LOGO MANAGER PANEL -->
                 <section class="glass-panel">
                     <div class="panel-header">
                         <h2>Branding & Logo Management</h2>
@@ -444,7 +432,6 @@
             purple: { color: "#a855f7", glow: "rgba(168, 85, 247, 0.25)" }
         };
 
-        /* LOGO MANAGEMENT STORAGE ENGINE */
         function uploadLogo(target, inputElement) {
             const file = inputElement.files[0];
             if (!file) return;
@@ -599,8 +586,9 @@
             if (btnElement) btnElement.classList.add('active');
         }
 
+        /* UPDATED AUTHENTICATION FUNCTION WITH NEW SECURITY PIN */
         function authenticateAdmin() {
-            if (document.getElementById("admin-pin").value === "2026") {
+            if (document.getElementById("admin-pin").value === "mystarlink120616") {
                 document.getElementById("auth-card").style.display = "none";
                 document.getElementById("admin-controls").style.display = "block";
             } else {
