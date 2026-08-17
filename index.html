@@ -95,7 +95,7 @@
         label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; }
         input, select { 
             width: 100%; padding: 12px 14px; border-radius: 10px; 
-            border: 1px solid var(--panel-border); background: rgba(0, 0, 0, 0.3); 
+            border: 1px solid var(--panel-border); background: rgba(0, 0, 0, 0.4); 
             color: #fff; font-size: 0.95rem; outline: none; transition: border 0.2s;
         }
         input:focus, select:focus { border-color: var(--accent-primary); }
@@ -130,7 +130,7 @@
     <div class="app-container">
         <header class="header-brand">
             <h1>ACHS INTRAMURALS 2026</h1>
-            <p>Enterprise Live Leaderboard & Medal Analytics Engine</p>
+            <p>Enterprise Live Leaderboard & Categorized Event Management System</p>
         </header>
 
         <nav class="nav-pipeline">
@@ -173,7 +173,7 @@
                     <table class="events-log-table">
                         <thead>
                             <tr>
-                                <th>Category</th>
+                                <th>Category / Sport</th>
                                 <th>Event Name</th>
                                 <th>🥇 Gold Winner</th>
                                 <th>🥈 Silver Winner</th>
@@ -213,20 +213,32 @@
                         <h2>Record Game Victory</h2>
                     </div>
                     <div class="form-grid">
+                        
+                        <!-- 1. CATEGORY / SPORT TYPE SELECTOR -->
                         <div class="form-group">
-                            <label>Division/Category</label>
-                            <select id="category-select">
-                                <option value="Boys">Boys Division</option>
-                                <option value="Girls">Girls Division</option>
-                                <option value="Mixed">Mixed Category</option>
+                            <label>Category / Sport Type</label>
+                            <select id="category-select" onchange="updateEventDropdown()">
+                                <option value="">-- Select Category --</option>
+                                <option value="Athletics - Track">Athletics - Track (Takbo)</option>
+                                <option value="Athletics - Relay">Athletics - Relay</option>
+                                <option value="Athletics - Jumps">Athletics - Jumps (Lundag)</option>
+                                <option value="Athletics - Throws">Athletics - Throws (Tapon)</option>
+                                <option value="Team Sports">Team Sports</option>
+                                <option value="Racket & Board Games">Racket & Board Games</option>
+                                <option value="Esports">Esports</option>
+                                <option value="Special Events & Cultural">Special Events & Cultural</option>
                             </select>
                         </div>
 
+                        <!-- 2. DYNAMIC EVENT NAME SELECTOR -->
                         <div class="form-group">
                             <label>Event Name</label>
-                            <input type="text" id="event-input" placeholder="e.g. Volleyball Championship">
+                            <select id="event-select">
+                                <option value="">-- Select Category First --</option>
+                            </select>
                         </div>
 
+                        <!-- 3. MEDAL WINNERS -->
                         <div class="form-group">
                             <label>🥇 Gold Medalist</label>
                             <select id="gold-select">
@@ -271,6 +283,72 @@
 
     <script>
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
+
+        // STRUCTURED EVENTS DICTIONARY
+        const eventOptions = {
+            "Athletics - Track": [
+                "100m Dash (Boys)", "100m Dash (Girls)",
+                "200m Dash (Boys)", "200m Dash (Girls)",
+                "400m Run (Boys)", "400m Run (Girls)",
+                "800m Run (Boys)", "800m Run (Girls)",
+                "1500m Run (Boys)", "1500m Run (Girls)",
+                "3000m Run (Boys)", "3000m Run (Girls)",
+                "5000m Run (Boys Only)",
+                "2000m Walk (Boys)", "2000m Walk (Girls)"
+            ],
+            "Athletics - Relay": [
+                "4x100m Relay (Boys)", "4x100m Relay (Girls)",
+                "4x400m Relay (Boys)", "4x400m Relay (Girls)"
+            ],
+            "Athletics - Jumps": [
+                "Long Jump (Boys)", "Long Jump (Girls)",
+                "Triple Jump (Boys)", "Triple Jump (Girls)",
+                "High Jump (Boys)", "High Jump (Girls)",
+                "Pole Vault (Boys Only)"
+            ],
+            "Athletics - Throws": [
+                "Shot Put (Boys)", "Shot Put (Girls)",
+                "Javelin Throw (Boys)", "Javelin Throw (Girls)",
+                "Discus Throw (Boys)", "Discus Throw (Girls)"
+            ],
+            "Team Sports": [
+                "Basketball 5v5 (Boys Only)",
+                "Volleyball (Boys)", "Volleyball (Girls)",
+                "Sepak Takraw (Boys Only)"
+            ],
+            "Racket & Board Games": [
+                "Chess - Board 1 (Boys)", "Chess - Board 1 (Girls)",
+                "Chess - Board 2 (Boys)", "Chess - Board 2 (Girls)"
+            ],
+            "Esports": [
+                "Mobile Legends: Bang Bang (Mixed Category)"
+            ],
+            "Special Events & Cultural": [
+                "Mr. Intramurals 2026",
+                "Ms. Intramurals 2026",
+                "Dance Sports / Hip-Hop Competition",
+                "Vocal Solo / Singing Contest"
+            ]
+        };
+
+        function updateEventDropdown() {
+            const categorySelect = document.getElementById("category-select");
+            const eventSelect = document.getElementById("event-select");
+            const selectedCat = categorySelect.value;
+
+            eventSelect.innerHTML = '<option value="">-- Select Event --</option>';
+
+            if (selectedCat && eventOptions[selectedCat]) {
+                eventOptions[selectedCat].forEach(event => {
+                    const opt = document.createElement("option");
+                    opt.value = event;
+                    opt.textContent = event;
+                    eventSelect.appendChild(opt);
+                });
+            } else {
+                eventSelect.innerHTML = '<option value="">-- Select Category First --</option>';
+            }
+        }
 
         const bgImages = [
             "https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=1600",
@@ -341,7 +419,7 @@
                         data.logs.slice().reverse().forEach(log => {
                             logsBody.innerHTML += `
                                 <tr>
-                                    <td>${log.category || 'Division'}</td>
+                                    <td>${log.category || 'Category'}</td>
                                     <td><strong>${log.event}</strong></td>
                                     <td class="badge-gold">🥇 ${log.gold || "-"}</td>
                                     <td class="badge-silver">🥈 ${log.silver || "-"}</td>
@@ -356,13 +434,21 @@
         }
 
         function publishGameEntry() {
+            const categoryVal = document.getElementById("category-select").value;
+            const eventVal = document.getElementById("event-select").value;
+
+            if (!categoryVal || !eventVal) {
+                alert("Mangyaring pumili ng Category at Event Name!");
+                return;
+            }
+
             const btn = document.getElementById("btn-submit-entry");
             btn.innerText = "Syncing with Database...";
             btn.disabled = true;
 
             const params = new URLSearchParams();
-            params.append("category", document.getElementById("category-select").value);
-            params.append("event", document.getElementById("event-input").value);
+            params.append("category", categoryVal);
+            params.append("event", eventVal);
             params.append("gold", document.getElementById("gold-select").value);
             params.append("silver", document.getElementById("silver-select").value);
             params.append("bronze", document.getElementById("bronze-select").value);
@@ -375,8 +461,9 @@
             }).then(() => {
                 alert("Game Victory Successfully Published!");
                 
-                // AUTO-CLEAR FORM INPUTS FOR SAFE NEXT ENTRY
-                document.getElementById("event-input").value = "";
+                // AUTO-CLEAR FORM INPUTS
+                document.getElementById("category-select").value = "";
+                document.getElementById("event-select").innerHTML = '<option value="">-- Select Category First --</option>';
                 document.getElementById("gold-select").value = "";
                 document.getElementById("silver-select").value = "";
                 document.getElementById("bronze-select").value = "";
