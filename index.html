@@ -12,8 +12,10 @@
             --bg-main: #05070a;
             --panel-bg: rgba(11, 15, 25, 0.85);
             --panel-border: rgba(255, 255, 255, 0.08);
-            --border-active: #38bdf8;
+            
             --accent-cyan: #06b6d4;
+            --accent-glow: rgba(6, 182, 212, 0.25);
+            
             --accent-gold: #f59e0b;
             --accent-silver: #94a3b8;
             --accent-bronze: #d97706;
@@ -45,13 +47,25 @@
         #bg-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 30%, rgba(6, 182, 212, 0.05) 0%, rgba(5, 7, 10, 0.95) 100%);
+            background: radial-gradient(circle at 50% 30%, var(--accent-glow) 0%, rgba(5, 7, 10, 0.95) 100%);
             z-index: -1;
+            transition: background 0.3s ease;
         }
 
         .app-container { max-width: 1240px; margin: 0 auto; padding: 35px 20px; }
         
-        .header-brand { text-align: left; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px; }
+        /* HEADER LOGO & BRANDING */
+        .header-brand { 
+            text-align: left; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); 
+            padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; 
+            flex-wrap: wrap; gap: 15px; 
+        }
+        .brand-container { display: flex; align-items: center; gap: 18px; }
+        .school-logo-img {
+            width: 55px; height: 55px; object-fit: contain;
+            filter: drop-shadow(0 0 10px var(--accent-cyan));
+            display: none;
+        }
         .header-brand h1 { 
             font-family: var(--font-display);
             font-size: 2.2rem; font-weight: 700; letter-spacing: 0.05em;
@@ -60,13 +74,33 @@
         }
         .header-brand h1::before {
             content: ''; display: inline-block; width: 4px; height: 28px; background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
         }
         .header-brand p { color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-top: 4px; }
         
+        .header-controls { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        
+        .theme-switcher {
+            display: flex; align-items: center; gap: 8px;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--panel-border);
+            padding: 5px 10px; border-radius: 6px;
+        }
+        .theme-label { font-size: 0.65rem; font-family: var(--font-mono); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+        .color-dot {
+            width: 16px; height: 16px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.2s, border-color 0.2s;
+        }
+        .color-dot:hover { transform: scale(1.2); }
+        .color-dot.active { border-color: #fff; transform: scale(1.15); }
+        .dot-cyan { background: #06b6d4; }
+        .dot-gold { background: #f59e0b; }
+        .dot-emerald { background: #10b981; }
+        .dot-purple { background: #a855f7; }
+
         .status-badge {
-            background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.3);
+            background: var(--accent-glow); border: 1px solid var(--accent-cyan);
             color: var(--accent-cyan); padding: 6px 14px; border-radius: 4px;
             font-size: 0.75rem; font-family: var(--font-mono); letter-spacing: 0.05em; text-transform: uppercase;
+            transition: all 0.3s ease;
         }
 
         /* METRIC CARDS */
@@ -83,7 +117,7 @@
             backdrop-filter: blur(12px);
             transition: all 0.2s ease;
         }
-        .kpi-card.active-leader { border-left-color: var(--accent-cyan); box-shadow: -5px 0 20px rgba(6, 182, 212, 0.15); }
+        .kpi-card.active-leader { border-left-color: var(--accent-cyan); box-shadow: -5px 0 20px var(--accent-glow); }
         .kpi-label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; letter-spacing: 0.1em; }
         .kpi-value { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 800; color: #fff; margin-top: 6px; letter-spacing: -0.02em; }
 
@@ -100,7 +134,7 @@
         .nav-btn:hover { color: #fff; border-color: var(--panel-border); }
         .nav-btn.active { 
             background: rgba(255, 255, 255, 0.05); color: var(--accent-cyan); 
-            border-color: var(--accent-cyan); box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
+            border-color: var(--accent-cyan); box-shadow: 0 0 12px var(--accent-glow);
         }
 
         .tab-viewport { display: none; }
@@ -115,6 +149,19 @@
         }
         .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 12px; flex-wrap: wrap; gap: 10px; }
         .panel-header h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* FACTION LOGO STYLES */
+        .faction-cell { display: flex; align-items: center; gap: 12px; }
+        .faction-logo {
+            width: 32px; height: 32px; object-fit: contain; border-radius: 50%;
+            filter: drop-shadow(0 0 8px var(--accent-cyan));
+            border: 1px solid var(--panel-border); background: rgba(0,0,0,0.4);
+        }
+        .faction-logo-placeholder {
+            width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.05);
+            display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-family: var(--font-mono);
+            color: var(--text-secondary); border: 1px solid var(--panel-border);
+        }
 
         /* FORM CONTROLS */
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
@@ -136,7 +183,7 @@
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
         }
         .btn-primary { background: var(--accent-cyan); color: #000; }
-        .btn-primary:hover { background: #22d3ee; box-shadow: 0 0 15px rgba(6, 182, 212, 0.4); }
+        .btn-primary:hover { opacity: 0.9; box-shadow: 0 0 15px var(--accent-glow); }
         .btn-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
         .btn-danger:hover { background: #ef4444; color: #fff; }
         .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid var(--panel-border); }
@@ -150,7 +197,7 @@
         tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
 
         .progress-bar-container { width: 100%; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; margin-top: 6px; }
-        .progress-bar-fill { height: 100%; background: var(--accent-cyan); border-radius: 2px; transition: width 0.5s ease; }
+        .progress-bar-fill { height: 100%; background: var(--accent-cyan); border-radius: 2px; transition: width 0.5s ease, background 0.3s ease; }
 
         .badge-rank { font-family: var(--font-mono); font-weight: 800; font-size: 0.85rem; color: var(--text-secondary); }
         .badge-gold { color: var(--accent-gold); font-family: var(--font-mono); font-weight: 700; }
@@ -167,11 +214,25 @@
 
     <div class="app-container">
         <header class="header-brand">
-            <div>
-                <h1>ACHS INTRAMURALS 2026</h1>
-                <p>Tournament Operations & Live Leaderboard Engine</p>
+            <div class="brand-container">
+                <img id="header-school-logo" class="school-logo-img" alt="School Logo">
+                <div>
+                    <h1>ACHS INTRAMURALS 2026</h1>
+                    <p>Tournament Operations & Live Leaderboard Engine</p>
+                </div>
             </div>
-            <div class="status-badge">System Status: Operational</div>
+            
+            <div class="header-controls">
+                <div class="theme-switcher">
+                    <span class="theme-label">Accent</span>
+                    <div class="color-dot dot-cyan active" onclick="setAccentTheme('cyan', this)" title="Cyan Theme"></div>
+                    <div class="color-dot dot-gold" onclick="setAccentTheme('gold', this)" title="Gold Theme"></div>
+                    <div class="color-dot dot-emerald" onclick="setAccentTheme('emerald', this)" title="Emerald Theme"></div>
+                    <div class="color-dot dot-purple" onclick="setAccentTheme('purple', this)" title="Purple Theme"></div>
+                </div>
+
+                <div class="status-badge">System Status: Operational</div>
+            </div>
         </header>
 
         <!-- KPI STATS OVERVIEW -->
@@ -261,6 +322,38 @@
             </section>
 
             <div id="admin-controls" style="display: none;">
+                <!-- ADMIN LOGO MANAGER PANEL -->
+                <section class="glass-panel">
+                    <div class="panel-header">
+                        <h2>Branding & Logo Management</h2>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>School Header Logo</label>
+                            <input type="file" id="upload-school-logo" accept="image/*" onchange="uploadLogo('school', this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Moniyan Empire Logo</label>
+                            <input type="file" id="upload-moniyan" accept="image/*" onchange="uploadLogo('Moniyan Empire', this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Abyssal Domain Logo</label>
+                            <input type="file" id="upload-abyssal" accept="image/*" onchange="uploadLogo('Abyssal Domain', this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Cadia Riverlands Logo</label>
+                            <input type="file" id="upload-cadia" accept="image/*" onchange="uploadLogo('Cadia Riverlands', this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Eruditio Logo</label>
+                            <input type="file" id="upload-eruditio" accept="image/*" onchange="uploadLogo('Eruditio', this)">
+                        </div>
+                        <div class="form-group" style="justify-content: flex-end;">
+                            <button class="btn-action btn-secondary" onclick="resetAllLogos()">Reset Logos</button>
+                        </div>
+                    </div>
+                </section>
+
                 <section class="glass-panel">
                     <div class="panel-header">
                         <h2>System Maintenance</h2>
@@ -343,6 +436,76 @@
 
     <script>
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
+
+        const themePresets = {
+            cyan: { color: "#06b6d4", glow: "rgba(6, 182, 212, 0.25)" },
+            gold: { color: "#f59e0b", glow: "rgba(245, 158, 11, 0.25)" },
+            emerald: { color: "#10b981", glow: "rgba(16, 185, 129, 0.25)" },
+            purple: { color: "#a855f7", glow: "rgba(168, 85, 247, 0.25)" }
+        };
+
+        /* LOGO MANAGEMENT STORAGE ENGINE */
+        function uploadLogo(target, inputElement) {
+            const file = inputElement.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Img = e.target.result;
+                if (target === 'school') {
+                    localStorage.setItem('logo_school', base64Img);
+                } else {
+                    localStorage.setItem(`logo_faction_${target}`, base64Img);
+                }
+                loadLogos();
+                syncDataEngine();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadLogos() {
+            const schoolLogo = localStorage.getItem('logo_school');
+            const schoolImgElem = document.getElementById('header-school-logo');
+            if (schoolLogo) {
+                schoolImgElem.src = schoolLogo;
+                schoolImgElem.style.display = 'block';
+            } else {
+                schoolImgElem.style.display = 'none';
+            }
+        }
+
+        function resetAllLogos() {
+            if (confirm("Alisin ang lahat ng custom logos?")) {
+                localStorage.removeItem('logo_school');
+                localStorage.removeItem('logo_faction_Moniyan Empire');
+                localStorage.removeItem('logo_faction_Abyssal Domain');
+                localStorage.removeItem('logo_faction_Cadia Riverlands');
+                localStorage.removeItem('logo_faction_Eruditio');
+                loadLogos();
+                syncDataEngine();
+            }
+        }
+
+        function setAccentTheme(themeKey, element) {
+            const theme = themePresets[themeKey] || themePresets.cyan;
+            document.documentElement.style.setProperty('--accent-cyan', theme.color);
+            document.documentElement.style.setProperty('--accent-glow', theme.glow);
+
+            document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
+            if (element) {
+                element.classList.add('active');
+            } else {
+                const activeDot = document.querySelector(`.dot-${themeKey}`);
+                if (activeDot) activeDot.classList.add('active');
+            }
+
+            localStorage.setItem('selected_theme_accent', themeKey);
+        }
+
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('selected_theme_accent') || 'cyan';
+            setAccentTheme(savedTheme, null);
+        }
 
         const eventOptions = {
             "Athletics - Track": [
@@ -464,13 +627,24 @@
 
                     standingsList.forEach((row, i) => {
                         let pct = Math.round(((row.total || 0) / highestTotal) * 100);
+                        let teamLogo = localStorage.getItem(`logo_faction_${row.faction}`);
+                        
+                        let logoMarkup = teamLogo 
+                            ? `<img src="${teamLogo}" class="faction-logo" alt="${row.faction}">` 
+                            : `<div class="faction-logo-placeholder">${row.faction.charAt(0)}</div>`;
+
                         standingsBody.innerHTML += `
                             <tr>
                                 <td><span class="badge-rank">0${i + 1}</span></td>
                                 <td>
-                                    <strong>${row.faction}</strong>
-                                    <div class="progress-bar-container">
-                                        <div class="progress-bar-fill" style="width: ${pct}%;"></div>
+                                    <div class="faction-cell">
+                                        ${logoMarkup}
+                                        <div>
+                                            <strong>${row.faction}</strong>
+                                            <div class="progress-bar-container">
+                                                <div class="progress-bar-fill" style="width: ${pct}%;"></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                                 <td class="badge-gold">${row.gold || 0}</td>
@@ -594,6 +768,8 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
+            loadSavedTheme();
+            loadLogos();
             syncDataEngine();
             initSlideshow();
         });
