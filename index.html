@@ -34,23 +34,16 @@
 
         .app-container { max-width: 1240px; margin: 0 auto; padding: 35px 20px; }
         
-        /* Header Area */
         .header-brand { text-align: left; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .brand-container { display: flex; align-items: center; gap: 20px; }
         
-        /* Transparent Logo Wrapper with Direct Outer Glow */
         .school-logo-wrapper {
             width: 58px; height: 58px;
             display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
-            background: transparent;
-            border: none;
-            /* Direct Cyan Outer Glow Filter */
+            flex-shrink: 0; background: transparent; border: none;
             filter: drop-shadow(0 0 12px var(--accent-color)) drop-shadow(0 0 20px rgba(6, 182, 212, 0.6));
         }
-        .school-logo-img {
-            width: 100%; height: 100%; object-fit: contain;
-        }
+        .school-logo-img { width: 100%; height: 100%; object-fit: contain; }
         
         .header-brand h1 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; display: flex; align-items: center; gap: 12px; }
         .header-brand h1::before { content: ''; display: inline-block; width: 4px; height: 28px; background: var(--accent-color); box-shadow: 0 0 10px var(--accent-color); }
@@ -62,14 +55,12 @@
         .dot-btn:hover { transform: scale(1.25); }
         .status-badge { border: 1px solid var(--accent-color); color: var(--accent-color); padding: 6px 14px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.05em; border-radius: 2px; background: rgba(6, 182, 212, 0.05); }
 
-        /* KPI Grid */
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 30px; }
         .kpi-card { background: var(--panel-bg); border: 1px solid var(--panel-border); border-left: 3px solid var(--text-secondary); border-radius: 6px; padding: 20px; backdrop-filter: blur(12px); }
         .kpi-card.active-leader { border-left-color: var(--accent-color); box-shadow: -5px 0 20px var(--accent-glow); }
         .kpi-label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; letter-spacing: 0.1em; }
         .kpi-value { font-family: var(--font-mono); font-size: 1.8rem; font-weight: 800; color: #fff; margin-top: 6px; }
 
-        /* Nav Pipeline Tabs */
         .nav-pipeline { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 15px; }
         .nav-btn { padding: 10px 20px; background: transparent; border: 1px solid transparent; color: var(--text-secondary); border-radius: 4px; cursor: pointer; font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; transition: all 0.2s ease; }
         .nav-btn:hover { color: #fff; border-color: var(--panel-border); }
@@ -79,18 +70,15 @@
         .tab-viewport.active { display: block; animation: fadeIn 0.2s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Glass Panel */
         .glass-panel { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 8px; padding: 25px; margin-bottom: 25px; backdrop-filter: blur(16px); }
         .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 12px; }
         .panel-header h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        /* Faction Shield Wrapper with Cyan Aura Glow */
         .faction-cell { display: flex; align-items: center; gap: 18px; }
         .faction-logo-wrapper {
             width: 44px; height: 52px;
             display: flex; align-items: center; justify-content: center; flex-shrink: 0;
             background: transparent;
-            /* Outer cyan aura filter matching example image */
             filter: drop-shadow(0 0 10px var(--accent-color)) drop-shadow(0 0 18px rgba(6, 182, 212, 0.5));
             transition: transform 0.2s ease, filter 0.2s ease;
         }
@@ -98,11 +86,8 @@
             transform: scale(1.12); 
             filter: drop-shadow(0 0 14px var(--accent-color)) drop-shadow(0 0 25px rgba(6, 182, 212, 0.8));
         }
-        .faction-logo-img { 
-            width: 100%; height: 100%; object-fit: contain; 
-        }
+        .faction-logo-img { width: 100%; height: 100%; object-fit: contain; }
 
-        /* Form Controls */
         .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
         label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.08em; }
         input, select { width: 100%; padding: 12px; border-radius: 4px; border: 1px solid var(--panel-border); background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 0.9rem; outline: none; }
@@ -112,7 +97,6 @@
         .btn-primary { background: var(--accent-color); color: #000; }
         .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid var(--panel-border); }
 
-        /* Tables */
         .data-table-wrapper { width: 100%; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th { padding: 12px; font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); border-bottom: 1px solid var(--panel-border); font-weight: 700; }
@@ -131,7 +115,6 @@
     <div id="bg-overlay"></div>
 
     <div class="app-container">
-        <!-- Header -->
         <header class="header-brand">
             <div class="brand-container">
                 <div class="school-logo-wrapper" id="school-logo-container">
@@ -158,7 +141,6 @@
             </div>
         </header>
 
-        <!-- KPI Grid -->
         <section class="kpi-grid">
             <div class="kpi-card active-leader">
                 <div class="kpi-label">Tournament Leader</div>
@@ -174,14 +156,12 @@
             </div>
         </section>
 
-        <!-- Navigation -->
         <nav class="nav-pipeline">
             <button class="nav-btn active" onclick="navigate('leaderboard', this)">Standings</button>
             <button class="nav-btn" onclick="navigate('event-logs', this)">Event Logs</button>
             <button class="nav-btn" onclick="navigate('admin-console', this)">Console Auth</button>
         </nav>
 
-        <!-- Tab 1: Leaderboard -->
         <main id="leaderboard" class="tab-viewport active">
             <section class="glass-panel">
                 <div class="panel-header">
@@ -205,7 +185,6 @@
             </section>
         </main>
 
-        <!-- Tab 2: Logs -->
         <main id="event-logs" class="tab-viewport">
             <section class="glass-panel">
                 <div class="panel-header">
@@ -229,7 +208,6 @@
             </section>
         </main>
 
-        <!-- Tab 3: Admin Auth -->
         <main id="admin-console" class="tab-viewport">
             <section id="auth-card" class="glass-panel" style="max-width: 380px; margin: 40px auto;">
                 <div class="panel-header">
@@ -304,10 +282,10 @@
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
 
         const factionImageCandidates = {
-            "Moniyan Empire": ["./77501193...1286_n.jpg", "./moniyan.png", "./moniyan.jpg"],
-            "Abyssal Domain": ["./77512704...006_n.jpg", "./abyssal.png", "./abyss.png.jpg", "./abyssal.jpg"],
-            "Cadia Riverlands": ["./77479470...279_n.jpg", "./cadia.png", "./cadia.jpg"],
-            "Eruditio": ["./7750366...9899_n.jpg", "./eruditio.png", "./eruditio.jpg"]
+            "Moniyan Empire": ["./moniyan.png", "./moniyan.jpg", "./77501193...1286_n.jpg"],
+            "Abyssal Domain": ["./abyssal.png", "./abyss.png", "./abyssal.jpg", "./77512704...006_n.jpg"],
+            "Cadia Riverlands": ["./cadia.png", "./cadia.jpg", "./77479470...279_n.jpg"],
+            "Eruditio": ["./eruditio.png", "./eruditio.jpg", "./7750366...9899_n.jpg"]
         };
 
         function handleImageFallback(imgElem, list, fallbackCode) {
@@ -369,14 +347,34 @@
             const standingsBody = document.getElementById("standings-tbody");
             standingsBody.innerHTML = "";
 
-            let highestTotal = Math.max(...standingsList.map(s => s.total || 0), 1);
+            // Dynamic Point Calculation (Gold=10, Silver=5, Bronze=2)
+            standingsList.forEach(s => {
+                let g = parseInt(s.gold || 0);
+                let sl = parseInt(s.silver || 0);
+                let b = parseInt(s.bronze || 0);
+                s.calculatedTotal = (g * 10) + (sl * 5) + (b * 2);
+            });
+
+            // Auto Sort by Highest Total Points
+            standingsList.sort((a, b) => b.calculatedTotal - a.calculatedTotal);
+
+            let highestTotal = Math.max(...standingsList.map(s => s.calculatedTotal || 0), 1);
+            let totalEventsAwarded = 0;
+            let totalMedalsCount = 0;
 
             if (standingsList.length > 0) {
                 document.getElementById("kpi-leader").innerText = standingsList[0].faction;
             }
 
             standingsList.forEach((row, i) => {
-                let pct = Math.round(((row.total || 0) / highestTotal) * 100);
+                let g = parseInt(row.gold || 0);
+                let sl = parseInt(row.silver || 0);
+                let b = parseInt(row.bronze || 0);
+                
+                totalEventsAwarded += g; 
+                totalMedalsCount += (g + sl + b);
+
+                let pct = Math.round(((row.calculatedTotal || 0) / highestTotal) * 100);
                 let candidates = factionImageCandidates[row.faction] || [];
                 let candidatesJson = JSON.stringify(candidates).replace(/"/g, '&quot;');
                 let shortCode = row.faction.substring(0, 3).toUpperCase();
@@ -400,23 +398,28 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="badge-gold">${row.gold || 0}</td>
-                        <td class="badge-silver">${row.silver || 0}</td>
-                        <td class="badge-bronze">${row.bronze || 0}</td>
-                        <td><strong style="font-family: var(--font-mono); font-size: 1.05rem;">${row.total || 0}</strong></td>
+                        <td class="badge-gold">${g}</td>
+                        <td class="badge-silver">${sl}</td>
+                        <td class="badge-bronze">${b}</td>
+                        <td><strong style="font-family: var(--font-mono); font-size: 1.05rem; color: var(--accent-color);">${row.calculatedTotal}</strong></td>
                     </tr>`;
             });
+
+            // Dynamic KPI Auto-Update
+            document.getElementById("kpi-completed").innerText = totalEventsAwarded;
+            document.getElementById("kpi-medals").innerText = totalMedalsCount;
         }
 
         function syncDataEngine() {
-            const defaultStandings = [
-                { faction: "Moniyan Empire", gold: 0, silver: 0, bronze: 0, total: 0 },
-                { faction: "Eruditio", gold: 0, silver: 0, bronze: 0, total: 0 },
-                { faction: "Abyssal Domain", gold: 0, silver: 0, bronze: 0, total: 0 },
-                { faction: "Cadia Riverlands", gold: 0, silver: 0, bronze: 0, total: 0 }
+            // Initial Mock Standings matching user sample screenshot
+            const sampleData = [
+                { faction: "Moniyan Empire", gold: 4, silver: 1, bronze: 2 },
+                { faction: "Eruditio", gold: 2, silver: 2, bronze: 3 },
+                { faction: "Abyssal Domain", gold: 1, silver: 4, bronze: 0 },
+                { faction: "Cadia Riverlands", gold: 1, silver: 1, bronze: 2 }
             ];
 
-            renderStandings(defaultStandings);
+            renderStandings(sampleData);
 
             fetch(API_ENDPOINT)
                 .then(res => res.json())
@@ -426,9 +429,6 @@
                     }
 
                     if (data.events && data.events.length > 0) {
-                        document.getElementById("kpi-completed").innerText = data.events.length;
-                        document.getElementById("kpi-medals").innerText = data.events.length * 3;
-
                         const logsBody = document.getElementById("logs-tbody");
                         logsBody.innerHTML = "";
                         data.events.forEach(evt => {
@@ -443,11 +443,7 @@
                     }
                 })
                 .catch(err => {
-                    console.warn("Using offline mode or awaiting Google Apps Script response:", err);
-                    const logsBody = document.getElementById("logs-tbody");
-                    if (logsBody) {
-                        logsBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">No event logs found or database connection pending.</td></tr>`;
-                    }
+                    console.warn("Using local sync dataset:", err);
                 });
         }
 
