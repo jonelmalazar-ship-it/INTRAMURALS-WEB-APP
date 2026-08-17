@@ -10,53 +10,16 @@
             --card-bg: rgba(22, 27, 34, 0.88);
             --border-color: #30363d;
             --gold: #ffd700;
-            --silver: #c0c0c0;
-            --bronze: #cd7f32;
             --accent-green: #238636;
             --text-color: #c9d1d9;
             --heading-color: #f0f6fc;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-color); 
-            padding: 20px 15px; 
-            min-height: 100vh;
-            position: relative;
-        }
-
-        .bg-slider {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            transition: opacity 1.2s ease-in-out;
-            opacity: 0;
-        }
-
-        .bg-slider.active { opacity: 1; }
-
-        .bg-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background-color: #000;
-            opacity: 0.6;
-            transition: opacity 0.3s ease;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); padding: 20px 15px; }
         .container { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
         
+        /* NAVIGATION TABS */
         .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; width: 100%; justify-content: center; }
         .tab-btn { padding: 10px 20px; background: #161b22; border: 1px solid var(--border-color); color: #fff; border-radius: 8px; cursor: pointer; font-weight: bold; width: auto; }
         .tab-btn.active { background: var(--accent-green); border-color: var(--accent-green); }
@@ -64,33 +27,9 @@
         .tab-content { display: none; width: 100%; }
         .tab-content.active { display: block; }
 
-        .card, .section { 
-            background-color: var(--card-bg); 
-            border: 1px solid var(--border-color); 
-            border-radius: 12px; 
-            padding: 22px; 
-            margin-bottom: 25px; 
-            width: 100%; 
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-        }
-
-        h1 { 
-            color: var(--gold); 
-            text-align: center; 
-            margin-bottom: 10px; 
-            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-            font-size: clamp(1.6rem, 4.5vw, 2.6rem);
-            font-weight: 800;
-        }
-
-        h2 { 
-            color: var(--heading-color); 
-            font-size: 1.15rem; 
-            margin-bottom: 18px; 
-            border-bottom: 1px solid var(--border-color); 
-            padding-bottom: 12px; 
-        }
+        .card, .section { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 22px; margin-bottom: 25px; width: 100%; }
+        h1 { color: var(--gold); text-align: center; margin-bottom: 10px; }
+        h2 { color: var(--heading-color); font-size: 1.15rem; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
         
         label { display: block; font-size: 0.9rem; color: #8b949e; margin-top: 12px; }
         input, select, button { width: 100%; padding: 12px; margin-top: 6px; margin-bottom: 12px; border-radius: 8px; border: 1px solid var(--border-color); background-color: #161b22; color: #fff; }
@@ -102,29 +41,21 @@
         
         .table-responsive { width: 100%; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { padding: 14px 10px; border-bottom: 1px solid var(--border-color); }
-        th { background-color: rgba(33, 38, 45, 0.9); color: #8b949e; font-size: 0.75rem; text-transform: uppercase; }
-
-        @media (max-width: 600px) {
-            body { padding: 12px 8px; }
-            .section, .card { padding: 16px 12px; }
-            th, td { padding: 10px 6px; font-size: 0.85rem; }
-        }
+        th, td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); }
+        th { background-color: rgba(33, 38, 45, 0.9); color: #8b949e; font-size: 0.75rem; }
     </style>
 </head>
 <body>
-    <div id="bg1" class="bg-slider active"></div>
-    <div id="bg2" class="bg-slider"></div>
-    <div id="bg-overlay" class="bg-overlay"></div>
-
     <div class="container">
         <h1>🏆 ACHS INTRAMURALS 2026 🏆</h1>
         
+        <!-- TABS FOR SWITCHING -->
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab(event, 'public-tab')">📊 Public Leaderboard</button>
-            <button class="tab-btn" onclick="switchTab(event, 'admin-tab')">🔒 Admin Panel</button>
+            <button class="tab-btn active" onclick="switchTab('public-tab')">📊 Public Leaderboard</button>
+            <button class="tab-btn" onclick="switchTab('admin-tab')">🔒 Admin Panel</button>
         </div>
 
+        <!-- 1. PUBLIC LEADERBOARD VIEW -->
         <div id="public-tab" class="tab-content active">
             <div class="section">
                 <h2>📊 Overall Faction Standings</h2>
@@ -151,6 +82,7 @@
             </div>
         </div>
 
+        <!-- 2. ADMIN CONTROL PANEL VIEW -->
         <div id="admin-tab" class="tab-content">
             <div id="login-container" class="card" style="max-width: 400px; margin: 0 auto; text-align: center;">
                 <h2>🔒 Admin Login</h2>
@@ -160,15 +92,6 @@
             </div>
 
             <div id="admin-panel" style="display: none; width: 100%;">
-                <div class="card">
-                    <h2>⚙️ Display & Background Settings</h2>
-                    <label>⏱️ Slideshow Interval (seconds):</label>
-                    <input type="number" id="interval-input" min="1" max="60" value="5">
-
-                    <label>☀️ Background Darkness Overlay (<span id="brightness-val">60%</span>):</label>
-                    <input type="range" id="brightness-input" min="10" max="90" value="60" oninput="updateOverlayOpacity(this.value)">
-                </div>
-
                 <div class="card">
                     <h2>⚡ Management Actions</h2>
                     <div class="action-btn-group">
@@ -221,51 +144,19 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
 
-        const bgImages = [
-            "https://images.unsplash.com/photo-1517649763962-0c6232661a0b?q=80&w=1920",
-            "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=1920",
-            "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=1920"
+        const defaultStandings = [
+            { faction: "Abyssal Domain", gold: 0, silver: 0, bronze: 0, total: 0 },
+            { faction: "Cadia Riverlands", gold: 0, silver: 0, bronze: 0, total: 0 },
+            { faction: "Eruditio", gold: 0, silver: 0, bronze: 0, total: 0 },
+            { faction: "Moniyan Empire", gold: 0, silver: 0, bronze: 0, total: 0 }
         ];
-        
-        let currentBgIndex = 0;
-        let activeSlider = 1;
 
-        function startBgSlideshow() {
-            if (bgImages.length === 0) return;
-            
-            const bg1 = document.getElementById('bg1');
-            const bg2 = document.getElementById('bg2');
-            bg1.style.backgroundImage = `url('${bgImages[0]}')`;
-
-            setInterval(() => {
-                currentBgIndex = (currentBgIndex + 1) % bgImages.length;
-                const nextImage = bgImages[currentBgIndex];
-
-                if (activeSlider === 1) {
-                    bg2.style.backgroundImage = `url('${nextImage}')`;
-                    bg2.classList.add('active');
-                    bg1.classList.remove('active');
-                    activeSlider = 2;
-                } else {
-                    bg1.style.backgroundImage = `url('${nextImage}')`;
-                    bg1.classList.add('active');
-                    bg2.classList.remove('active');
-                    activeSlider = 1;
-                }
-            }, 5000);
-        }
-
-        function updateOverlayOpacity(val) {
-            document.getElementById('brightness-val').innerText = val + '%';
-            document.getElementById('bg-overlay').style.opacity = val / 100;
-        }
-
-        function switchTab(evt, tabId) {
+        function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             
             document.getElementById(tabId).classList.add('active');
-            evt.currentTarget.classList.add('active');
+            event.currentTarget.classList.add('active');
         }
 
         function checkPin() {
@@ -287,21 +178,22 @@
                     tbodyStandings.innerHTML = "";
                     tbodyLogs.innerHTML = "";
 
-                    if (data.standings) {
-                        data.standings.forEach((item, i) => {
-                            tbodyStandings.innerHTML += `
-                                <tr>
-                                    <td>#${i + 1}</td>
-                                    <td><strong>${item.faction}</strong></td>
-                                    <td>🥇 ${item.gold}</td>
-                                    <td>🥈 ${item.silver}</td>
-                                    <td>🥉 ${item.bronze}</td>
-                                    <td><strong>${item.total}</strong></td>
-                                </tr>`;
-                        });
-                    }
+                    // Force 0-0-0 default view if standings array is empty or zeroed
+                    let listToDisplay = (data.standings && data.standings.length > 0) ? data.standings : defaultStandings;
 
-                    if (data.logs) {
+                    listToDisplay.forEach((item, i) => {
+                        tbodyStandings.innerHTML += `
+                            <tr>
+                                <td>#${i + 1}</td>
+                                <td><strong>${item.faction}</strong></td>
+                                <td>🥇 ${item.gold || 0}</td>
+                                <td>🥈 ${item.silver || 0}</td>
+                                <td>🥉 ${item.bronze || 0}</td>
+                                <td><strong>${item.total || 0}</strong></td>
+                            </tr>`;
+                    });
+
+                    if (data.logs && data.logs.length > 0) {
                         data.logs.slice().reverse().forEach(log => {
                             tbodyLogs.innerHTML += `
                                 <tr>
@@ -312,9 +204,13 @@
                                     <td>🥉 ${log.bronze || ""}</td>
                                 </tr>`;
                         });
+                    } else {
+                        tbodyLogs.innerHTML = `<tr><td colspan="5" style="text-align:center;">Wala pang naitalang kaganapan.</td></tr>`;
                     }
                 })
-                .catch(err => console.error("Error fetching data:", err));
+                .catch(err => {
+                    console.error("Error fetching data:", err);
+                });
         }
 
         function resetTallyData() {
@@ -354,10 +250,7 @@
             });
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            fetchTallyData();
-            startBgSlideshow();
-        });
+        document.addEventListener("DOMContentLoaded", fetchTallyData);
     </script>
 </body>
-</html> 
+</html>
