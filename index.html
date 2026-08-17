@@ -13,7 +13,7 @@
             --panel-bg: rgba(11, 15, 25, 0.85);
             --panel-border: rgba(255, 255, 255, 0.08);
             --accent-color: #06b6d4;
-            --accent-glow: rgba(6, 182, 212, 0.35);
+            --accent-glow: rgba(6, 182, 212, 0.45);
             --accent-gold: #f59e0b;
             --accent-silver: #94a3b8;
             --accent-bronze: #d97706;
@@ -36,18 +36,20 @@
         
         /* Header Area */
         .header-brand { text-align: left; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .brand-container { display: flex; align-items: center; gap: 18px; }
+        .brand-container { display: flex; align-items: center; gap: 20px; }
         
+        /* Transparent Logo Wrapper with Direct Outer Glow */
         .school-logo-wrapper {
-            width: 56px; height: 56px; border-radius: 50%;
-            background: rgba(11, 15, 25, 0.9);
-            border: 2px solid var(--accent-color);
-            box-shadow: 0 0 15px var(--accent-glow);
+            width: 58px; height: 58px;
             display: flex; align-items: center; justify-content: center;
-            overflow: hidden; flex-shrink: 0; color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 0.8rem;
+            flex-shrink: 0;
+            background: transparent;
+            border: none;
+            /* Direct Cyan Outer Glow Filter */
+            filter: drop-shadow(0 0 12px var(--accent-color)) drop-shadow(0 0 20px rgba(6, 182, 212, 0.6));
         }
         .school-logo-img {
-            width: 100%; height: 100%; object-fit: contain; padding: 2px;
+            width: 100%; height: 100%; object-fit: contain;
         }
         
         .header-brand h1 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; display: flex; align-items: center; gap: 12px; }
@@ -82,18 +84,23 @@
         .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 12px; }
         .panel-header h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        /* Faction Logo Wrapper */
-        .faction-cell { display: flex; align-items: center; gap: 16px; }
+        /* Faction Shield Wrapper with Cyan Aura Glow */
+        .faction-cell { display: flex; align-items: center; gap: 18px; }
         .faction-logo-wrapper {
-            width: 42px; height: 50px; background: rgba(15, 23, 42, 0.9);
-            clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
+            width: 44px; height: 52px;
             display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-            border: 1px solid rgba(255,255,255,0.15);
-            filter: drop-shadow(0 0 8px var(--accent-glow)); transition: transform 0.2s ease;
-            overflow: hidden; color: #fff; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800;
+            background: transparent;
+            /* Outer cyan aura filter matching example image */
+            filter: drop-shadow(0 0 10px var(--accent-color)) drop-shadow(0 0 18px rgba(6, 182, 212, 0.5));
+            transition: transform 0.2s ease, filter 0.2s ease;
         }
-        .faction-logo-wrapper:hover { transform: scale(1.1); }
-        .faction-logo-img { width: 100%; height: 100%; object-fit: cover; }
+        .faction-logo-wrapper:hover { 
+            transform: scale(1.12); 
+            filter: drop-shadow(0 0 14px var(--accent-color)) drop-shadow(0 0 25px rgba(6, 182, 212, 0.8));
+        }
+        .faction-logo-img { 
+            width: 100%; height: 100%; object-fit: contain; 
+        }
 
         /* Form Controls */
         .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
@@ -141,11 +148,11 @@
             <div class="header-controls">
                 <div class="accent-picker">
                     ACCENT
-                    <button class="dot-btn" style="background:#06b6d4;" title="Cyan" onclick="changeAccent('#06b6d4', 'rgba(6, 182, 212, 0.35)')"></button>
-                    <button class="dot-btn" style="background:#f59e0b;" title="Yellow" onclick="changeAccent('#f59e0b', 'rgba(245, 158, 11, 0.35)')"></button>
-                    <button class="dot-btn" style="background:#10b981;" title="Green" onclick="changeAccent('#10b981', 'rgba(16, 185, 129, 0.35)')"></button>
-                    <button class="dot-btn" style="background:#a855f7;" title="Purple" onclick="changeAccent('#a855f7', 'rgba(168, 85, 247, 0.35)')"></button>
-                    <button class="dot-btn" style="background:#ef4444;" title="Red" onclick="changeAccent('#ef4444', 'rgba(239, 68, 68, 0.35)')"></button>
+                    <button class="dot-btn" style="background:#06b6d4;" title="Cyan" onclick="changeAccent('#06b6d4', 'rgba(6, 182, 212, 0.45)')"></button>
+                    <button class="dot-btn" style="background:#f59e0b;" title="Yellow" onclick="changeAccent('#f59e0b', 'rgba(245, 158, 11, 0.45)')"></button>
+                    <button class="dot-btn" style="background:#10b981;" title="Green" onclick="changeAccent('#10b981', 'rgba(16, 185, 129, 0.45)')"></button>
+                    <button class="dot-btn" style="background:#a855f7;" title="Purple" onclick="changeAccent('#a855f7', 'rgba(168, 85, 247, 0.45)')"></button>
+                    <button class="dot-btn" style="background:#ef4444;" title="Red" onclick="changeAccent('#ef4444', 'rgba(239, 68, 68, 0.45)')"></button>
                 </div>
                 <div class="status-badge" id="status-tag">SYSTEM STATUS: OPERATIONAL</div>
             </div>
@@ -303,7 +310,6 @@
             "Eruditio": ["./7750366...9899_n.jpg", "./eruditio.png", "./eruditio.jpg"]
         };
 
-        // Fallback Image Handler to prevent Broken Icon Box
         function handleImageFallback(imgElem, list, fallbackCode) {
             let idx = parseInt(imgElem.dataset.failIndex || "0");
             if (idx < list.length) {
@@ -410,7 +416,6 @@
                 { faction: "Cadia Riverlands", gold: 0, silver: 0, bronze: 0, total: 0 }
             ];
 
-            // Render local default instantly so screen is never blank or stuck loading
             renderStandings(defaultStandings);
 
             fetch(API_ENDPOINT)
