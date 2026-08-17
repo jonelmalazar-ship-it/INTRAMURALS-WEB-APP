@@ -61,9 +61,9 @@
         }
         .brand-container { display: flex; align-items: center; gap: 18px; }
         .school-logo-img {
-            width: 55px; height: 55px; object-fit: contain;
+            width: 52px; height: 52px;
+            object-fit: contain;
             filter: drop-shadow(0 0 10px var(--accent-cyan));
-            display: none;
         }
         .header-brand h1 { 
             font-family: var(--font-display);
@@ -147,16 +147,16 @@
         .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 12px; flex-wrap: wrap; gap: 10px; }
         .panel-header h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        .faction-cell { display: flex; align-items: center; gap: 12px; }
-        .faction-logo {
-            width: 32px; height: 32px; object-fit: contain; border-radius: 50%;
-            filter: drop-shadow(0 0 8px var(--accent-cyan));
-            border: 1px solid var(--panel-border); background: rgba(0,0,0,0.4);
+        .faction-cell { display: flex; align-items: center; gap: 14px; }
+        .faction-logo-wrapper {
+            width: 42px; height: 42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            border: 2px solid var(--panel-border); background: rgba(0,0,0,0.6);
+            overflow: hidden; flex-shrink: 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-        .faction-logo-placeholder {
-            width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.05);
-            display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-family: var(--font-mono);
-            color: var(--text-secondary); border: 1px solid var(--panel-border);
+        .faction-logo-img {
+            width: 30px; height: 30px; object-fit: contain;
         }
 
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
@@ -209,7 +209,7 @@
     <div class="app-container">
         <header class="header-brand">
             <div class="brand-container">
-                <img id="header-school-logo" class="school-logo-img" alt="School Logo">
+                <img class="school-logo-img" src="./school-logo.png" alt="School Logo" onerror="this.src='https://ui-avatars.com/api/?name=ACHS&background=06b6d4&color=fff'">
                 <div>
                     <h1>ACHS INTRAMURALS 2026</h1>
                     <p>Tournament Operations & Live Leaderboard Engine</p>
@@ -313,37 +313,6 @@
             <div id="admin-controls" style="display: none;">
                 <section class="glass-panel">
                     <div class="panel-header">
-                        <h2>Branding & Logo Management</h2>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>School Header Logo</label>
-                            <input type="file" id="upload-school-logo" accept="image/*" onchange="uploadLogo('school', this)">
-                        </div>
-                        <div class="form-group">
-                            <label>Moniyan Empire Logo</label>
-                            <input type="file" id="upload-moniyan" accept="image/*" onchange="uploadLogo('Moniyan Empire', this)">
-                        </div>
-                        <div class="form-group">
-                            <label>Abyssal Domain Logo</label>
-                            <input type="file" id="upload-abyssal" accept="image/*" onchange="uploadLogo('Abyssal Domain', this)">
-                        </div>
-                        <div class="form-group">
-                            <label>Cadia Riverlands Logo</label>
-                            <input type="file" id="upload-cadia" accept="image/*" onchange="uploadLogo('Cadia Riverlands', this)">
-                        </div>
-                        <div class="form-group">
-                            <label>Eruditio Logo</label>
-                            <input type="file" id="upload-eruditio" accept="image/*" onchange="uploadLogo('Eruditio', this)">
-                        </div>
-                        <div class="form-group" style="justify-content: flex-end;">
-                            <button class="btn-action btn-secondary" onclick="resetAllLogos()">Reset Logos</button>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="glass-panel">
-                    <div class="panel-header">
                         <h2>System Maintenance</h2>
                     </div>
                     <div style="display: flex; gap: 12px; flex-wrap: wrap;">
@@ -357,7 +326,6 @@
                         <h2>Record Event Result</h2>
                     </div>
                     <div class="form-grid">
-                        
                         <div class="form-group">
                             <label>Category / Division</label>
                             <select id="category-select" onchange="updateEventDropdown()">
@@ -425,53 +393,20 @@
     <script>
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
 
+        // GINAGAMIT NA ANG AKMANG RELATIVE PATHS NG INYONG LOGOS
+        const factionIcons = {
+            "Moniyan Empire": { logo: "./moniyan.png", border: "#f59e0b" },
+            "Abyssal Domain": { logo: "./abyssal.png", border: "#ef4444" },
+            "Cadia Riverlands": { logo: "./cadia.png", border: "#10b981" },
+            "Eruditio": { logo: "./eruditio.png", border: "#a855f7" }
+        };
+
         const themePresets = {
             cyan: { color: "#06b6d4", glow: "rgba(6, 182, 212, 0.25)" },
             gold: { color: "#f59e0b", glow: "rgba(245, 158, 11, 0.25)" },
             emerald: { color: "#10b981", glow: "rgba(16, 185, 129, 0.25)" },
             purple: { color: "#a855f7", glow: "rgba(168, 85, 247, 0.25)" }
         };
-
-        function uploadLogo(target, inputElement) {
-            const file = inputElement.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Img = e.target.result;
-                if (target === 'school') {
-                    localStorage.setItem('logo_school', base64Img);
-                } else {
-                    localStorage.setItem(`logo_faction_${target}`, base64Img);
-                }
-                loadLogos();
-                syncDataEngine();
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function loadLogos() {
-            const schoolLogo = localStorage.getItem('logo_school');
-            const schoolImgElem = document.getElementById('header-school-logo');
-            if (schoolLogo) {
-                schoolImgElem.src = schoolLogo;
-                schoolImgElem.style.display = 'block';
-            } else {
-                schoolImgElem.style.display = 'none';
-            }
-        }
-
-        function resetAllLogos() {
-            if (confirm("Alisin ang lahat ng custom logos?")) {
-                localStorage.removeItem('logo_school');
-                localStorage.removeItem('logo_faction_Moniyan Empire');
-                localStorage.removeItem('logo_faction_Abyssal Domain');
-                localStorage.removeItem('logo_faction_Cadia Riverlands');
-                localStorage.removeItem('logo_faction_Eruditio');
-                loadLogos();
-                syncDataEngine();
-            }
-        }
 
         function setAccentTheme(themeKey, element) {
             const theme = themePresets[themeKey] || themePresets.cyan;
@@ -586,7 +521,6 @@
             if (btnElement) btnElement.classList.add('active');
         }
 
-        /* UPDATED AUTHENTICATION FUNCTION WITH NEW SECURITY PIN */
         function authenticateAdmin() {
             if (document.getElementById("admin-pin").value === "mystarlink120616") {
                 document.getElementById("auth-card").style.display = "none";
@@ -615,18 +549,19 @@
 
                     standingsList.forEach((row, i) => {
                         let pct = Math.round(((row.total || 0) / highestTotal) * 100);
-                        let teamLogo = localStorage.getItem(`logo_faction_${row.faction}`);
-                        
-                        let logoMarkup = teamLogo 
-                            ? `<img src="${teamLogo}" class="faction-logo" alt="${row.faction}">` 
-                            : `<div class="faction-logo-placeholder">${row.faction.charAt(0)}</div>`;
+                        let meta = factionIcons[row.faction] || { 
+                            logo: "https://via.placeholder.com/100?text=FC", 
+                            border: "var(--panel-border)" 
+                        };
 
                         standingsBody.innerHTML += `
                             <tr>
                                 <td><span class="badge-rank">0${i + 1}</span></td>
                                 <td>
                                     <div class="faction-cell">
-                                        ${logoMarkup}
+                                        <div class="faction-logo-wrapper" style="border-color: ${meta.border};">
+                                            <img class="faction-logo-img" src="${meta.logo}" alt="${row.faction} Logo" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(row.faction)}&background=0b0f19&color=fff'">
+                                        </div>
                                         <div>
                                             <strong>${row.faction}</strong>
                                             <div class="progress-bar-container">
@@ -757,7 +692,6 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             loadSavedTheme();
-            loadLogos();
             syncDataEngine();
             initSlideshow();
         });
