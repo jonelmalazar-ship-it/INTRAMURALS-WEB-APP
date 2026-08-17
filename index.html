@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACHS INTRAMURALS 2026 | Tournament Operations Center</title>
+    <title>ACHS INTRAMURALS 2026 | Operations Center</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
@@ -12,10 +12,8 @@
             --bg-main: #05070a;
             --panel-bg: rgba(11, 15, 25, 0.85);
             --panel-border: rgba(255, 255, 255, 0.08);
-            
             --accent-cyan: #06b6d4;
             --accent-glow: rgba(6, 182, 212, 0.25);
-            
             --accent-gold: #f59e0b;
             --accent-silver: #94a3b8;
             --accent-bronze: #d97706;
@@ -26,184 +24,70 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        
-        body { 
-            background-color: var(--bg-main); 
-            color: var(--text-primary); 
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
+        body { background-color: var(--bg-main); color: var(--text-primary); min-height: 100vh; position: relative; overflow-x: hidden; }
 
-        #bg-slider {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover;
-            background-position: center;
-            transition: background-image 1.5s ease-in-out;
-            z-index: -2;
-            filter: brightness(0.25) contrast(1.2);
-        }
-        #bg-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 30%, var(--accent-glow) 0%, rgba(5, 7, 10, 0.95) 100%);
-            z-index: -1;
-            transition: background 0.3s ease;
-        }
+        #bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 30%, var(--accent-glow) 0%, rgba(5, 7, 10, 0.95) 100%); z-index: -1; }
 
         .app-container { max-width: 1240px; margin: 0 auto; padding: 35px 20px; }
-        
-        .header-brand { 
-            text-align: left; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); 
-            padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; 
-            flex-wrap: wrap; gap: 15px; 
-        }
+        .header-brand { text-align: left; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .brand-container { display: flex; align-items: center; gap: 18px; }
+        
         .school-logo-img {
-            width: 52px; height: 52px;
-            object-fit: contain;
+            width: 55px; height: 55px; object-fit: contain;
             filter: drop-shadow(0 0 10px var(--accent-cyan));
+            border-radius: 6px;
         }
-        .header-brand h1 { 
-            font-family: var(--font-display);
-            font-size: 2.2rem; font-weight: 700; letter-spacing: 0.05em;
-            text-transform: uppercase; color: #fff;
-            display: flex; align-items: center; gap: 12px;
-        }
-        .header-brand h1::before {
-            content: ''; display: inline-block; width: 4px; height: 28px; background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan);
-            transition: background 0.3s ease, box-shadow 0.3s ease;
-        }
+        
+        .header-brand h1 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; display: flex; align-items: center; gap: 12px; }
+        .header-brand h1::before { content: ''; display: inline-block; width: 4px; height: 28px; background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan); }
         .header-brand p { color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-top: 4px; }
-        
-        .header-controls { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
-        
-        .theme-switcher {
-            display: flex; align-items: center; gap: 8px;
-            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--panel-border);
-            padding: 5px 10px; border-radius: 6px;
-        }
-        .theme-label { font-size: 0.65rem; font-family: var(--font-mono); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
-        .color-dot {
-            width: 16px; height: 16px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.2s, border-color 0.2s;
-        }
-        .color-dot:hover { transform: scale(1.2); }
-        .color-dot.active { border-color: #fff; transform: scale(1.15); }
-        .dot-cyan { background: #06b6d4; }
-        .dot-gold { background: #f59e0b; }
-        .dot-emerald { background: #10b981; }
-        .dot-purple { background: #a855f7; }
 
-        .status-badge {
-            background: var(--accent-glow); border: 1px solid var(--accent-cyan);
-            color: var(--accent-cyan); padding: 6px 14px; border-radius: 4px;
-            font-size: 0.75rem; font-family: var(--font-mono); letter-spacing: 0.05em; text-transform: uppercase;
-            transition: all 0.3s ease;
-        }
-
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 16px; margin-bottom: 30px;
-        }
-        .kpi-card {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-left: 3px solid var(--text-secondary);
-            border-radius: 6px; padding: 20px;
-            backdrop-filter: blur(12px);
-            transition: all 0.2s ease;
-        }
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 30px; }
+        .kpi-card { background: var(--panel-bg); border: 1px solid var(--panel-border); border-left: 3px solid var(--text-secondary); border-radius: 6px; padding: 20px; backdrop-filter: blur(12px); }
         .kpi-card.active-leader { border-left-color: var(--accent-cyan); box-shadow: -5px 0 20px var(--accent-glow); }
         .kpi-label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; letter-spacing: 0.1em; }
-        .kpi-value { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 800; color: #fff; margin-top: 6px; letter-spacing: -0.02em; }
+        .kpi-value { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 800; color: #fff; margin-top: 6px; }
 
-        .nav-pipeline { 
-            display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 15px;
-        }
-        .nav-btn { 
-            padding: 10px 20px; background: transparent; border: 1px solid transparent;
-            color: var(--text-secondary); border-radius: 4px; cursor: pointer; 
-            font-family: var(--font-display); font-weight: 600; font-size: 0.9rem;
-            letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.2s ease;
-        }
+        .nav-pipeline { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 15px; }
+        .nav-btn { padding: 10px 20px; background: transparent; border: 1px solid transparent; color: var(--text-secondary); border-radius: 4px; cursor: pointer; font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; transition: all 0.2s ease; }
         .nav-btn:hover { color: #fff; border-color: var(--panel-border); }
-        .nav-btn.active { 
-            background: rgba(255, 255, 255, 0.05); color: var(--accent-cyan); 
-            border-color: var(--accent-cyan); box-shadow: 0 0 12px var(--accent-glow);
-        }
+        .nav-btn.active { background: rgba(255, 255, 255, 0.05); color: var(--accent-cyan); border-color: var(--accent-cyan); box-shadow: 0 0 12px var(--accent-glow); }
 
         .tab-viewport { display: none; }
         .tab-viewport.active { display: block; animation: fadeIn 0.2s ease-in-out; }
-
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .glass-panel { 
-            background: var(--panel-bg); border: 1px solid var(--panel-border); 
-            border-radius: 8px; padding: 25px; margin-bottom: 25px; 
-            backdrop-filter: blur(16px);
-        }
-        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 12px; flex-wrap: wrap; gap: 10px; }
-        .panel-header h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
+        .glass-panel { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 8px; padding: 25px; margin-bottom: 25px; backdrop-filter: blur(16px); }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 12px; }
+        .panel-header h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: #fff; text-transform: uppercase; }
 
         .faction-cell { display: flex; align-items: center; gap: 14px; }
-        .faction-logo-wrapper {
-            width: 42px; height: 42px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            border: 2px solid var(--panel-border); background: rgba(0,0,0,0.6);
-            overflow: hidden; flex-shrink: 0;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-        .faction-logo-img {
-            width: 30px; height: 30px; object-fit: contain;
-        }
+        .faction-logo-wrapper { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--panel-border); background: rgba(0,0,0,0.6); overflow: hidden; flex-shrink: 0; }
+        .faction-logo-img { width: 100%; height: 100%; object-fit: cover; }
 
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
-        .form-group { display: flex; flex-direction: column; gap: 8px; }
-        .form-group.full-width { grid-column: 1 / -1; }
-        
+        .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
         label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.08em; }
-        input, select { 
-            width: 100%; padding: 12px; border-radius: 4px; 
-            border: 1px solid var(--panel-border); background: rgba(0, 0, 0, 0.6); 
-            color: #fff; font-size: 0.9rem; outline: none; transition: border-color 0.2s;
-        }
-        input:focus, select:focus { border-color: var(--accent-cyan); }
+        input { width: 100%; padding: 12px; border-radius: 4px; border: 1px solid var(--panel-border); background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 0.9rem; outline: none; }
 
-        .btn-action { 
-            padding: 12px 20px; border-radius: 4px; border: none; 
-            font-family: var(--font-display); font-weight: 700; font-size: 0.85rem;
-            text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s;
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-        }
+        .btn-action { padding: 12px 20px; border-radius: 4px; border: none; font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-primary { background: var(--accent-cyan); color: #000; }
-        .btn-primary:hover { opacity: 0.9; box-shadow: 0 0 15px var(--accent-glow); }
-        .btn-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
-        .btn-danger:hover { background: #ef4444; color: #fff; }
         .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid var(--panel-border); }
-        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); }
 
         .data-table-wrapper { width: 100%; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        th { padding: 12px; font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); border-bottom: 1px solid var(--panel-border); font-weight: 700; letter-spacing: 0.08em; }
+        th { padding: 12px; font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); border-bottom: 1px solid var(--panel-border); font-weight: 700; }
         td { padding: 14px 12px; border-bottom: 1px solid var(--panel-border); font-size: 0.9rem; }
-        tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
 
         .progress-bar-container { width: 100%; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; margin-top: 6px; }
-        .progress-bar-fill { height: 100%; background: var(--accent-cyan); border-radius: 2px; transition: width 0.5s ease, background 0.3s ease; }
-
+        .progress-bar-fill { height: 100%; background: var(--accent-cyan); border-radius: 2px; transition: width 0.5s ease; }
         .badge-rank { font-family: var(--font-mono); font-weight: 800; font-size: 0.85rem; color: var(--text-secondary); }
         .badge-gold { color: var(--accent-gold); font-family: var(--font-mono); font-weight: 700; }
         .badge-silver { color: var(--accent-silver); font-family: var(--font-mono); font-weight: 700; }
         .badge-bronze { color: var(--accent-bronze); font-family: var(--font-mono); font-weight: 700; }
-        
-        .tag-category { background: rgba(255, 255, 255, 0.05); color: var(--text-secondary); font-size: 0.7rem; font-weight: 600; padding: 4px 8px; border-radius: 3px; border: 1px solid var(--panel-border); text-transform: uppercase; font-family: var(--font-mono); }
     </style>
 </head>
 <body>
 
-    <div id="bg-slider"></div>
     <div id="bg-overlay"></div>
 
     <div class="app-container">
@@ -215,18 +99,7 @@
                     <p>Tournament Operations & Live Leaderboard Engine</p>
                 </div>
             </div>
-            
-            <div class="header-controls">
-                <div class="theme-switcher">
-                    <span class="theme-label">Accent</span>
-                    <div class="color-dot dot-cyan active" onclick="setAccentTheme('cyan', this)" title="Cyan Theme"></div>
-                    <div class="color-dot dot-gold" onclick="setAccentTheme('gold', this)" title="Gold Theme"></div>
-                    <div class="color-dot dot-emerald" onclick="setAccentTheme('emerald', this)" title="Emerald Theme"></div>
-                    <div class="color-dot dot-purple" onclick="setAccentTheme('purple', this)" title="Purple Theme"></div>
-                </div>
-
-                <div class="status-badge">System Status: Operational</div>
-            </div>
+            <div style="color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.8rem;">System Status: Operational</div>
         </header>
 
         <section class="kpi-grid">
@@ -246,7 +119,6 @@
 
         <nav class="nav-pipeline">
             <button class="nav-btn active" onclick="navigate('leaderboard', this)">Standings</button>
-            <button class="nav-btn" onclick="navigate('tally-sheet', this)">Event Logs</button>
             <button class="nav-btn" onclick="navigate('admin-console', this)">Console Auth</button>
         </nav>
 
@@ -264,32 +136,7 @@
                                 <th>Gold</th>
                                 <th>Silver</th>
                                 <th>Bronze</th>
-                                <th>Total Points / Medals</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </section>
-        </main>
-
-        <main id="tally-sheet" class="tab-viewport">
-            <section class="glass-panel">
-                <div class="panel-header">
-                    <h2>Official Audit Log</h2>
-                    <div style="width: 100%; max-width: 320px;">
-                        <input type="text" id="tally-search" placeholder="Filter events or teams..." onkeyup="filterTallySheet()">
-                    </div>
-                </div>
-                <div class="data-table-wrapper">
-                    <table class="events-log-table">
-                        <thead>
-                            <tr>
-                                <th>Category</th>
-                                <th>Event Name</th>
-                                <th>Gold Winner</th>
-                                <th>Silver Winner</th>
-                                <th>Bronze Winner</th>
+                                <th>Total Points</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -299,15 +146,15 @@
         </main>
 
         <main id="admin-console" class="tab-viewport">
-            <section id="auth-card" class="glass-panel" style="max-width: 380px; margin: 40px auto; text-align: left;">
+            <section id="auth-card" class="glass-panel" style="max-width: 380px; margin: 40px auto;">
                 <div class="panel-header">
                     <h2>Admin Authentication</h2>
                 </div>
-                <div class="form-group" style="margin-top: 10px;">
+                <div class="form-group">
                     <label>Security Key</label>
-                    <input type="password" id="admin-pin" placeholder="Enter Password" style="letter-spacing: 0.1em; font-family: var(--font-mono); text-align: center;">
+                    <input type="password" id="admin-pin" placeholder="Enter Password" style="text-align: center;">
                 </div>
-                <button class="btn-action btn-primary" style="width: 100%; margin-top: 20px;" onclick="authenticateAdmin()">Authenticate</button>
+                <button class="btn-action btn-primary" style="width: 100%; margin-top: 10px;" onclick="authenticateAdmin()">Authenticate</button>
             </section>
 
             <div id="admin-controls" style="display: none;">
@@ -317,73 +164,6 @@
                     </div>
                     <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                         <button class="btn-action btn-secondary" onclick="window.print()">Export Official PDF</button>
-                        <button class="btn-action btn-danger" onclick="triggerSystemReset()">Purge System Database</button>
-                    </div>
-                </section>
-
-                <section class="glass-panel">
-                    <div class="panel-header">
-                        <h2>Record Event Result</h2>
-                    </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Category / Division</label>
-                            <select id="category-select" onchange="updateEventDropdown()">
-                                <option value="">-- Select Category --</option>
-                                <option value="Athletics - Track">Athletics - Track</option>
-                                <option value="Athletics - Relay">Athletics - Relay</option>
-                                <option value="Athletics - Jumps">Athletics - Jumps</option>
-                                <option value="Athletics - Throws">Athletics - Throws</option>
-                                <option value="Team Sports">Team Sports</option>
-                                <option value="Racket & Board Games">Racket & Board Games</option>
-                                <option value="Esports">Esports</option>
-                                <option value="Special Events & Cultural">Special Events & Cultural</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Event Name</label>
-                            <select id="event-select">
-                                <option value="">-- Select Category First --</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Gold Medalist (1st)</label>
-                            <select id="gold-select">
-                                <option value="">-- Select Faction --</option>
-                                <option value="Moniyan Empire">Moniyan Empire</option>
-                                <option value="Abyssal Domain">Abyssal Domain</option>
-                                <option value="Cadia Riverlands">Cadia Riverlands</option>
-                                <option value="Eruditio">Eruditio</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Silver Medalist (2nd)</label>
-                            <select id="silver-select">
-                                <option value="">-- Select Faction --</option>
-                                <option value="Moniyan Empire">Moniyan Empire</option>
-                                <option value="Abyssal Domain">Abyssal Domain</option>
-                                <option value="Cadia Riverlands">Cadia Riverlands</option>
-                                <option value="Eruditio">Eruditio</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Bronze Medalist (3rd)</label>
-                            <select id="bronze-select">
-                                <option value="">-- Select Faction --</option>
-                                <option value="Moniyan Empire">Moniyan Empire</option>
-                                <option value="Abyssal Domain">Abyssal Domain</option>
-                                <option value="Cadia Riverlands">Cadia Riverlands</option>
-                                <option value="Eruditio">Eruditio</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group full-width" style="margin-top: 10px;">
-                            <button id="btn-submit-entry" class="btn-action btn-primary" onclick="publishGameEntry()">Commit Result to Database</button>
-                        </div>
                     </div>
                 </section>
             </div>
@@ -393,7 +173,6 @@
     <script>
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
 
-        // GINAGAMIT NA ANG AKMANG RELATIVE PATHS NG INYONG LOGOS
         const factionIcons = {
             "Moniyan Empire": { logo: "./moniyan.png", border: "#f59e0b" },
             "Abyssal Domain": { logo: "./abyssal.png", border: "#ef4444" },
@@ -401,122 +180,9 @@
             "Eruditio": { logo: "./eruditio.png", border: "#a855f7" }
         };
 
-        const themePresets = {
-            cyan: { color: "#06b6d4", glow: "rgba(6, 182, 212, 0.25)" },
-            gold: { color: "#f59e0b", glow: "rgba(245, 158, 11, 0.25)" },
-            emerald: { color: "#10b981", glow: "rgba(16, 185, 129, 0.25)" },
-            purple: { color: "#a855f7", glow: "rgba(168, 85, 247, 0.25)" }
-        };
-
-        function setAccentTheme(themeKey, element) {
-            const theme = themePresets[themeKey] || themePresets.cyan;
-            document.documentElement.style.setProperty('--accent-cyan', theme.color);
-            document.documentElement.style.setProperty('--accent-glow', theme.glow);
-
-            document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
-            if (element) {
-                element.classList.add('active');
-            } else {
-                const activeDot = document.querySelector(`.dot-${themeKey}`);
-                if (activeDot) activeDot.classList.add('active');
-            }
-
-            localStorage.setItem('selected_theme_accent', themeKey);
-        }
-
-        function loadSavedTheme() {
-            const savedTheme = localStorage.getItem('selected_theme_accent') || 'cyan';
-            setAccentTheme(savedTheme, null);
-        }
-
-        const eventOptions = {
-            "Athletics - Track": [
-                "100m Dash (Boys)", "100m Dash (Girls)",
-                "200m Dash (Boys)", "200m Dash (Girls)",
-                "400m Run (Boys)", "400m Run (Girls)",
-                "800m Run (Boys)", "800m Run (Girls)",
-                "1500m Run (Boys)", "1500m Run (Girls)",
-                "3000m Run (Boys)", "3000m Run (Girls)",
-                "5000m Run (Boys Only)",
-                "2000m Walk (Boys)", "2000m Walk (Girls)"
-            ],
-            "Athletics - Relay": [
-                "4x100m Relay (Boys)", "4x100m Relay (Girls)",
-                "4x400m Relay (Boys)", "4x400m Relay (Girls)"
-            ],
-            "Athletics - Jumps": [
-                "Long Jump (Boys)", "Long Jump (Girls)",
-                "Triple Jump (Boys)", "Triple Jump (Girls)",
-                "High Jump (Boys)", "High Jump (Girls)",
-                "Pole Vault (Boys Only)"
-            ],
-            "Athletics - Throws": [
-                "Shot Put (Boys)", "Shot Put (Girls)",
-                "Javelin Throw (Boys)", "Javelin Throw (Girls)",
-                "Discus Throw (Boys)", "Discus Throw (Girls)"
-            ],
-            "Team Sports": [
-                "Basketball 5v5 (Boys Only)",
-                "Volleyball (Boys)", "Volleyball (Girls)",
-                "Sepak Takraw (Boys Only)"
-            ],
-            "Racket & Board Games": [
-                "Chess - Board 1 (Boys)", "Chess - Board 1 (Girls)",
-                "Chess - Board 2 (Boys)", "Chess - Board 2 (Girls)"
-            ],
-            "Esports": [
-                "Mobile Legends: Bang Bang (Mixed Category)"
-            ],
-            "Special Events & Cultural": [
-                "Mr. Intramurals 2026",
-                "Ms. Intramurals 2026",
-                "Dance Sports / Hip-Hop Competition",
-                "Vocal Solo / Singing Contest"
-            ]
-        };
-
-        let rawLogsData = [];
-
-        function updateEventDropdown() {
-            const categorySelect = document.getElementById("category-select");
-            const eventSelect = document.getElementById("event-select");
-            const selectedCat = categorySelect.value;
-
-            eventSelect.innerHTML = '<option value="">-- Select Event --</option>';
-
-            if (selectedCat && eventOptions[selectedCat]) {
-                eventOptions[selectedCat].forEach(event => {
-                    const opt = document.createElement("option");
-                    opt.value = event;
-                    opt.textContent = event;
-                    eventSelect.appendChild(opt);
-                });
-            } else {
-                eventSelect.innerHTML = '<option value="">-- Select Category First --</option>';
-            }
-        }
-
-        const bgImages = [
-            "https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=1600",
-            "https://images.unsplash.com/photo-1519766304817-4f37bda74a29?q=80&w=1600",
-            "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=1600"
-        ];
-        let bgIdx = 0;
-
-        function initSlideshow() {
-            const slider = document.getElementById("bg-slider");
-            if (!slider) return;
-            slider.style.backgroundImage = `url('${bgImages[0]}')`;
-            setInterval(() => {
-                bgIdx = (bgIdx + 1) % bgImages.length;
-                slider.style.backgroundImage = `url('${bgImages[bgIdx]}')`;
-            }, 8000);
-        }
-
         function navigate(tabId, btnElement) {
             document.querySelectorAll('.tab-viewport').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-            
             document.getElementById(tabId).classList.add('active');
             if (btnElement) btnElement.classList.add('active');
         }
@@ -547,12 +213,13 @@
                     let standingsList = (data.standings && data.standings.length > 0) ? data.standings : defaultStandings;
                     let highestTotal = Math.max(...standingsList.map(s => s.total || 0), 1);
 
+                    if(standingsList.length > 0) {
+                        document.getElementById("kpi-leader").innerText = standingsList[0].faction;
+                    }
+
                     standingsList.forEach((row, i) => {
                         let pct = Math.round(((row.total || 0) / highestTotal) * 100);
-                        let meta = factionIcons[row.faction] || { 
-                            logo: "https://via.placeholder.com/100?text=FC", 
-                            border: "var(--panel-border)" 
-                        };
+                        let meta = factionIcons[row.faction] || { logo: "", border: "var(--panel-border)" };
 
                         standingsBody.innerHTML += `
                             <tr>
@@ -560,7 +227,7 @@
                                 <td>
                                     <div class="faction-cell">
                                         <div class="faction-logo-wrapper" style="border-color: ${meta.border};">
-                                            <img class="faction-logo-img" src="${meta.logo}" alt="${row.faction} Logo" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(row.faction)}&background=0b0f19&color=fff'">
+                                            <img class="faction-logo-img" src="${meta.logo}" alt="${row.faction}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(row.faction)}&background=0b0f19&color=fff'">
                                         </div>
                                         <div>
                                             <strong>${row.faction}</strong>
@@ -576,124 +243,12 @@
                                 <td><strong style="font-family: var(--font-mono); font-size: 1.05rem;">${row.total || 0}</strong></td>
                             </tr>`;
                     });
-
-                    if (standingsList.length > 0 && standingsList[0].total > 0) {
-                        document.getElementById("kpi-leader").innerText = standingsList[0].faction;
-                    } else {
-                        document.getElementById("kpi-leader").innerText = "UNDECIDED";
-                    }
-
-                    rawLogsData = data.logs || [];
-                    document.getElementById("kpi-completed").innerText = rawLogsData.length;
-
-                    let totalMedalsCount = rawLogsData.reduce((acc, log) => {
-                        let count = 0;
-                        if (log.gold) count++;
-                        if (log.silver) count++;
-                        if (log.bronze) count++;
-                        return acc + count;
-                    }, 0);
-                    document.getElementById("kpi-medals").innerText = totalMedalsCount;
-
-                    renderTallySheet(rawLogsData);
                 })
                 .catch(err => console.error("Database Error:", err));
         }
 
-        function renderTallySheet(logs) {
-            const logsBody = document.querySelector(".events-log-table tbody");
-            logsBody.innerHTML = "";
-
-            if (logs && logs.length > 0) {
-                logs.slice().reverse().forEach(log => {
-                    logsBody.innerHTML += `
-                        <tr>
-                            <td><span class="tag-category">${log.category || 'General'}</span></td>
-                            <td><strong>${log.event}</strong></td>
-                            <td class="badge-gold">${log.gold || "-"}</td>
-                            <td class="badge-silver">${log.silver || "-"}</td>
-                            <td class="badge-bronze">${log.bronze || "-"}</td>
-                        </tr>`;
-                });
-            } else {
-                logsBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-secondary);">No event records found in database.</td></tr>`;
-            }
-        }
-
-        function filterTallySheet() {
-            const query = document.getElementById("tally-search").value.toLowerCase();
-            const filtered = rawLogsData.filter(log => {
-                return (log.category && log.category.toLowerCase().includes(query)) ||
-                       (log.event && log.event.toLowerCase().includes(query)) ||
-                       (log.gold && log.gold.toLowerCase().includes(query)) ||
-                       (log.silver && log.silver.toLowerCase().includes(query)) ||
-                       (log.bronze && log.bronze.toLowerCase().includes(query));
-            });
-            renderTallySheet(filtered);
-        }
-
-        function publishGameEntry() {
-            const categoryVal = document.getElementById("category-select").value;
-            const eventVal = document.getElementById("event-select").value;
-
-            if (!categoryVal || !eventVal) {
-                alert("Mangyaring pumili ng Category at Event Name!");
-                return;
-            }
-
-            const btn = document.getElementById("btn-submit-entry");
-            btn.innerText = "Committing Entry...";
-            btn.disabled = true;
-
-            const params = new URLSearchParams();
-            params.append("category", categoryVal);
-            params.append("event", eventVal);
-            params.append("gold", document.getElementById("gold-select").value);
-            params.append("silver", document.getElementById("silver-select").value);
-            params.append("bronze", document.getElementById("bronze-select").value);
-
-            fetch(API_ENDPOINT, {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: params.toString()
-            }).then(() => {
-                alert("Game Result Committed to Database!");
-                
-                document.getElementById("category-select").value = "";
-                document.getElementById("event-select").innerHTML = '<option value="">-- Select Category First --</option>';
-                document.getElementById("gold-select").value = "";
-                document.getElementById("silver-select").value = "";
-                document.getElementById("bronze-select").value = "";
-
-                btn.innerText = "Commit Result to Database";
-                btn.disabled = false;
-                
-                syncDataEngine();
-            });
-        }
-
-        function triggerSystemReset() {
-            if (prompt("CRITICAL ACTION WARNING:\nType 'RESET' to erase all spreadsheet records:") !== "RESET") return;
-
-            const params = new URLSearchParams();
-            params.append("action", "reset");
-
-            fetch(API_ENDPOINT, {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: params.toString()
-            }).then(() => {
-                alert("Database purged and rezeroed successfully.");
-                syncDataEngine();
-            });
-        }
-
         document.addEventListener("DOMContentLoaded", () => {
-            loadSavedTheme();
             syncDataEngine();
-            initSlideshow();
         });
     </script>
 </body>
