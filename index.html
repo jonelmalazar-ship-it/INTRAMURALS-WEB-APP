@@ -34,15 +34,20 @@
 
         .app-container { max-width: 1240px; margin: 0 auto; padding: 35px 20px; }
         
-        /* Top Header Area */
+        /* Header Area */
         .header-brand { text-align: left; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .brand-container { display: flex; align-items: center; gap: 18px; }
         
+        .school-logo-wrapper {
+            width: 56px; height: 56px; border-radius: 50%;
+            background: rgba(11, 15, 25, 0.9);
+            border: 2px solid var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-glow);
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; flex-shrink: 0;
+        }
         .school-logo-img {
-            width: 52px; height: 52px; object-fit: contain; border-radius: 50%;
-            filter: drop-shadow(0 0 12px var(--accent-color));
-            border: 1px solid var(--accent-color);
-            background: rgba(11, 15, 25, 0.8); padding: 2px;
+            width: 100%; height: 100%; object-fit: contain; padding: 2px;
         }
         
         .header-brand h1 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; display: flex; align-items: center; gap: 12px; }
@@ -52,17 +57,17 @@
         .header-controls { display: flex; align-items: center; gap: 20px; }
         .accent-picker { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-secondary); }
         .dot-btn { width: 14px; height: 14px; border-radius: 50%; cursor: pointer; border: none; transition: transform 0.2s; }
-        .dot-btn:hover { transform: scale(1.2); }
+        .dot-btn:hover { transform: scale(1.25); }
         .status-badge { border: 1px solid var(--accent-color); color: var(--accent-color); padding: 6px 14px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.05em; border-radius: 2px; background: rgba(6, 182, 212, 0.05); }
 
-        /* KPI Cards Grid */
+        /* KPI Grid */
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 30px; }
         .kpi-card { background: var(--panel-bg); border: 1px solid var(--panel-border); border-left: 3px solid var(--text-secondary); border-radius: 6px; padding: 20px; backdrop-filter: blur(12px); }
         .kpi-card.active-leader { border-left-color: var(--accent-color); box-shadow: -5px 0 20px var(--accent-glow); }
         .kpi-label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; letter-spacing: 0.1em; }
         .kpi-value { font-family: var(--font-mono); font-size: 1.8rem; font-weight: 800; color: #fff; margin-top: 6px; }
 
-        /* Navigation Tabs */
+        /* Nav Pipeline Tabs */
         .nav-pipeline { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 15px; }
         .nav-btn { padding: 10px 20px; background: transparent; border: 1px solid transparent; color: var(--text-secondary); border-radius: 4px; cursor: pointer; font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; transition: all 0.2s ease; }
         .nav-btn:hover { color: #fff; border-color: var(--panel-border); }
@@ -77,15 +82,17 @@
         .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 12px; }
         .panel-header h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        /* Glowing Shield Faction Logo */
+        /* Faction Logo Wrapper */
         .faction-cell { display: flex; align-items: center; gap: 16px; }
         .faction-logo-wrapper {
-            width: 38px; height: 48px; background: rgba(11, 15, 25, 0.95);
-            clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%);
+            width: 42px; height: 50px; background: rgba(15, 23, 42, 0.9);
+            clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
             display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-            filter: drop-shadow(0 0 10px var(--accent-color)); transition: transform 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.15);
+            filter: drop-shadow(0 0 8px var(--accent-glow)); transition: transform 0.2s ease;
+            overflow: hidden;
         }
-        .faction-logo-wrapper:hover { transform: scale(1.08); }
+        .faction-logo-wrapper:hover { transform: scale(1.1); }
         .faction-logo-img { width: 100%; height: 100%; object-fit: cover; }
 
         /* Form Controls */
@@ -117,10 +124,15 @@
     <div id="bg-overlay"></div>
 
     <div class="app-container">
-        <!-- Header Section matching screenshot -->
+        <!-- Header Section -->
         <header class="header-brand">
             <div class="brand-container">
-                <img class="school-logo-img" src="./school-logo.png" onerror="this.onerror=null; this.src='./school.png.png';" alt="School Logo">
+                <div class="school-logo-wrapper">
+                    <img class="school-logo-img" 
+                         src="./images (1).png" 
+                         onerror="handleImageError(this, ['./school-logo.png', './school.png', './school.jpg', './images (1).png'])" 
+                         alt="ACHS Logo">
+                </div>
                 <div>
                     <h1>ACHS INTRAMURALS 2026</h1>
                     <p>Tournament Operations & Live Leaderboard Engine</p>
@@ -129,16 +141,18 @@
             <div class="header-controls">
                 <div class="accent-picker">
                     ACCENT
-                    <button class="dot-btn" style="background:#06b6d4;" onclick="changeAccent('#06b6d4', 'rgba(6, 182, 212, 0.35)')"></button>
-                    <button class="dot-btn" style="background:#f59e0b;" onclick="changeAccent('#f59e0b', 'rgba(245, 158, 11, 0.35)')"></button>
-                    <button class="dot-btn" style="background:#10b981;" onclick="changeAccent('#10b981', 'rgba(16, 185, 129, 0.35)')"></button>
-                    <button class="dot-btn" style="background:#a855f7;" onclick="changeAccent('#a855f7', 'rgba(168, 85, 247, 0.35)')"></button>
+                    <button class="dot-btn" style="background:#06b6d4;" title="Cyan" onclick="changeAccent('#06b6d4', 'rgba(6, 182, 212, 0.35)')"></button>
+                    <button class="dot-btn" style="background:#f59e0b;" title="Yellow" onclick="changeAccent('#f59e0b', 'rgba(245, 158, 11, 0.35)')"></button>
+                    <button class="dot-btn" style="background:#10b981;" title="Green" onclick="changeAccent('#10b981', 'rgba(16, 185, 129, 0.35)')"></button>
+                    <button class="dot-btn" style="background:#a855f7;" title="Purple" onclick="changeAccent('#a855f7', 'rgba(168, 85, 247, 0.35)')"></button>
+                    <!-- DAGDAG NA KULAY PULA (RED) -->
+                    <button class="dot-btn" style="background:#ef4444;" title="Red" onclick="changeAccent('#ef4444', 'rgba(239, 68, 68, 0.35)')"></button>
                 </div>
                 <div class="status-badge">SYSTEM STATUS: OPERATIONAL</div>
             </div>
         </header>
 
-        <!-- KPI Grid Summary -->
+        <!-- KPI Grid -->
         <section class="kpi-grid">
             <div class="kpi-card active-leader">
                 <div class="kpi-label">Tournament Leader</div>
@@ -283,12 +297,27 @@
     <script>
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
 
-        const factionIcons = {
-            "Moniyan Empire": { primary: "./moniyan.png", secondary: "./moniyan.png.jpg" },
-            "Abyssal Domain": { primary: "./abyssal.png", secondary: "./abyss.png.jpg" },
-            "Cadia Riverlands": { primary: "./cadia.png", secondary: "./cadia.png.jpg" },
-            "Eruditio": { primary: "./eruditio.png", secondary: "./erudito.png.jpg" }
+        // Dynamic candidates list for all logos
+        const factionImageCandidates = {
+            "Moniyan Empire": ["./77501193...1286_n.jpg", "./moniyan.png", "./moniyan.png.jpg", "./moniyan.jpg"],
+            "Abyssal Domain": ["./77512704...006_n.jpg", "./abyssal.png", "./abyss.png.jpg", "./abyssal.jpg", "./abyss.png"],
+            "Cadia Riverlands": ["./77479470...279_n.jpg", "./cadia.png", "./cadia.png.jpg", "./cadia.jpg"],
+            "Eruditio": ["./7750366...9899_n.jpg", "./eruditio.png", "./eruditio.png.jpg", "./erudito.png.jpg"]
         };
+
+        function handleImageError(imgElem, candidateList) {
+            let currentIndex = parseInt(imgElem.dataset.failIndex || "0");
+            if (currentIndex < candidateList.length) {
+                imgElem.dataset.failIndex = currentIndex + 1;
+                imgElem.src = candidateList[currentIndex];
+            } else {
+                imgElem.style.display = "none";
+                if(imgElem.parentElement) {
+                    imgElem.parentElement.style.background = "radial-gradient(circle, var(--accent-glow) 0%, rgba(15, 23, 42, 0.9) 100%)";
+                    imgElem.parentElement.innerHTML = `<span style="font-family:var(--font-mono); font-weight:800; font-size:0.7rem; color:#fff;">LOG</span>`;
+                }
+            }
+        }
 
         function changeAccent(colorHex, glowRgba) {
             document.documentElement.style.setProperty('--accent-color', colorHex);
@@ -336,7 +365,6 @@
             fetch(API_ENDPOINT)
                 .then(res => res.json())
                 .then(data => {
-                    // Update Leaderboard
                     const standingsBody = document.querySelector(".standings-table tbody");
                     standingsBody.innerHTML = "";
 
@@ -358,7 +386,6 @@
                         document.getElementById("kpi-completed").innerText = data.events.length;
                         document.getElementById("kpi-medals").innerText = data.events.length * 3;
 
-                        // Populate Logs Tab
                         const logsBody = document.getElementById("logs-tbody");
                         logsBody.innerHTML = "";
                         data.events.forEach(evt => {
@@ -374,7 +401,8 @@
 
                     standingsList.forEach((row, i) => {
                         let pct = Math.round(((row.total || 0) / highestTotal) * 100);
-                        let meta = factionIcons[row.faction] || { primary: "", secondary: "" };
+                        let candidates = factionImageCandidates[row.faction] || ["./logo.png"];
+                        let candidatesJson = JSON.stringify(candidates).replace(/"/g, '&quot;');
 
                         standingsBody.innerHTML += `
                             <tr>
@@ -383,8 +411,8 @@
                                     <div class="faction-cell">
                                         <div class="faction-logo-wrapper">
                                             <img class="faction-logo-img" 
-                                                 src="${meta.primary}" 
-                                                 onerror="this.onerror=null; this.src='${meta.secondary}';" 
+                                                 src="${candidates[0]}" 
+                                                 onerror="handleImageError(this, ${candidatesJson})" 
                                                  alt="${row.faction}">
                                         </div>
                                         <div>
