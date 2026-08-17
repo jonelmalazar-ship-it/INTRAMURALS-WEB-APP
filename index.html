@@ -3,30 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACHS INTRAMURALS 2026 | Enterprise Leaderboard & Tally System</title>
+    <title>ACHS INTRAMURALS 2026 | Tournament Operations Center</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-base: #0a0d14;
-            --panel-bg: rgba(18, 24, 38, 0.75);
+            --bg-main: #05070a;
+            --panel-bg: rgba(11, 15, 25, 0.85);
             --panel-border: rgba(255, 255, 255, 0.08);
-            --accent-primary: #3b82f6;
-            --accent-success: #10b981;
-            --accent-danger: #ef4444;
-            --gold-glow: #f59e0b;
-            --silver-glow: #94a3b8;
-            --bronze-glow: #d97706;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
+            --border-active: #38bdf8;
+            --accent-cyan: #06b6d4;
+            --accent-gold: #f59e0b;
+            --accent-silver: #94a3b8;
+            --accent-bronze: #d97706;
+            --text-primary: #f8fafc;
+            --text-secondary: #64748b;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-display: 'Chakra Petch', sans-serif;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         
         body { 
-            background-color: var(--bg-base); 
-            color: var(--text-main); 
+            background-color: var(--bg-main); 
+            color: var(--text-primary); 
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
@@ -37,89 +38,126 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background-size: cover;
             background-position: center;
-            transition: background-image 1.2s ease-in-out;
+            transition: background-image 1.5s ease-in-out;
             z-index: -2;
-            filter: scale(1.05);
+            filter: brightness(0.25) contrast(1.2);
         }
         #bg-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(10, 13, 20, 0.65) 0%, rgba(10, 13, 20, 0.92) 100%);
+            background: radial-gradient(circle at 50% 30%, rgba(6, 182, 212, 0.05) 0%, rgba(5, 7, 10, 0.95) 100%);
             z-index: -1;
         }
 
-        .app-container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+        .app-container { max-width: 1240px; margin: 0 auto; padding: 35px 20px; }
         
-        .header-brand { text-align: center; margin-bottom: 30px; }
+        .header-brand { text-align: left; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 15px; }
         .header-brand h1 { 
-            font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #fff 30%, var(--gold-glow) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
+            font-family: var(--font-display);
+            font-size: 2.2rem; font-weight: 700; letter-spacing: 0.05em;
+            text-transform: uppercase; color: #fff;
+            display: flex; align-items: center; gap: 12px;
         }
-        .header-brand p { color: var(--text-muted); font-size: 0.95rem; margin-top: 5px; }
+        .header-brand h1::before {
+            content: ''; display: inline-block; width: 4px; height: 28px; background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan);
+        }
+        .header-brand p { color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-top: 4px; }
+        
+        .status-badge {
+            background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.3);
+            color: var(--accent-cyan); padding: 6px 14px; border-radius: 4px;
+            font-size: 0.75rem; font-family: var(--font-mono); letter-spacing: 0.05em; text-transform: uppercase;
+        }
 
+        /* METRIC CARDS */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px; margin-bottom: 30px;
+        }
+        .kpi-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-left: 3px solid var(--text-secondary);
+            border-radius: 6px; padding: 20px;
+            backdrop-filter: blur(12px);
+            transition: all 0.2s ease;
+        }
+        .kpi-card.active-leader { border-left-color: var(--accent-cyan); box-shadow: -5px 0 20px rgba(6, 182, 212, 0.15); }
+        .kpi-label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; letter-spacing: 0.1em; }
+        .kpi-value { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 800; color: #fff; margin-top: 6px; letter-spacing: -0.02em; }
+
+        /* PIPELINE NAV */
         .nav-pipeline { 
-            display: flex; justify-content: center; gap: 8px; 
-            background: rgba(255, 255, 255, 0.03); padding: 6px; 
-            border-radius: 14px; border: 1px solid var(--panel-border);
-            margin-bottom: 30px; backdrop-filter: blur(10px);
+            display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 15px;
         }
         .nav-btn { 
-            padding: 10px 22px; background: transparent; border: none; 
-            color: var(--text-muted); border-radius: 10px; cursor: pointer; 
-            font-weight: 600; font-size: 0.9rem; transition: all 0.2s ease;
+            padding: 10px 20px; background: transparent; border: 1px solid transparent;
+            color: var(--text-secondary); border-radius: 4px; cursor: pointer; 
+            font-family: var(--font-display); font-weight: 600; font-size: 0.9rem;
+            letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.2s ease;
         }
+        .nav-btn:hover { color: #fff; border-color: var(--panel-border); }
         .nav-btn.active { 
-            background: var(--accent-primary); color: #fff; 
-            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+            background: rgba(255, 255, 255, 0.05); color: var(--accent-cyan); 
+            border-color: var(--accent-cyan); box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
         }
 
         .tab-viewport { display: none; }
-        .tab-viewport.active { display: block; animation: fadeIn 0.3s ease; }
+        .tab-viewport.active { display: block; animation: fadeIn 0.2s ease-in-out; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .glass-panel { 
             background: var(--panel-bg); border: 1px solid var(--panel-border); 
-            border-radius: 16px; padding: 28px; margin-bottom: 25px; 
-            backdrop-filter: blur(16px); box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border-radius: 8px; padding: 25px; margin-bottom: 25px; 
+            backdrop-filter: blur(16px);
         }
-        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 14px; }
-        .panel-header h2 { font-size: 1.2rem; font-weight: 700; color: #fff; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+        .panel-header h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
 
+        /* FORM CONTROLS */
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
-        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
         .form-group.full-width { grid-column: 1 / -1; }
         
-        label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; }
+        label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.08em; }
         input, select { 
-            width: 100%; padding: 12px 14px; border-radius: 10px; 
-            border: 1px solid var(--panel-border); background: rgba(0, 0, 0, 0.4); 
-            color: #fff; font-size: 0.95rem; outline: none; transition: border 0.2s;
+            width: 100%; padding: 12px; border-radius: 4px; 
+            border: 1px solid var(--panel-border); background: rgba(0, 0, 0, 0.6); 
+            color: #fff; font-size: 0.9rem; outline: none; transition: border-color 0.2s;
         }
-        input:focus, select:focus { border-color: var(--accent-primary); }
+        input:focus, select:focus { border-color: var(--accent-cyan); }
 
         .btn-action { 
-            padding: 14px; border-radius: 10px; border: none; font-weight: 700; 
-            font-size: 0.95rem; cursor: pointer; transition: all 0.2s; display: inline-flex; 
-            align-items: center; justify-content: center; gap: 8px;
+            padding: 12px 20px; border-radius: 4px; border: none; 
+            font-family: var(--font-display); font-weight: 700; font-size: 0.85rem;
+            text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .btn-primary { background: var(--accent-primary); color: #fff; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
-        .btn-primary:hover { background: #2563eb; }
-        .btn-danger { background: var(--accent-danger); color: #fff; }
-        .btn-secondary { background: rgba(255, 255, 255, 0.1); color: #fff; }
+        .btn-primary { background: var(--accent-cyan); color: #000; }
+        .btn-primary:hover { background: #22d3ee; box-shadow: 0 0 15px rgba(6, 182, 212, 0.4); }
+        .btn-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+        .btn-danger:hover { background: #ef4444; color: #fff; }
+        .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid var(--panel-border); }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); }
 
+        /* DATA TABLES */
         .data-table-wrapper { width: 100%; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        th { padding: 14px 12px; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--panel-border); font-weight: 700; }
-        td { padding: 16px 12px; border-bottom: 1px solid var(--panel-border); font-size: 0.95rem; }
+        th { padding: 12px; font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); border-bottom: 1px solid var(--panel-border); font-weight: 700; letter-spacing: 0.08em; }
+        td { padding: 14px 12px; border-bottom: 1px solid var(--panel-border); font-size: 0.9rem; }
         tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
 
-        .badge-rank { font-weight: 800; padding: 4px 10px; border-radius: 6px; background: rgba(255,255,255,0.05); }
-        .badge-gold { color: var(--gold-glow); }
-        .badge-silver { color: var(--silver-glow); }
-        .badge-bronze { color: var(--bronze-glow); }
+        .progress-bar-container { width: 100%; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; margin-top: 6px; }
+        .progress-bar-fill { height: 100%; background: var(--accent-cyan); border-radius: 2px; transition: width 0.5s ease; }
+
+        .badge-rank { font-family: var(--font-mono); font-weight: 800; font-size: 0.85rem; color: var(--text-secondary); }
+        .badge-gold { color: var(--accent-gold); font-family: var(--font-mono); font-weight: 700; }
+        .badge-silver { color: var(--accent-silver); font-family: var(--font-mono); font-weight: 700; }
+        .badge-bronze { color: var(--accent-bronze); font-family: var(--font-mono); font-weight: 700; }
+        
+        .tag-category { background: rgba(255, 255, 255, 0.05); color: var(--text-secondary); font-size: 0.7rem; font-weight: 600; padding: 4px 8px; border-radius: 3px; border: 1px solid var(--panel-border); text-transform: uppercase; font-family: var(--font-mono); }
     </style>
 </head>
 <body>
@@ -129,21 +167,41 @@
 
     <div class="app-container">
         <header class="header-brand">
-            <h1>ACHS INTRAMURALS 2026</h1>
-            <p>Enterprise Live Leaderboard & Categorized Event Management System</p>
+            <div>
+                <h1>ACHS INTRAMURALS 2026</h1>
+                <p>Tournament Operations & Live Leaderboard Engine</p>
+            </div>
+            <div class="status-badge">System Status: Operational</div>
         </header>
 
+        <!-- KPI STATS OVERVIEW -->
+        <section class="kpi-grid">
+            <div class="kpi-card active-leader">
+                <div class="kpi-label">Tournament Leader</div>
+                <div class="kpi-value" id="kpi-leader">---</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Events Completed</div>
+                <div class="kpi-value" id="kpi-completed">0</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Total Medals Awarded</div>
+                <div class="kpi-value" id="kpi-medals">0</div>
+            </div>
+        </section>
+
+        <!-- NAVIGATION PIPELINE -->
         <nav class="nav-pipeline">
-            <button class="nav-btn active" onclick="navigate('leaderboard', this)">📊 Leaderboard</button>
-            <button class="nav-btn" onclick="navigate('tally-sheet', this)">📋 Tally Sheet</button>
-            <button class="nav-btn" onclick="navigate('admin-console', this)">🔒 Admin Console</button>
+            <button class="nav-btn active" onclick="navigate('leaderboard', this)">Standings</button>
+            <button class="nav-btn" onclick="navigate('tally-sheet', this)">Event Logs</button>
+            <button class="nav-btn" onclick="navigate('admin-console', this)">Console Auth</button>
         </nav>
 
-        <!-- LEADERBOARD TAB -->
+        <!-- STANDINGS TAB -->
         <main id="leaderboard" class="tab-viewport active">
             <section class="glass-panel">
                 <div class="panel-header">
-                    <h2>Overall Faction Standings</h2>
+                    <h2>Overall Faction Rankings</h2>
                 </div>
                 <div class="data-table-wrapper">
                     <table class="standings-table">
@@ -151,10 +209,10 @@
                             <tr>
                                 <th>Rank</th>
                                 <th>Faction Name</th>
-                                <th>🥇 Gold</th>
-                                <th>🥈 Silver</th>
-                                <th>🥉 Bronze</th>
-                                <th>Total Medals</th>
+                                <th>Gold</th>
+                                <th>Silver</th>
+                                <th>Bronze</th>
+                                <th>Total Points / Medals</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -163,21 +221,24 @@
             </section>
         </main>
 
-        <!-- TALLY SHEET TAB -->
+        <!-- TALLY LOGS TAB -->
         <main id="tally-sheet" class="tab-viewport">
             <section class="glass-panel">
                 <div class="panel-header">
-                    <h2>Completed Events Log (Audit Trail)</h2>
+                    <h2>Official Audit Log</h2>
+                    <div style="width: 100%; max-width: 320px;">
+                        <input type="text" id="tally-search" placeholder="Filter events or teams..." onkeyup="filterTallySheet()">
+                    </div>
                 </div>
                 <div class="data-table-wrapper">
                     <table class="events-log-table">
                         <thead>
                             <tr>
-                                <th>Category / Sport</th>
+                                <th>Category</th>
                                 <th>Event Name</th>
-                                <th>🥇 Gold Winner</th>
-                                <th>🥈 Silver Winner</th>
-                                <th>🥉 Bronze Winner</th>
+                                <th>Gold Winner</th>
+                                <th>Silver Winner</th>
+                                <th>Bronze Winner</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -188,41 +249,42 @@
 
         <!-- ADMIN CONSOLE TAB -->
         <main id="admin-console" class="tab-viewport">
-            <section id="auth-card" class="glass-panel" style="max-width: 400px; margin: 40px auto; text-align: center;">
-                <h2>Admin Authentication</h2>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label>Security Key</label>
-                    <input type="password" id="admin-pin" placeholder="Enter PIN" maxlength="6" style="text-align: center; font-size: 1.1rem;">
+            <section id="auth-card" class="glass-panel" style="max-width: 380px; margin: 40px auto; text-align: left;">
+                <div class="panel-header">
+                    <h2>Admin Authentication</h2>
                 </div>
-                <button class="btn-action btn-primary" style="width: 100%; margin-top: 15px;" onclick="authenticateAdmin()">Unlock Console</button>
+                <div class="form-group" style="margin-top: 10px;">
+                    <label>Security Key</label>
+                    <input type="password" id="admin-pin" placeholder="••••" maxlength="6" style="letter-spacing: 0.3em; font-family: var(--font-mono); text-align: center;">
+                </div>
+                <button class="btn-action btn-primary" style="width: 100%; margin-top: 20px;" onclick="authenticateAdmin()">Authenticate</button>
             </section>
 
             <div id="admin-controls" style="display: none;">
                 <section class="glass-panel">
                     <div class="panel-header">
-                        <h2>System Controls</h2>
+                        <h2>System Maintenance</h2>
                     </div>
                     <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                        <button class="btn-action btn-secondary" onclick="window.print()">🖨️ Export PDF Report</button>
-                        <button class="btn-action btn-danger" onclick="triggerSystemReset()">⚠️ Rezero / Reset Database</button>
+                        <button class="btn-action btn-secondary" onclick="window.print()">Export Official PDF</button>
+                        <button class="btn-action btn-danger" onclick="triggerSystemReset()">Purge System Database</button>
                     </div>
                 </section>
 
                 <section class="glass-panel">
                     <div class="panel-header">
-                        <h2>Record Game Victory</h2>
+                        <h2>Record Event Result</h2>
                     </div>
                     <div class="form-grid">
                         
-                        <!-- 1. CATEGORY / SPORT TYPE SELECTOR -->
                         <div class="form-group">
-                            <label>Category / Sport Type</label>
+                            <label>Category / Division</label>
                             <select id="category-select" onchange="updateEventDropdown()">
                                 <option value="">-- Select Category --</option>
-                                <option value="Athletics - Track">Athletics - Track (Takbo)</option>
+                                <option value="Athletics - Track">Athletics - Track</option>
                                 <option value="Athletics - Relay">Athletics - Relay</option>
-                                <option value="Athletics - Jumps">Athletics - Jumps (Lundag)</option>
-                                <option value="Athletics - Throws">Athletics - Throws (Tapon)</option>
+                                <option value="Athletics - Jumps">Athletics - Jumps</option>
+                                <option value="Athletics - Throws">Athletics - Throws</option>
                                 <option value="Team Sports">Team Sports</option>
                                 <option value="Racket & Board Games">Racket & Board Games</option>
                                 <option value="Esports">Esports</option>
@@ -230,7 +292,6 @@
                             </select>
                         </div>
 
-                        <!-- 2. DYNAMIC EVENT NAME SELECTOR -->
                         <div class="form-group">
                             <label>Event Name</label>
                             <select id="event-select">
@@ -238,9 +299,8 @@
                             </select>
                         </div>
 
-                        <!-- 3. MEDAL WINNERS -->
                         <div class="form-group">
-                            <label>🥇 Gold Medalist</label>
+                            <label>Gold Medalist (1st)</label>
                             <select id="gold-select">
                                 <option value="">-- Select Faction --</option>
                                 <option value="Moniyan Empire">Moniyan Empire</option>
@@ -251,7 +311,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>🥈 Silver Medalist</label>
+                            <label>Silver Medalist (2nd)</label>
                             <select id="silver-select">
                                 <option value="">-- Select Faction --</option>
                                 <option value="Moniyan Empire">Moniyan Empire</option>
@@ -262,7 +322,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>🥉 Bronze Medalist</label>
+                            <label>Bronze Medalist (3rd)</label>
                             <select id="bronze-select">
                                 <option value="">-- Select Faction --</option>
                                 <option value="Moniyan Empire">Moniyan Empire</option>
@@ -273,7 +333,7 @@
                         </div>
 
                         <div class="form-group full-width" style="margin-top: 10px;">
-                            <button id="btn-submit-entry" class="btn-action btn-primary" onclick="publishGameEntry()">Publish Game Result</button>
+                            <button id="btn-submit-entry" class="btn-action btn-primary" onclick="publishGameEntry()">Commit Result to Database</button>
                         </div>
                     </div>
                 </section>
@@ -284,7 +344,6 @@
     <script>
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
 
-        // STRUCTURED EVENTS DICTIONARY
         const eventOptions = {
             "Athletics - Track": [
                 "100m Dash (Boys)", "100m Dash (Girls)",
@@ -331,6 +390,8 @@
             ]
         };
 
+        let rawLogsData = [];
+
         function updateEventDropdown() {
             const categorySelect = document.getElementById("category-select");
             const eventSelect = document.getElementById("event-select");
@@ -364,7 +425,7 @@
             setInterval(() => {
                 bgIdx = (bgIdx + 1) % bgImages.length;
                 slider.style.backgroundImage = `url('${bgImages[bgIdx]}')`;
-            }, 7000);
+            }, 8000);
         }
 
         function navigate(tabId, btnElement) {
@@ -380,7 +441,7 @@
                 document.getElementById("auth-card").style.display = "none";
                 document.getElementById("admin-controls").style.display = "block";
             } else {
-                alert("Access Denied: Invalid Authorization Passcode.");
+                alert("Access Denied: Invalid Security Pin.");
             }
         }
 
@@ -389,10 +450,7 @@
                 .then(res => res.json())
                 .then(data => {
                     const standingsBody = document.querySelector(".standings-table tbody");
-                    const logsBody = document.querySelector(".events-log-table tbody");
-
                     standingsBody.innerHTML = "";
-                    logsBody.innerHTML = "";
 
                     const defaultStandings = [
                         { faction: "Abyssal Domain", gold: 0, silver: 0, bronze: 0, total: 0 },
@@ -402,35 +460,79 @@
                     ];
 
                     let standingsList = (data.standings && data.standings.length > 0) ? data.standings : defaultStandings;
+                    let highestTotal = Math.max(...standingsList.map(s => s.total || 0), 1);
 
                     standingsList.forEach((row, i) => {
+                        let pct = Math.round(((row.total || 0) / highestTotal) * 100);
                         standingsBody.innerHTML += `
                             <tr>
-                                <td><span class="badge-rank">#${i + 1}</span></td>
-                                <td><strong>${row.faction}</strong></td>
-                                <td class="badge-gold">🥇 ${row.gold || 0}</td>
-                                <td class="badge-silver">🥈 ${row.silver || 0}</td>
-                                <td class="badge-bronze">🥉 ${row.bronze || 0}</td>
-                                <td><strong>${row.total || 0}</strong></td>
+                                <td><span class="badge-rank">0${i + 1}</span></td>
+                                <td>
+                                    <strong>${row.faction}</strong>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar-fill" style="width: ${pct}%;"></div>
+                                    </div>
+                                </td>
+                                <td class="badge-gold">${row.gold || 0}</td>
+                                <td class="badge-silver">${row.silver || 0}</td>
+                                <td class="badge-bronze">${row.bronze || 0}</td>
+                                <td><strong style="font-family: var(--font-mono); font-size: 1.05rem;">${row.total || 0}</strong></td>
                             </tr>`;
                     });
 
-                    if (data.logs && data.logs.length > 0) {
-                        data.logs.slice().reverse().forEach(log => {
-                            logsBody.innerHTML += `
-                                <tr>
-                                    <td>${log.category || 'Category'}</td>
-                                    <td><strong>${log.event}</strong></td>
-                                    <td class="badge-gold">🥇 ${log.gold || "-"}</td>
-                                    <td class="badge-silver">🥈 ${log.silver || "-"}</td>
-                                    <td class="badge-bronze">🥉 ${log.bronze || "-"}</td>
-                                </tr>`;
-                        });
+                    if (standingsList.length > 0 && standingsList[0].total > 0) {
+                        document.getElementById("kpi-leader").innerText = standingsList[0].faction;
                     } else {
-                        logsBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">No records found in database.</td></tr>`;
+                        document.getElementById("kpi-leader").innerText = "UNDECIDED";
                     }
+
+                    rawLogsData = data.logs || [];
+                    document.getElementById("kpi-completed").innerText = rawLogsData.length;
+
+                    let totalMedalsCount = rawLogsData.reduce((acc, log) => {
+                        let count = 0;
+                        if (log.gold) count++;
+                        if (log.silver) count++;
+                        if (log.bronze) count++;
+                        return acc + count;
+                    }, 0);
+                    document.getElementById("kpi-medals").innerText = totalMedalsCount;
+
+                    renderTallySheet(rawLogsData);
                 })
-                .catch(err => console.error("Database Connection Error:", err));
+                .catch(err => console.error("Database Error:", err));
+        }
+
+        function renderTallySheet(logs) {
+            const logsBody = document.querySelector(".events-log-table tbody");
+            logsBody.innerHTML = "";
+
+            if (logs && logs.length > 0) {
+                logs.slice().reverse().forEach(log => {
+                    logsBody.innerHTML += `
+                        <tr>
+                            <td><span class="tag-category">${log.category || 'General'}</span></td>
+                            <td><strong>${log.event}</strong></td>
+                            <td class="badge-gold">${log.gold || "-"}</td>
+                            <td class="badge-silver">${log.silver || "-"}</td>
+                            <td class="badge-bronze">${log.bronze || "-"}</td>
+                        </tr>`;
+                });
+            } else {
+                logsBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-secondary);">No event records found in database.</td></tr>`;
+            }
+        }
+
+        function filterTallySheet() {
+            const query = document.getElementById("tally-search").value.toLowerCase();
+            const filtered = rawLogsData.filter(log => {
+                return (log.category && log.category.toLowerCase().includes(query)) ||
+                       (log.event && log.event.toLowerCase().includes(query)) ||
+                       (log.gold && log.gold.toLowerCase().includes(query)) ||
+                       (log.silver && log.silver.toLowerCase().includes(query)) ||
+                       (log.bronze && log.bronze.toLowerCase().includes(query));
+            });
+            renderTallySheet(filtered);
         }
 
         function publishGameEntry() {
@@ -443,7 +545,7 @@
             }
 
             const btn = document.getElementById("btn-submit-entry");
-            btn.innerText = "Syncing with Database...";
+            btn.innerText = "Committing Entry...";
             btn.disabled = true;
 
             const params = new URLSearchParams();
@@ -459,16 +561,15 @@
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: params.toString()
             }).then(() => {
-                alert("Game Victory Successfully Published!");
+                alert("Game Result Committed to Database!");
                 
-                // AUTO-CLEAR FORM INPUTS
                 document.getElementById("category-select").value = "";
                 document.getElementById("event-select").innerHTML = '<option value="">-- Select Category First --</option>';
                 document.getElementById("gold-select").value = "";
                 document.getElementById("silver-select").value = "";
                 document.getElementById("bronze-select").value = "";
 
-                btn.innerText = "Publish Game Result";
+                btn.innerText = "Commit Result to Database";
                 btn.disabled = false;
                 
                 syncDataEngine();
