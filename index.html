@@ -3,300 +3,411 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACHS INTRAMURALS 2026</title>
+    <title>ACHS INTRAMURALS 2026 | Enterprise Leaderboard & Tally System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0b0e14;
-            --card-bg: rgba(22, 27, 34, 0.90);
-            --border-color: #30363d;
-            --gold: #ffd700;
-            --accent-green: #238636;
-            --text-color: #c9d1d9;
-            --heading-color: #f0f6fc;
+            --bg-base: #0a0d14;
+            --panel-bg: rgba(18, 24, 38, 0.75);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --accent-primary: #3b82f6;
+            --accent-success: #10b981;
+            --accent-danger: #ef4444;
+            --gold-glow: #f59e0b;
+            --silver-glow: #94a3b8;
+            --bronze-glow: #d97706;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         
         body { 
-            background-color: var(--bg-color); 
-            color: var(--text-color); 
-            padding: 20px 15px; 
+            background-color: var(--bg-base); 
+            color: var(--text-main); 
             min-height: 100vh;
             position: relative;
+            overflow-x: hidden;
         }
 
-        /* BACKGROUND SLIDESHOW & OVERLAY */
         #bg-slider {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-size: cover;
             background-position: center;
-            transition: background-image 1s ease-in-out;
+            transition: background-image 1.2s ease-in-out;
             z-index: -2;
+            filter: scale(1.05);
         }
         #bg-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(11, 14, 20, 0.75);
+            background: radial-gradient(circle at center, rgba(10, 13, 20, 0.65) 0%, rgba(10, 13, 20, 0.92) 100%);
             z-index: -1;
         }
 
-        .container { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+        .app-container { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
         
-        /* NAVIGATION TABS */
-        .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; width: 100%; justify-content: center; }
-        .tab-btn { padding: 10px 20px; background: #161b22; border: 1px solid var(--border-color); color: #fff; border-radius: 8px; cursor: pointer; font-weight: bold; width: auto; }
-        .tab-btn.active { background: var(--accent-green); border-color: var(--accent-green); }
+        .header-brand { text-align: center; margin-bottom: 30px; }
+        .header-brand h1 { 
+            font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #fff 30%, var(--gold-glow) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+        .header-brand p { color: var(--text-muted); font-size: 0.95rem; margin-top: 5px; }
 
-        .tab-content { display: none; width: 100%; }
-        .tab-content.active { display: block; }
+        .nav-pipeline { 
+            display: flex; justify-content: center; gap: 8px; 
+            background: rgba(255, 255, 255, 0.03); padding: 6px; 
+            border-radius: 14px; border: 1px solid var(--panel-border);
+            margin-bottom: 30px; backdrop-filter: blur(10px);
+        }
+        .nav-btn { 
+            padding: 10px 22px; background: transparent; border: none; 
+            color: var(--text-muted); border-radius: 10px; cursor: pointer; 
+            font-weight: 600; font-size: 0.9rem; transition: all 0.2s ease;
+        }
+        .nav-btn.active { 
+            background: var(--accent-primary); color: #fff; 
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+        }
 
-        .card, .section { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 22px; margin-bottom: 25px; width: 100%; backdrop-filter: blur(4px); }
-        h1 { color: var(--gold); text-align: center; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        h2 { color: var(--heading-color); font-size: 1.15rem; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
+        .tab-viewport { display: none; }
+        .tab-viewport.active { display: block; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        .glass-panel { 
+            background: var(--panel-bg); border: 1px solid var(--panel-border); 
+            border-radius: 16px; padding: 28px; margin-bottom: 25px; 
+            backdrop-filter: blur(16px); box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 14px; }
+        .panel-header h2 { font-size: 1.2rem; font-weight: 700; color: #fff; }
+
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full-width { grid-column: 1 / -1; }
         
-        label { display: block; font-size: 0.9rem; color: #8b949e; margin-top: 12px; }
-        input, select, button { width: 100%; padding: 12px; margin-top: 6px; margin-bottom: 12px; border-radius: 8px; border: 1px solid var(--border-color); background-color: #161b22; color: #fff; }
-        button { background-color: var(--accent-green); font-weight: bold; cursor: pointer; border: none; }
-        
-        .action-btn-group { display: flex; gap: 15px; flex-wrap: wrap; }
-        .btn-download { background-color: #2ea44f; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; flex: 1; }
-        .btn-reset { background-color: #da3633; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; flex: 1; }
-        
-        .table-responsive { width: 100%; overflow-x: auto; }
+        label { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; }
+        input, select { 
+            width: 100%; padding: 12px 14px; border-radius: 10px; 
+            border: 1px solid var(--panel-border); background: rgba(0, 0, 0, 0.3); 
+            color: #fff; font-size: 0.95rem; outline: none; transition: border 0.2s;
+        }
+        input:focus, select:focus { border-color: var(--accent-primary); }
+
+        .btn-action { 
+            padding: 14px; border-radius: 10px; border: none; font-weight: 700; 
+            font-size: 0.95rem; cursor: pointer; transition: all 0.2s; display: inline-flex; 
+            align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-primary { background: var(--accent-primary); color: #fff; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+        .btn-primary:hover { background: #2563eb; }
+        .btn-danger { background: var(--accent-danger); color: #fff; }
+        .btn-secondary { background: rgba(255, 255, 255, 0.1); color: #fff; }
+
+        .data-table-wrapper { width: 100%; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); }
-        th { background-color: rgba(33, 38, 45, 0.9); color: #8b949e; font-size: 0.75rem; }
+        th { padding: 14px 12px; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--panel-border); font-weight: 700; }
+        td { padding: 16px 12px; border-bottom: 1px solid var(--panel-border); font-size: 0.95rem; }
+        tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
+
+        .badge-rank { font-weight: 800; padding: 4px 10px; border-radius: 6px; background: rgba(255,255,255,0.05); }
+        .badge-gold { color: var(--gold-glow); }
+        .badge-silver { color: var(--silver-glow); }
+        .badge-bronze { color: var(--bronze-glow); }
     </style>
 </head>
 <body>
 
-    <!-- Background Image & Overlay -->
     <div id="bg-slider"></div>
     <div id="bg-overlay"></div>
 
-    <div class="container">
-        <h1>🏆 ACHS INTRAMURALS 2026 🏆</h1>
-        
-        <!-- TABS FOR SWITCHING -->
-        <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('public-tab')">📊 Public Leaderboard</button>
-            <button class="tab-btn" onclick="switchTab('admin-tab')">🔒 Admin Panel</button>
-        </div>
+    <div class="app-container">
+        <header class="header-brand">
+            <h1>ACHS INTRAMURALS 2026</h1>
+            <p>Enterprise Live Leaderboard & Medal Analytics Engine</p>
+        </header>
 
-        <!-- 1. PUBLIC LEADERBOARD VIEW -->
-        <div id="public-tab" class="tab-content active">
-            <div class="section">
-                <h2>📊 Overall Faction Standings</h2>
-                <div class="table-responsive">
+        <nav class="nav-pipeline">
+            <button class="nav-btn active" onclick="navigate('leaderboard', this)">📊 Leaderboard</button>
+            <button class="nav-btn" onclick="navigate('tally-sheet', this)">📋 Tally Sheet</button>
+            <button class="nav-btn" onclick="navigate('admin-console', this)">🔒 Admin Console</button>
+        </nav>
+
+        <!-- LEADERBOARD TAB -->
+        <main id="leaderboard" class="tab-viewport active">
+            <section class="glass-panel">
+                <div class="panel-header">
+                    <h2>Overall Faction Standings</h2>
+                </div>
+                <div class="data-table-wrapper">
                     <table class="standings-table">
                         <thead>
-                            <tr><th>RANK</th><th>FACTION</th><th>🥇 GOLD</th><th>🥈 SILVER</th><th>🥉 BRONZE</th><th>TOTAL</th></tr>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Faction Name</th>
+                                <th>🥇 Gold</th>
+                                <th>🥈 Silver</th>
+                                <th>🥉 Bronze</th>
+                                <th>Total Medals</th>
+                            </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
                 </div>
-            </div>
+            </section>
+        </main>
 
-            <div class="section">
-                <h2>📜 Completed Events Log</h2>
-                <div class="table-responsive">
+        <!-- TALLY SHEET TAB -->
+        <main id="tally-sheet" class="tab-viewport">
+            <section class="glass-panel">
+                <div class="panel-header">
+                    <h2>Completed Events Log (Audit Trail)</h2>
+                </div>
+                <div class="data-table-wrapper">
                     <table class="events-log-table">
                         <thead>
-                            <tr><th>CATEGORY</th><th>EVENT</th><th>🥇 GOLD</th><th>🥈 SILVER</th><th>🥉 BRONZE</th></tr>
+                            <tr>
+                                <th>Category</th>
+                                <th>Event Name</th>
+                                <th>🥇 Gold Winner</th>
+                                <th>🥈 Silver Winner</th>
+                                <th>🥉 Bronze Winner</th>
+                            </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
                 </div>
-            </div>
-        </div>
+            </section>
+        </main>
 
-        <!-- 2. ADMIN CONTROL PANEL VIEW -->
-        <div id="admin-tab" class="tab-content">
-            <div id="login-container" class="card" style="max-width: 400px; margin: 0 auto; text-align: center;">
-                <h2>🔒 Admin Login</h2>
-                <label>Enter Passcode:</label>
-                <input type="password" id="admin-pin" placeholder="****" maxlength="4" style="text-align: center; font-size: 1.2rem;">
-                <button onclick="checkPin()">LOGIN</button>
-            </div>
+        <!-- ADMIN CONSOLE TAB -->
+        <main id="admin-console" class="tab-viewport">
+            <section id="auth-card" class="glass-panel" style="max-width: 400px; margin: 40px auto; text-align: center;">
+                <h2>Admin Authentication</h2>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Security Key</label>
+                    <input type="password" id="admin-pin" placeholder="Enter PIN" maxlength="6" style="text-align: center; font-size: 1.1rem;">
+                </div>
+                <button class="btn-action btn-primary" style="width: 100%; margin-top: 15px;" onclick="authenticateAdmin()">Unlock Console</button>
+            </section>
 
-            <div id="admin-panel" style="display: none; width: 100%;">
-                <div class="card">
-                    <h2>⚡ Management Actions</h2>
-                    <div class="action-btn-group">
-                        <button class="btn-download" onclick="window.print()">🖨️ Print Report (PDF)</button>
-                        <button id="reset-btn" class="btn-reset" onclick="resetTallyData()">⚠️ Rezero / Reset Tally Data</button>
+            <div id="admin-controls" style="display: none;">
+                <section class="glass-panel">
+                    <div class="panel-header">
+                        <h2>System Controls</h2>
                     </div>
-                </div>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <button class="btn-action btn-secondary" onclick="window.print()">🖨️ Export PDF Report</button>
+                        <button class="btn-action btn-danger" onclick="triggerSystemReset()">⚠️ Rezero / Reset Database</button>
+                    </div>
+                </section>
 
-                <div class="card">
-                    <h2>🏅 Add Game Result</h2>
-                    <label>Category:</label>
-                    <select id="category-select"><option value="Boys">Boys</option><option value="Girls">Girls</option><option value="Mixed">Mixed</option></select>
+                <section class="glass-panel">
+                    <div class="panel-header">
+                        <h2>Record Game Victory</h2>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Division/Category</label>
+                            <select id="category-select">
+                                <option value="Boys">Boys Division</option>
+                                <option value="Girls">Girls Division</option>
+                                <option value="Mixed">Mixed Category</option>
+                            </select>
+                        </div>
 
-                    <label>Event Name:</label>
-                    <input type="text" id="event-input" placeholder="e.g. Basketball">
+                        <div class="form-group">
+                            <label>Event Name</label>
+                            <input type="text" id="event-input" placeholder="e.g. Volleyball Championship">
+                        </div>
 
-                    <label>🥇 Gold Medalist:</label>
-                    <select id="gold-select">
-                        <option value="">-- Select Faction --</option>
-                        <option value="Moniyan Empire">Moniyan Empire</option>
-                        <option value="Abyssal Domain">Abyssal Domain</option>
-                        <option value="Cadia Riverlands">Cadia Riverlands</option>
-                        <option value="Eruditio">Eruditio</option>
-                    </select>
+                        <div class="form-group">
+                            <label>🥇 Gold Medalist</label>
+                            <select id="gold-select">
+                                <option value="">-- Select Faction --</option>
+                                <option value="Moniyan Empire">Moniyan Empire</option>
+                                <option value="Abyssal Domain">Abyssal Domain</option>
+                                <option value="Cadia Riverlands">Cadia Riverlands</option>
+                                <option value="Eruditio">Eruditio</option>
+                            </select>
+                        </div>
 
-                    <label>🥈 Silver Medalist:</label>
-                    <select id="silver-select">
-                        <option value="">-- Select Faction --</option>
-                        <option value="Moniyan Empire">Moniyan Empire</option>
-                        <option value="Abyssal Domain">Abyssal Domain</option>
-                        <option value="Cadia Riverlands">Cadia Riverlands</option>
-                        <option value="Eruditio">Eruditio</option>
-                    </select>
+                        <div class="form-group">
+                            <label>🥈 Silver Medalist</label>
+                            <select id="silver-select">
+                                <option value="">-- Select Faction --</option>
+                                <option value="Moniyan Empire">Moniyan Empire</option>
+                                <option value="Abyssal Domain">Abyssal Domain</option>
+                                <option value="Cadia Riverlands">Cadia Riverlands</option>
+                                <option value="Eruditio">Eruditio</option>
+                            </select>
+                        </div>
 
-                    <label>🥉 Bronze Medalist:</label>
-                    <select id="bronze-select">
-                        <option value="">-- Select Faction --</option>
-                        <option value="Moniyan Empire">Moniyan Empire</option>
-                        <option value="Abyssal Domain">Abyssal Domain</option>
-                        <option value="Cadia Riverlands">Cadia Riverlands</option>
-                        <option value="Eruditio">Eruditio</option>
-                    </select>
+                        <div class="form-group">
+                            <label>🥉 Bronze Medalist</label>
+                            <select id="bronze-select">
+                                <option value="">-- Select Faction --</option>
+                                <option value="Moniyan Empire">Moniyan Empire</option>
+                                <option value="Abyssal Domain">Abyssal Domain</option>
+                                <option value="Cadia Riverlands">Cadia Riverlands</option>
+                                <option value="Eruditio">Eruditio</option>
+                            </select>
+                        </div>
 
-                    <button id="submit-btn" onclick="submitGameResult()">UPDATE TALLY</button>
-                </div>
+                        <div class="form-group full-width" style="margin-top: 10px;">
+                            <button id="btn-submit-entry" class="btn-action btn-primary" onclick="publishGameEntry()">Publish Game Result</button>
+                        </div>
+                    </div>
+                </section>
             </div>
-        </div>
+        </main>
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
+        const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
 
-        // BACKGROUND SLIDESHOW IMAGES
         const bgImages = [
-            "https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=1200",
-            "https://images.unsplash.com/photo-1519766304817-4f37bda74a29?q=80&w=1200",
-            "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=1200"
+            "https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=1600",
+            "https://images.unsplash.com/photo-1519766304817-4f37bda74a29?q=80&w=1600",
+            "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=1600"
         ];
-        let currentBgIndex = 0;
+        let bgIdx = 0;
 
-        function startBgSlideshow() {
+        function initSlideshow() {
             const slider = document.getElementById("bg-slider");
             if (!slider) return;
             slider.style.backgroundImage = `url('${bgImages[0]}')`;
             setInterval(() => {
-                currentBgIndex = (currentBgIndex + 1) % bgImages.length;
-                slider.style.backgroundImage = `url('${bgImages[currentBgIndex]}')`;
-            }, 6000);
+                bgIdx = (bgIdx + 1) % bgImages.length;
+                slider.style.backgroundImage = `url('${bgImages[bgIdx]}')`;
+            }, 7000);
         }
 
-        const defaultStandings = [
-            { faction: "Abyssal Domain", gold: 0, silver: 0, bronze: 0, total: 0 },
-            { faction: "Cadia Riverlands", gold: 0, silver: 0, bronze: 0, total: 0 },
-            { faction: "Eruditio", gold: 0, silver: 0, bronze: 0, total: 0 },
-            { faction: "Moniyan Empire", gold: 0, silver: 0, bronze: 0, total: 0 }
-        ];
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        function navigate(tabId, btnElement) {
+            document.querySelectorAll('.tab-viewport').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             
             document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+            if (btnElement) btnElement.classList.add('active');
         }
 
-        function checkPin() {
+        function authenticateAdmin() {
             if (document.getElementById("admin-pin").value === "2026") {
-                document.getElementById("login-container").style.display = "none";
-                document.getElementById("admin-panel").style.display = "block";
+                document.getElementById("auth-card").style.display = "none";
+                document.getElementById("admin-controls").style.display = "block";
             } else {
-                alert("Maling Passcode!");
+                alert("Access Denied: Invalid Authorization Passcode.");
             }
         }
 
-        function fetchTallyData() {
-            fetch(SCRIPT_URL)
+        function syncDataEngine() {
+            fetch(API_ENDPOINT)
                 .then(res => res.json())
                 .then(data => {
-                    const tbodyStandings = document.querySelector(".standings-table tbody");
-                    const tbodyLogs = document.querySelector(".events-log-table tbody");
+                    const standingsBody = document.querySelector(".standings-table tbody");
+                    const logsBody = document.querySelector(".events-log-table tbody");
 
-                    tbodyStandings.innerHTML = "";
-                    tbodyLogs.innerHTML = "";
+                    standingsBody.innerHTML = "";
+                    logsBody.innerHTML = "";
 
-                    let listToDisplay = (data.standings && data.standings.length > 0) ? data.standings : defaultStandings;
+                    const defaultStandings = [
+                        { faction: "Abyssal Domain", gold: 0, silver: 0, bronze: 0, total: 0 },
+                        { faction: "Cadia Riverlands", gold: 0, silver: 0, bronze: 0, total: 0 },
+                        { faction: "Eruditio", gold: 0, silver: 0, bronze: 0, total: 0 },
+                        { faction: "Moniyan Empire", gold: 0, silver: 0, bronze: 0, total: 0 }
+                    ];
 
-                    listToDisplay.forEach((item, i) => {
-                        tbodyStandings.innerHTML += `
+                    let standingsList = (data.standings && data.standings.length > 0) ? data.standings : defaultStandings;
+
+                    standingsList.forEach((row, i) => {
+                        standingsBody.innerHTML += `
                             <tr>
-                                <td>#${i + 1}</td>
-                                <td><strong>${item.faction}</strong></td>
-                                <td>🥇 ${item.gold || 0}</td>
-                                <td>🥈 ${item.silver || 0}</td>
-                                <td>🥉 ${item.bronze || 0}</td>
-                                <td><strong>${item.total || 0}</strong></td>
+                                <td><span class="badge-rank">#${i + 1}</span></td>
+                                <td><strong>${row.faction}</strong></td>
+                                <td class="badge-gold">🥇 ${row.gold || 0}</td>
+                                <td class="badge-silver">🥈 ${row.silver || 0}</td>
+                                <td class="badge-bronze">🥉 ${row.bronze || 0}</td>
+                                <td><strong>${row.total || 0}</strong></td>
                             </tr>`;
                     });
 
                     if (data.logs && data.logs.length > 0) {
                         data.logs.slice().reverse().forEach(log => {
-                            tbodyLogs.innerHTML += `
+                            logsBody.innerHTML += `
                                 <tr>
-                                    <td>${log.category || 'Boys'}</td>
+                                    <td>${log.category || 'Division'}</td>
                                     <td><strong>${log.event}</strong></td>
-                                    <td>🥇 ${log.gold || ""}</td>
-                                    <td>🥈 ${log.silver || ""}</td>
-                                    <td>🥉 ${log.bronze || ""}</td>
+                                    <td class="badge-gold">🥇 ${log.gold || "-"}</td>
+                                    <td class="badge-silver">🥈 ${log.silver || "-"}</td>
+                                    <td class="badge-bronze">🥉 ${log.bronze || "-"}</td>
                                 </tr>`;
                         });
                     } else {
-                        tbodyLogs.innerHTML = `<tr><td colspan="5" style="text-align:center;">Wala pang naitalang kaganapan.</td></tr>`;
+                        logsBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">No records found in database.</td></tr>`;
                     }
                 })
-                .catch(err => console.error("Error fetching data:", err));
+                .catch(err => console.error("Database Connection Error:", err));
         }
 
-        function resetTallyData() {
-            if (prompt("⚠️ PERMANENT DELETE WARNING ⚠️\n\nI-type ang 'RESET' upang burahin ang tally:") !== "RESET") return;
+        function publishGameEntry() {
+            const btn = document.getElementById("btn-submit-entry");
+            btn.innerText = "Syncing with Database...";
+            btn.disabled = true;
 
-            const formData = new URLSearchParams();
-            formData.append("action", "reset");
+            const params = new URLSearchParams();
+            params.append("category", document.getElementById("category-select").value);
+            params.append("event", document.getElementById("event-input").value);
+            params.append("gold", document.getElementById("gold-select").value);
+            params.append("silver", document.getElementById("silver-select").value);
+            params.append("bronze", document.getElementById("bronze-select").value);
 
-            fetch(SCRIPT_URL, {
+            fetch(API_ENDPOINT, {
                 method: "POST",
                 mode: "no-cors",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: formData.toString()
+                body: params.toString()
             }).then(() => {
-                alert("✅ Matagumpay na na-reset ang data!");
-                fetchTallyData();
+                alert("Game Victory Successfully Published!");
+                
+                // AUTO-CLEAR FORM INPUTS FOR SAFE NEXT ENTRY
+                document.getElementById("event-input").value = "";
+                document.getElementById("gold-select").value = "";
+                document.getElementById("silver-select").value = "";
+                document.getElementById("bronze-select").value = "";
+
+                btn.innerText = "Publish Game Result";
+                btn.disabled = false;
+                
+                syncDataEngine();
             });
         }
 
-        function submitGameResult() {
-            const formData = new URLSearchParams();
-            formData.append("category", document.getElementById("category-select").value);
-            formData.append("event", document.getElementById("event-input").value);
-            formData.append("gold", document.getElementById("gold-select").value);
-            formData.append("silver", document.getElementById("silver-select").value);
-            formData.append("bronze", document.getElementById("bronze-select").value);
+        function triggerSystemReset() {
+            if (prompt("CRITICAL ACTION WARNING:\nType 'RESET' to erase all spreadsheet records:") !== "RESET") return;
 
-            fetch(SCRIPT_URL, {
+            const params = new URLSearchParams();
+            params.append("action", "reset");
+
+            fetch(API_ENDPOINT, {
                 method: "POST",
                 mode: "no-cors",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: formData.toString()
+                body: params.toString()
             }).then(() => {
-                alert("✅ Matagumpay na naidagdag!");
-                document.getElementById("event-input").value = "";
-                fetchTallyData();
+                alert("Database purged and rezeroed successfully.");
+                syncDataEngine();
             });
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            fetchTallyData();
-            startBgSlideshow();
+            syncDataEngine();
+            initSlideshow();
         });
     </script>
 </body>
