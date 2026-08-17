@@ -32,7 +32,7 @@
         .header-brand { text-align: left; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .brand-container { display: flex; align-items: center; gap: 18px; }
         
-        /* School Logo na may Cyan Glow */
+        /* Original School Logo Frame with Glowing Effect */
         .school-logo-img {
             width: 52px;
             height: 52px;
@@ -69,7 +69,7 @@
 
         .faction-cell { display: flex; align-items: center; gap: 16px; }
         
-        /* Custom Shield Banner Frame na may Intense Glowing Effect */
+        /* Shield/Banner Frame with Glowing Effect */
         .faction-logo-wrapper {
             width: 38px;
             height: 48px;
@@ -96,7 +96,7 @@
 
         .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
         label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.08em; }
-        input { width: 100%; padding: 12px; border-radius: 4px; border: 1px solid var(--panel-border); background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 0.9rem; outline: none; }
+        input, select { width: 100%; padding: 12px; border-radius: 4px; border: 1px solid var(--panel-border); background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 0.9rem; outline: none; }
 
         .btn-action { padding: 12px 20px; border-radius: 4px; border: none; font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-primary { background: var(--accent-cyan); color: #000; }
@@ -120,6 +120,7 @@
     <div id="bg-overlay"></div>
 
     <div class="app-container">
+        <!-- Header Section -->
         <header class="header-brand">
             <div class="brand-container">
                 <img class="school-logo-img" src="./school-logo.png" onerror="this.onerror=null; this.src='./school.png.png';" alt="School Logo">
@@ -131,6 +132,7 @@
             <div style="color: var(--accent-cyan); font-family: var(--font-mono); font-size: 0.8rem;">System Status: Operational</div>
         </header>
 
+        <!-- KPI Summary Cards -->
         <section class="kpi-grid">
             <div class="kpi-card active-leader">
                 <div class="kpi-label">Tournament Leader</div>
@@ -146,11 +148,13 @@
             </div>
         </section>
 
+        <!-- Navigation Tabs -->
         <nav class="nav-pipeline">
             <button class="nav-btn active" onclick="navigate('leaderboard', this)">Standings</button>
             <button class="nav-btn" onclick="navigate('admin-console', this)">Console Auth</button>
         </nav>
 
+        <!-- Leaderboard Viewport -->
         <main id="leaderboard" class="tab-viewport active">
             <section class="glass-panel">
                 <div class="panel-header">
@@ -174,7 +178,9 @@
             </section>
         </main>
 
+        <!-- Admin Console Viewport -->
         <main id="admin-console" class="tab-viewport">
+            <!-- Authentication Form -->
             <section id="auth-card" class="glass-panel" style="max-width: 380px; margin: 40px auto;">
                 <div class="panel-header">
                     <h2>Admin Authentication</h2>
@@ -186,7 +192,53 @@
                 <button class="btn-action btn-primary" style="width: 100%; margin-top: 10px;" onclick="authenticateAdmin()">Authenticate</button>
             </section>
 
+            <!-- Admin Controls (Original Interface with Upload Options) -->
             <div id="admin-controls" style="display: none;">
+                <section class="glass-panel">
+                    <div class="panel-header">
+                        <h2>Record Event Result</h2>
+                    </div>
+                    <form id="event-form" onsubmit="handleFormSubmit(event)">
+                        <div class="form-group">
+                            <label>Event Name</label>
+                            <input type="text" id="event-name" required placeholder="e.g. Basketball Men Senior">
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <div class="form-group">
+                                <label>Gold Medalist</label>
+                                <select id="gold-winner" required>
+                                    <option value="">Select Faction</option>
+                                    <option value="Moniyan Empire">Moniyan Empire</option>
+                                    <option value="Eruditio">Eruditio</option>
+                                    <option value="Abyssal Domain">Abyssal Domain</option>
+                                    <option value="Cadia Riverlands">Cadia Riverlands</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Silver Medalist</label>
+                                <select id="silver-winner" required>
+                                    <option value="">Select Faction</option>
+                                    <option value="Moniyan Empire">Moniyan Empire</option>
+                                    <option value="Eruditio">Eruditio</option>
+                                    <option value="Abyssal Domain">Abyssal Domain</option>
+                                    <option value="Cadia Riverlands">Cadia Riverlands</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Bronze Medalist</label>
+                                <select id="bronze-winner" required>
+                                    <option value="">Select Faction</option>
+                                    <option value="Moniyan Empire">Moniyan Empire</option>
+                                    <option value="Eruditio">Eruditio</option>
+                                    <option value="Abyssal Domain">Abyssal Domain</option>
+                                    <option value="Cadia Riverlands">Cadia Riverlands</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-action btn-primary" style="margin-top: 15px;">Submit Event Results</button>
+                    </form>
+                </section>
+
                 <section class="glass-panel">
                     <div class="panel-header">
                         <h2>System Maintenance</h2>
@@ -202,7 +254,7 @@
     <script>
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
 
-        // Multi-fallback configuration para siguradong mag-load ang images kahit anong filename sa repo
+        // Multi-fallback configuration para siguradong mag-load ang images sa lahat ng bisita
         const factionIcons = {
             "Moniyan Empire": { primary: "./moniyan.png", secondary: "./moniyan.png.jpg" },
             "Abyssal Domain": { primary: "./abyssal.png", secondary: "./abyss.png.jpg" },
@@ -226,6 +278,27 @@
             }
         }
 
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const payload = {
+                event: document.getElementById("event-name").value,
+                gold: document.getElementById("gold-winner").value,
+                silver: document.getElementById("silver-winner").value,
+                bronze: document.getElementById("bronze-winner").value
+            };
+
+            fetch(API_ENDPOINT, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                alert("Result successfully recorded!");
+                document.getElementById("event-form").reset();
+                setTimeout(syncDataEngine, 1500);
+            }).catch(err => alert("Error saving data: " + err));
+        }
+
         function syncDataEngine() {
             fetch(API_ENDPOINT)
                 .then(res => res.json())
@@ -245,6 +318,11 @@
 
                     if(standingsList.length > 0) {
                         document.getElementById("kpi-leader").innerText = standingsList[0].faction;
+                    }
+
+                    if(data.events) {
+                        document.getElementById("kpi-completed").innerText = data.events.length;
+                        document.getElementById("kpi-medals").innerText = data.events.length * 3;
                     }
 
                     standingsList.forEach((row, i) => {
