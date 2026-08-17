@@ -44,7 +44,7 @@
             border: 2px solid var(--accent-color);
             box-shadow: 0 0 15px var(--accent-glow);
             display: flex; align-items: center; justify-content: center;
-            overflow: hidden; flex-shrink: 0;
+            overflow: hidden; flex-shrink: 0; color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 0.8rem;
         }
         .school-logo-img {
             width: 100%; height: 100%; object-fit: contain; padding: 2px;
@@ -77,7 +77,7 @@
         .tab-viewport.active { display: block; animation: fadeIn 0.2s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Glass Panel Styling */
+        /* Glass Panel */
         .glass-panel { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 8px; padding: 25px; margin-bottom: 25px; backdrop-filter: blur(16px); }
         .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 12px; }
         .panel-header h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -90,7 +90,7 @@
             display: flex; align-items: center; justify-content: center; flex-shrink: 0;
             border: 1px solid rgba(255,255,255,0.15);
             filter: drop-shadow(0 0 8px var(--accent-glow)); transition: transform 0.2s ease;
-            overflow: hidden;
+            overflow: hidden; color: #fff; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 800;
         }
         .faction-logo-wrapper:hover { transform: scale(1.1); }
         .faction-logo-img { width: 100%; height: 100%; object-fit: cover; }
@@ -105,7 +105,7 @@
         .btn-primary { background: var(--accent-color); color: #000; }
         .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid var(--panel-border); }
 
-        /* Data Tables */
+        /* Tables */
         .data-table-wrapper { width: 100%; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th { padding: 12px; font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); border-bottom: 1px solid var(--panel-border); font-weight: 700; }
@@ -124,13 +124,13 @@
     <div id="bg-overlay"></div>
 
     <div class="app-container">
-        <!-- Header Section -->
+        <!-- Header -->
         <header class="header-brand">
             <div class="brand-container">
-                <div class="school-logo-wrapper">
+                <div class="school-logo-wrapper" id="school-logo-container">
                     <img class="school-logo-img" 
                          src="./images (1).png" 
-                         onerror="handleImageError(this, ['./school-logo.png', './school.png', './school.jpg', './images (1).png'])" 
+                         onerror="handleImageFallback(this, ['./images (1).png', './school-logo.png', './school.png'], 'ACHS')" 
                          alt="ACHS Logo">
                 </div>
                 <div>
@@ -145,10 +145,9 @@
                     <button class="dot-btn" style="background:#f59e0b;" title="Yellow" onclick="changeAccent('#f59e0b', 'rgba(245, 158, 11, 0.35)')"></button>
                     <button class="dot-btn" style="background:#10b981;" title="Green" onclick="changeAccent('#10b981', 'rgba(16, 185, 129, 0.35)')"></button>
                     <button class="dot-btn" style="background:#a855f7;" title="Purple" onclick="changeAccent('#a855f7', 'rgba(168, 85, 247, 0.35)')"></button>
-                    <!-- DAGDAG NA KULAY PULA (RED) -->
                     <button class="dot-btn" style="background:#ef4444;" title="Red" onclick="changeAccent('#ef4444', 'rgba(239, 68, 68, 0.35)')"></button>
                 </div>
-                <div class="status-badge">SYSTEM STATUS: OPERATIONAL</div>
+                <div class="status-badge" id="status-tag">SYSTEM STATUS: OPERATIONAL</div>
             </div>
         </header>
 
@@ -156,7 +155,7 @@
         <section class="kpi-grid">
             <div class="kpi-card active-leader">
                 <div class="kpi-label">Tournament Leader</div>
-                <div class="kpi-value" id="kpi-leader">---</div>
+                <div class="kpi-value" id="kpi-leader">Moniyan Empire</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-label">Events Completed</div>
@@ -168,14 +167,14 @@
             </div>
         </section>
 
-        <!-- Navigation Tabs -->
+        <!-- Navigation -->
         <nav class="nav-pipeline">
             <button class="nav-btn active" onclick="navigate('leaderboard', this)">Standings</button>
             <button class="nav-btn" onclick="navigate('event-logs', this)">Event Logs</button>
             <button class="nav-btn" onclick="navigate('admin-console', this)">Console Auth</button>
         </nav>
 
-        <!-- Tab 1: Overall Standings -->
+        <!-- Tab 1: Leaderboard -->
         <main id="leaderboard" class="tab-viewport active">
             <section class="glass-panel">
                 <div class="panel-header">
@@ -193,13 +192,13 @@
                                 <th>Total Points</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody id="standings-tbody"></tbody>
                     </table>
                 </div>
             </section>
         </main>
 
-        <!-- Tab 2: Event Logs -->
+        <!-- Tab 2: Logs -->
         <main id="event-logs" class="tab-viewport">
             <section class="glass-panel">
                 <div class="panel-header">
@@ -216,14 +215,14 @@
                             </tr>
                         </thead>
                         <tbody id="logs-tbody">
-                            <tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">Loading logs...</td></tr>
+                            <tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">No event logs recorded yet.</td></tr>
                         </tbody>
                     </table>
                 </div>
             </section>
         </main>
 
-        <!-- Tab 3: Admin Console Auth & Form -->
+        <!-- Tab 3: Admin Auth -->
         <main id="admin-console" class="tab-viewport">
             <section id="auth-card" class="glass-panel" style="max-width: 380px; margin: 40px auto;">
                 <div class="panel-header">
@@ -297,24 +296,23 @@
     <script>
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
 
-        // Dynamic candidates list for all logos
         const factionImageCandidates = {
-            "Moniyan Empire": ["./77501193...1286_n.jpg", "./moniyan.png", "./moniyan.png.jpg", "./moniyan.jpg"],
-            "Abyssal Domain": ["./77512704...006_n.jpg", "./abyssal.png", "./abyss.png.jpg", "./abyssal.jpg", "./abyss.png"],
-            "Cadia Riverlands": ["./77479470...279_n.jpg", "./cadia.png", "./cadia.png.jpg", "./cadia.jpg"],
-            "Eruditio": ["./7750366...9899_n.jpg", "./eruditio.png", "./eruditio.png.jpg", "./erudito.png.jpg"]
+            "Moniyan Empire": ["./77501193...1286_n.jpg", "./moniyan.png", "./moniyan.jpg"],
+            "Abyssal Domain": ["./77512704...006_n.jpg", "./abyssal.png", "./abyss.png.jpg", "./abyssal.jpg"],
+            "Cadia Riverlands": ["./77479470...279_n.jpg", "./cadia.png", "./cadia.jpg"],
+            "Eruditio": ["./7750366...9899_n.jpg", "./eruditio.png", "./eruditio.jpg"]
         };
 
-        function handleImageError(imgElem, candidateList) {
-            let currentIndex = parseInt(imgElem.dataset.failIndex || "0");
-            if (currentIndex < candidateList.length) {
-                imgElem.dataset.failIndex = currentIndex + 1;
-                imgElem.src = candidateList[currentIndex];
+        // Fallback Image Handler to prevent Broken Icon Box
+        function handleImageFallback(imgElem, list, fallbackCode) {
+            let idx = parseInt(imgElem.dataset.failIndex || "0");
+            if (idx < list.length) {
+                imgElem.dataset.failIndex = idx + 1;
+                imgElem.src = list[idx];
             } else {
-                imgElem.style.display = "none";
-                if(imgElem.parentElement) {
-                    imgElem.parentElement.style.background = "radial-gradient(circle, var(--accent-glow) 0%, rgba(15, 23, 42, 0.9) 100%)";
-                    imgElem.parentElement.innerHTML = `<span style="font-family:var(--font-mono); font-weight:800; font-size:0.7rem; color:#fff;">LOG</span>`;
+                imgElem.style.display = 'none';
+                if (imgElem.parentElement) {
+                    imgElem.parentElement.innerText = fallbackCode;
                 }
             }
         }
@@ -361,28 +359,68 @@
             }).catch(err => alert("Error saving data: " + err));
         }
 
+        function renderStandings(standingsList) {
+            const standingsBody = document.getElementById("standings-tbody");
+            standingsBody.innerHTML = "";
+
+            let highestTotal = Math.max(...standingsList.map(s => s.total || 0), 1);
+
+            if (standingsList.length > 0) {
+                document.getElementById("kpi-leader").innerText = standingsList[0].faction;
+            }
+
+            standingsList.forEach((row, i) => {
+                let pct = Math.round(((row.total || 0) / highestTotal) * 100);
+                let candidates = factionImageCandidates[row.faction] || [];
+                let candidatesJson = JSON.stringify(candidates).replace(/"/g, '&quot;');
+                let shortCode = row.faction.substring(0, 3).toUpperCase();
+
+                standingsBody.innerHTML += `
+                    <tr>
+                        <td><span class="badge-rank">0${i + 1}</span></td>
+                        <td>
+                            <div class="faction-cell">
+                                <div class="faction-logo-wrapper">
+                                    <img class="faction-logo-img" 
+                                         src="${candidates[0] || ''}" 
+                                         onerror="handleImageFallback(this, ${candidatesJson}, '${shortCode}')" 
+                                         alt="${row.faction}">
+                                </div>
+                                <div>
+                                    <strong>${row.faction}</strong>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar-fill" style="width: ${pct}%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="badge-gold">${row.gold || 0}</td>
+                        <td class="badge-silver">${row.silver || 0}</td>
+                        <td class="badge-bronze">${row.bronze || 0}</td>
+                        <td><strong style="font-family: var(--font-mono); font-size: 1.05rem;">${row.total || 0}</strong></td>
+                    </tr>`;
+            });
+        }
+
         function syncDataEngine() {
+            const defaultStandings = [
+                { faction: "Moniyan Empire", gold: 0, silver: 0, bronze: 0, total: 0 },
+                { faction: "Eruditio", gold: 0, silver: 0, bronze: 0, total: 0 },
+                { faction: "Abyssal Domain", gold: 0, silver: 0, bronze: 0, total: 0 },
+                { faction: "Cadia Riverlands", gold: 0, silver: 0, bronze: 0, total: 0 }
+            ];
+
+            // Render local default instantly so screen is never blank or stuck loading
+            renderStandings(defaultStandings);
+
             fetch(API_ENDPOINT)
                 .then(res => res.json())
                 .then(data => {
-                    const standingsBody = document.querySelector(".standings-table tbody");
-                    standingsBody.innerHTML = "";
-
-                    const defaultStandings = [
-                        { faction: "Moniyan Empire", gold: 0, silver: 0, bronze: 0, total: 0 },
-                        { faction: "Eruditio", gold: 0, silver: 0, bronze: 0, total: 0 },
-                        { faction: "Abyssal Domain", gold: 0, silver: 0, bronze: 0, total: 0 },
-                        { faction: "Cadia Riverlands", gold: 0, silver: 0, bronze: 0, total: 0 }
-                    ];
-
-                    let standingsList = (data.standings && data.standings.length > 0) ? data.standings : defaultStandings;
-                    let highestTotal = Math.max(...standingsList.map(s => s.total || 0), 1);
-
-                    if(standingsList.length > 0) {
-                        document.getElementById("kpi-leader").innerText = standingsList[0].faction;
+                    if (data.standings && data.standings.length > 0) {
+                        renderStandings(data.standings);
                     }
 
-                    if(data.events) {
+                    if (data.events && data.events.length > 0) {
                         document.getElementById("kpi-completed").innerText = data.events.length;
                         document.getElementById("kpi-medals").innerText = data.events.length * 3;
 
@@ -398,39 +436,14 @@
                                 </tr>`;
                         });
                     }
-
-                    standingsList.forEach((row, i) => {
-                        let pct = Math.round(((row.total || 0) / highestTotal) * 100);
-                        let candidates = factionImageCandidates[row.faction] || ["./logo.png"];
-                        let candidatesJson = JSON.stringify(candidates).replace(/"/g, '&quot;');
-
-                        standingsBody.innerHTML += `
-                            <tr>
-                                <td><span class="badge-rank">0${i + 1}</span></td>
-                                <td>
-                                    <div class="faction-cell">
-                                        <div class="faction-logo-wrapper">
-                                            <img class="faction-logo-img" 
-                                                 src="${candidates[0]}" 
-                                                 onerror="handleImageError(this, ${candidatesJson})" 
-                                                 alt="${row.faction}">
-                                        </div>
-                                        <div>
-                                            <strong>${row.faction}</strong>
-                                            <div class="progress-bar-container">
-                                                <div class="progress-bar-fill" style="width: ${pct}%;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="badge-gold">${row.gold || 0}</td>
-                                <td class="badge-silver">${row.silver || 0}</td>
-                                <td class="badge-bronze">${row.bronze || 0}</td>
-                                <td><strong style="font-family: var(--font-mono); font-size: 1.05rem;">${row.total || 0}</strong></td>
-                            </tr>`;
-                    });
                 })
-                .catch(err => console.error("Database Error:", err));
+                .catch(err => {
+                    console.warn("Using offline mode or awaiting Google Apps Script response:", err);
+                    const logsBody = document.getElementById("logs-tbody");
+                    if (logsBody) {
+                        logsBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">No event logs found or database connection pending.</td></tr>`;
+                    }
+                });
         }
 
         document.addEventListener("DOMContentLoaded", () => {
