@@ -13,7 +13,7 @@
             --panel-bg: rgba(11, 15, 25, 0.85);
             --panel-border: rgba(255, 255, 255, 0.08);
             --accent-cyan: #06b6d4;
-            --accent-glow: rgba(6, 182, 212, 0.25);
+            --accent-glow: rgba(6, 182, 212, 0.35);
             --accent-gold: #f59e0b;
             --accent-silver: #94a3b8;
             --accent-bronze: #d97706;
@@ -32,10 +32,16 @@
         .header-brand { text-align: left; margin-bottom: 30px; border-bottom: 1px solid var(--panel-border); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .brand-container { display: flex; align-items: center; gap: 18px; }
         
+        /* School Logo na may Cyan Glow */
         .school-logo-img {
-            width: 55px; height: 55px; object-fit: contain;
-            filter: drop-shadow(0 0 10px var(--accent-cyan));
-            border-radius: 6px;
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            border-radius: 8px;
+            filter: drop-shadow(0 0 12px var(--accent-cyan));
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            background: rgba(11, 15, 25, 0.8);
+            padding: 2px;
         }
         
         .header-brand h1 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; display: flex; align-items: center; gap: 12px; }
@@ -61,9 +67,32 @@
         .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 12px; }
         .panel-header h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: #fff; text-transform: uppercase; }
 
-        .faction-cell { display: flex; align-items: center; gap: 14px; }
-        .faction-logo-wrapper { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--panel-border); background: rgba(0,0,0,0.6); overflow: hidden; flex-shrink: 0; }
-        .faction-logo-img { width: 100%; height: 100%; object-fit: cover; }
+        .faction-cell { display: flex; align-items: center; gap: 16px; }
+        
+        /* Custom Shield Banner Frame na may Intense Glowing Effect */
+        .faction-logo-wrapper {
+            width: 38px;
+            height: 48px;
+            background: rgba(11, 15, 25, 0.95);
+            clip-path: polygon(0 0, 100% 0, 100% 82%, 50% 100%, 0 82%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.85));
+            transition: transform 0.2s ease;
+        }
+
+        .faction-logo-wrapper:hover {
+            transform: scale(1.08);
+            filter: drop-shadow(0 0 15px rgba(6, 182, 212, 1));
+        }
+
+        .faction-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
         .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
         label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.08em; }
@@ -79,7 +108,7 @@
         td { padding: 14px 12px; border-bottom: 1px solid var(--panel-border); font-size: 0.9rem; }
 
         .progress-bar-container { width: 100%; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; margin-top: 6px; }
-        .progress-bar-fill { height: 100%; background: var(--accent-cyan); border-radius: 2px; transition: width 0.5s ease; }
+        .progress-bar-fill { height: 100%; background: var(--accent-cyan); border-radius: 2px; transition: width 0.5s ease; box-shadow: 0 0 8px var(--accent-cyan); }
         .badge-rank { font-family: var(--font-mono); font-weight: 800; font-size: 0.85rem; color: var(--text-secondary); }
         .badge-gold { color: var(--accent-gold); font-family: var(--font-mono); font-weight: 700; }
         .badge-silver { color: var(--accent-silver); font-family: var(--font-mono); font-weight: 700; }
@@ -93,7 +122,7 @@
     <div class="app-container">
         <header class="header-brand">
             <div class="brand-container">
-                <img class="school-logo-img" src="./school-logo.png" alt="School Logo" onerror="this.src='https://ui-avatars.com/api/?name=ACHS&background=06b6d4&color=fff'">
+                <img class="school-logo-img" src="./school-logo.png" onerror="this.onerror=null; this.src='./school.png.png';" alt="School Logo">
                 <div>
                     <h1>ACHS INTRAMURALS 2026</h1>
                     <p>Tournament Operations & Live Leaderboard Engine</p>
@@ -173,11 +202,12 @@
     <script>
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
 
+        // Multi-fallback configuration para siguradong mag-load ang images kahit anong filename sa repo
         const factionIcons = {
-            "Moniyan Empire": { logo: "./moniyan.png", border: "#f59e0b" },
-            "Abyssal Domain": { logo: "./abyssal.png", border: "#ef4444" },
-            "Cadia Riverlands": { logo: "./cadia.png", border: "#10b981" },
-            "Eruditio": { logo: "./eruditio.png", border: "#a855f7" }
+            "Moniyan Empire": { primary: "./moniyan.png", secondary: "./moniyan.png.jpg" },
+            "Abyssal Domain": { primary: "./abyssal.png", secondary: "./abyss.png.jpg" },
+            "Cadia Riverlands": { primary: "./cadia.png", secondary: "./cadia.png.jpg" },
+            "Eruditio": { primary: "./eruditio.png", secondary: "./erudito.png.jpg" }
         };
 
         function navigate(tabId, btnElement) {
@@ -204,10 +234,10 @@
                     standingsBody.innerHTML = "";
 
                     const defaultStandings = [
-                        { faction: "Abyssal Domain", gold: 0, silver: 0, bronze: 0, total: 0 },
-                        { faction: "Cadia Riverlands", gold: 0, silver: 0, bronze: 0, total: 0 },
+                        { faction: "Moniyan Empire", gold: 0, silver: 0, bronze: 0, total: 0 },
                         { faction: "Eruditio", gold: 0, silver: 0, bronze: 0, total: 0 },
-                        { faction: "Moniyan Empire", gold: 0, silver: 0, bronze: 0, total: 0 }
+                        { faction: "Abyssal Domain", gold: 0, silver: 0, bronze: 0, total: 0 },
+                        { faction: "Cadia Riverlands", gold: 0, silver: 0, bronze: 0, total: 0 }
                     ];
 
                     let standingsList = (data.standings && data.standings.length > 0) ? data.standings : defaultStandings;
@@ -219,15 +249,18 @@
 
                     standingsList.forEach((row, i) => {
                         let pct = Math.round(((row.total || 0) / highestTotal) * 100);
-                        let meta = factionIcons[row.faction] || { logo: "", border: "var(--panel-border)" };
+                        let meta = factionIcons[row.faction] || { primary: "", secondary: "" };
 
                         standingsBody.innerHTML += `
                             <tr>
                                 <td><span class="badge-rank">0${i + 1}</span></td>
                                 <td>
                                     <div class="faction-cell">
-                                        <div class="faction-logo-wrapper" style="border-color: ${meta.border};">
-                                            <img class="faction-logo-img" src="${meta.logo}" alt="${row.faction}" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(row.faction)}&background=0b0f19&color=fff'">
+                                        <div class="faction-logo-wrapper">
+                                            <img class="faction-logo-img" 
+                                                 src="${meta.primary}" 
+                                                 onerror="this.onerror=null; this.src='${meta.secondary}';" 
+                                                 alt="${row.faction}">
                                         </div>
                                         <div>
                                             <strong>${row.faction}</strong>
