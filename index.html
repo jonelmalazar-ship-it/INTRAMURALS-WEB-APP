@@ -326,33 +326,7 @@
                 <form id="event-form" onsubmit="handleFormSubmit(event)">
                     <div class="form-group">
                         <label>Event Name / Discipline</label>
-                        <select id="event-name" required>
-                            <option value="">Select Sports / Event Discipline</option>
-                            <optgroup label="Ball Games">
-                                <option value="Basketball Men Senior">Basketball Men Senior</option>
-                                <option value="Basketball Men Junior">Basketball Men Junior</option>
-                                <option value="Volleyball Women">Volleyball Women</option>
-                                <option value="Volleyball Men">Volleyball Men</option>
-                                <option value="Sepak Takraw">Sepak Takraw</option>
-                            </optgroup>
-                            <optgroup label="Racket Sports">
-                                <option value="Badminton Singles Men">Badminton Singles Men</option>
-                                <option value="Badminton Singles Women">Badminton Singles Women</option>
-                                <option value="Badminton Doubles Mixed">Badminton Doubles Mixed</option>
-                                <option value="Table Tennis Men">Table Tennis Men</option>
-                                <option value="Table Tennis Women">Table Tennis Women</option>
-                            </optgroup>
-                            <optgroup label="Board Games & Mind Sports">
-                                <option value="Chess Men">Chess Men</option>
-                                <option value="Chess Women">Chess Women</option>
-                                <option value="Scrabble">Scrabble</option>
-                            </optgroup>
-                            <optgroup label="Socio-Cultural & Special Events">
-                                <option value="Cheerdance Competition">Cheerdance Competition</option>
-                                <option value="Mr. & Ms. Intramurals">Mr. & Ms. Intramurals</option>
-                                <option value="E-Sports (Mobile Legends)">E-Sports (Mobile Legends)</option>
-                            </optgroup>
-                        </select>
+                        <input type="text" id="event-name" placeholder="e.g. Basketball Men" required>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
                         <div class="form-group">
@@ -405,10 +379,10 @@
         let currentEventsData = [];
 
         const factionImageCandidates = {
-            "Moniyan Empire": ["./moniyan.png", "./moniyan.jpg"],
-            "Abyssal Domain": ["./abyssal.png", "./abyss.png", "./abyssal.jpg"],
-            "Cadia Riverlands": ["./cadia.png", "./cadia.jpg"],
-            "Eruditio": ["./eruditio.png", "./eruditio.jpg"]
+            "Moniyan Empire": ["./moniyan.png", "./moniyan.jpg", "./77501193...1286_n.jpg"],
+            "Abyssal Domain": ["./abyssal.png", "./abyss.png", "./abyssal.jpg", "./77512704...006_n.jpg"],
+            "Cadia Riverlands": ["./cadia.png", "./cadia.jpg", "./77479470...279_n.jpg"],
+            "Eruditio": ["./eruditio.png", "./eruditio.jpg", "./7750366...9899_n.jpg"]
         };
 
         function handleImageFallback(imgElem, list, fallbackCode) {
@@ -422,6 +396,11 @@
                     imgElem.parentElement.innerText = fallbackCode;
                 }
             }
+        }
+
+        function changeAccent(colorHex, glowRgba) {
+            document.documentElement.style.setProperty('--accent-color', colorHex);
+            document.documentElement.style.setProperty('--accent-glow', glowRgba);
         }
 
         function navigate(tabId, btnElement) {
