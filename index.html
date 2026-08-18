@@ -318,8 +318,8 @@
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
                             <div class="form-group">
                                 <label>Gold Winner (10 Pts)</label>
-                                <select id="gold-winner" required>
-                                    <option value="">Select Faction</option>
+                                <select id="gold-winner">
+                                    <option value="">-- None / No Winner --</option>
                                     <option value="Moniyan Empire">Moniyan Empire</option>
                                     <option value="Eruditio">Eruditio</option>
                                     <option value="Abyssal Domain">Abyssal Domain</option>
@@ -328,8 +328,8 @@
                             </div>
                             <div class="form-group">
                                 <label>Silver Winner (5 Pts)</label>
-                                <select id="silver-winner" required>
-                                    <option value="">Select Faction</option>
+                                <select id="silver-winner">
+                                    <option value="">-- None / No Winner --</option>
                                     <option value="Moniyan Empire">Moniyan Empire</option>
                                     <option value="Eruditio">Eruditio</option>
                                     <option value="Abyssal Domain">Abyssal Domain</option>
@@ -338,8 +338,8 @@
                             </div>
                             <div class="form-group">
                                 <label>Bronze Winner (2 Pts)</label>
-                                <select id="bronze-winner" required>
-                                    <option value="">Select Faction</option>
+                                <select id="bronze-winner">
+                                    <option value="">-- None / No Winner --</option>
                                     <option value="Moniyan Empire">Moniyan Empire</option>
                                     <option value="Eruditio">Eruditio</option>
                                     <option value="Abyssal Domain">Abyssal Domain</option>
@@ -364,8 +364,8 @@
     </div>
 
     <script>
-        // PALITAN ITO NG IYONG BAGONG DEPLOYMENT URL (Important!)
-        const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbwU-C3BxTgbjmLRIEKnKrUc1RPpsooAmBV4ui-2Dp4Rh6Dp6vIsKkzXv4Pnz5Mr1oA/exec";
+        // PALITAN ITO NG IYONG WEB APP DEPLOYMENT URL
+        const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw6nmABGn6FIWhTsiGzF5qaYgkr8bQN2pWYjX5vK7dkkkmw1zsdPjKWPkaKaKaTMvrM/exec";
 
         const factionImageCandidates = {
             "Moniyan Empire": ["./moniyan.png", "./moniyan.jpg", "./77501193...1286_n.jpg"],
@@ -419,18 +419,17 @@
 
             const category = "General Sports";
             const event = document.getElementById("event-name").value;
-            const gold = document.getElementById("gold-winner").value;
-            const silver = document.getElementById("silver-winner").value;
-            const bronze = document.getElementById("bronze-winner").value;
+            const gold = document.getElementById("gold-winner").value || "";
+            const silver = document.getElementById("silver-winner").value || "";
+            const bronze = document.getElementById("bronze-winner").value || "";
 
-            if (gold === silver || gold === bronze || silver === bronze) {
-                alert("Error: Factions must be unique for Gold, Silver, and Bronze!");
+            if (!gold && !silver && !bronze) {
+                alert("Pumili ng kahit isang panalo (Gold, Silver, o Bronze).");
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Publish Match Results";
                 return;
             }
 
-            // Direktang ipapasa via URL query parameters
             const postUrl = `${API_ENDPOINT}?category=${encodeURIComponent(category)}&event=${encodeURIComponent(event)}&gold=${encodeURIComponent(gold)}&silver=${encodeURIComponent(silver)}&bronze=${encodeURIComponent(bronze)}`;
 
             fetch(postUrl, {
