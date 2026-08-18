@@ -1,210 +1,603 @@
-<script>
-    const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intramurals Leaderboard</title>
+    <style>
+        :root {
+            --bg-dark: #0b0e14;
+            --card-bg: #151921;
+            --accent-color: #00f2fe;
+            --accent-glow: rgba(0, 242, 254, 0.25);
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+            --font-mono: 'Courier New', Courier, monospace;
+        }
 
-    let currentStandingsData = [
-        { faction: "Moniyan Empire", gold: 4, silver: 1, bronze: 2 },
-        { faction: "Eruditio", gold: 2, silver: 2, bronze: 3 },
-        { faction: "Abyssal Domain", gold: 1, silver: 4, bronze: 0 },
-        { faction: "Cadia Riverlands", gold: 1, silver: 1, bronze: 2 }
-    ];
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
 
-    let currentEventsData = [];
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-    const factionImageCandidates = {
-        "Moniyan Empire": ["./moniyan.png", "./moniyan.jpg", "./77501193...1286_n.jpg"],
-        "Abyssal Domain": ["./abyssal.png", "./abyss.png", "./abyssal.jpg", "./77512704...006_n.jpg"],
-        "Cadia Riverlands": ["./cadia.png", "./cadia.jpg", "./77479470...279_n.jpg"],
-        "Eruditio": ["./eruditio.png", "./eruditio.jpg", "./7750366...9899_n.jpg"]
-    };
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
 
-    function handleImageFallback(imgElem, list, fallbackCode) {
-        let idx = parseInt(imgElem.dataset.failIndex || "0");
-        if (idx < list.length) {
-            imgElem.dataset.failIndex = idx + 1;
-            imgElem.src = list[idx];
-        } else {
-            imgElem.style.display = 'none';
-            if (imgElem.parentElement) {
-                imgElem.parentElement.innerText = fallbackCode;
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 25px;
+        }
+
+        .logo-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-primary);
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.active {
+            background: var(--card-bg);
+            color: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .tab-viewport {
+            display: none;
+        }
+
+        .tab-viewport.active {
+            display: block;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .kpi-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .kpi-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .kpi-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent-color);
+        }
+
+        .table-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .badge-rank {
+            font-family: var(--font-mono);
+            font-weight: bold;
+            color: var(--text-secondary);
+        }
+
+        .faction-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .faction-logo-wrapper {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            overflow: hidden;
+            font-size: 0.8rem;
+        }
+
+        .faction-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .progress-bar-container {
+            width: 100px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .badge-gold { color: var(--gold); font-weight: bold; }
+        .badge-silver { color: var(--silver); font-weight: bold; }
+        .badge-bronze { color: var(--bronze); font-weight: bold; }
+
+        .form-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-color);
+        }
+
+        .btn-action {
+            background: var(--accent-color);
+            color: #000;
+            font-weight: bold;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-action:hover {
+            opacity: 0.9;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo-title">INTRAMURALS 2026</div>
+            <div class="nav-tabs">
+                <button class="nav-btn active" onclick="navigate('tab-standings', this)">Leaderboard</button>
+                <button class="nav-btn" onclick="navigate('tab-admin', this)">Admin Portal</button>
+            </div>
+        </header>
+
+        <!-- STANDINGS TAB -->
+        <div id="tab-standings" class="tab-viewport active">
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Current Leader</div>
+                    <div class="kpi-value" id="kpi-leader">---</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Events Completed</div>
+                    <div class="kpi-value" id="kpi-completed">0</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Medals Awarded</div>
+                    <div class="kpi-value" id="kpi-medals">0</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Faction / Team</th>
+                            <th>Gold (10)</th>
+                            <th>Silver (5)</th>
+                            <th>Bronze (2)</th>
+                            <th>Total Points</th>
+                        </tr>
+                    </thead>
+                    <tbody id="standings-tbody">
+                        <!-- Dynamic Standings Content -->
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="margin-bottom: 15px; color: var(--text-secondary); text-transform: uppercase; font-size: 0.9rem;">Recent Match Logs</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Event Name</th>
+                            <th>Gold</th>
+                            <th>Silver</th>
+                            <th>Bronze</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logs-tbody">
+                        <!-- Dynamic Logs Content -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ADMIN TAB -->
+        <div id="tab-admin" class="tab-viewport">
+            <div id="auth-card" class="form-card" style="max-width: 400px; margin: 40px auto;">
+                <h3 style="margin-bottom: 15px;">Admin Authentication</h3>
+                <div class="form-group">
+                    <label>Security PIN</label>
+                    <input type="password" id="admin-pin" placeholder="Enter PIN">
+                </div>
+                <button class="btn-action" style="width: 100%;" onclick="authenticateAdmin()">Authenticate</button>
+            </div>
+
+            <div id="admin-controls" class="form-card" style="display: none;">
+                <h3 style="margin-bottom: 20px;">Record New Event Result</h3>
+                <form id="event-form" onsubmit="handleFormSubmit(event)">
+                    <div class="form-group">
+                        <label>Event Name / Discipline</label>
+                        <select id="event-name" required>
+                            <option value="">Select Sports / Event Discipline</option>
+                            <optgroup label="Ball Games">
+                                <option value="Basketball Men Senior">Basketball Men Senior</option>
+                                <option value="Basketball Men Junior">Basketball Men Junior</option>
+                                <option value="Volleyball Women">Volleyball Women</option>
+                                <option value="Volleyball Men">Volleyball Men</option>
+                                <option value="Sepak Takraw">Sepak Takraw</option>
+                            </optgroup>
+                            <optgroup label="Racket Sports">
+                                <option value="Badminton Singles Men">Badminton Singles Men</option>
+                                <option value="Badminton Singles Women">Badminton Singles Women</option>
+                                <option value="Badminton Doubles Mixed">Badminton Doubles Mixed</option>
+                                <option value="Table Tennis Men">Table Tennis Men</option>
+                                <option value="Table Tennis Women">Table Tennis Women</option>
+                            </optgroup>
+                            <optgroup label="Board Games & Mind Sports">
+                                <option value="Chess Men">Chess Men</option>
+                                <option value="Chess Women">Chess Women</option>
+                                <option value="Scrabble">Scrabble</option>
+                            </optgroup>
+                            <optgroup label="Socio-Cultural & Special Events">
+                                <option value="Cheerdance Competition">Cheerdance Competition</option>
+                                <option value="Mr. & Ms. Intramurals">Mr. & Ms. Intramurals</option>
+                                <option value="E-Sports (Mobile Legends)">E-Sports (Mobile Legends)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div class="form-group">
+                            <label>Gold Winner (10 Pts)</label>
+                            <select id="gold-winner" required>
+                                <option value="">Select Faction</option>
+                                <option value="Moniyan Empire">Moniyan Empire</option>
+                                <option value="Eruditio">Eruditio</option>
+                                <option value="Abyssal Domain">Abyssal Domain</option>
+                                <option value="Cadia Riverlands">Cadia Riverlands</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Silver Winner (5 Pts)</label>
+                            <select id="silver-winner" required>
+                                <option value="">Select Faction</option>
+                                <option value="Moniyan Empire">Moniyan Empire</option>
+                                <option value="Eruditio">Eruditio</option>
+                                <option value="Abyssal Domain">Abyssal Domain</option>
+                                <option value="Cadia Riverlands">Cadia Riverlands</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Bronze Winner (2 Pts)</label>
+                            <select id="bronze-winner" required>
+                                <option value="">Select Faction</option>
+                                <option value="Moniyan Empire">Moniyan Empire</option>
+                                <option value="Eruditio">Eruditio</option>
+                                <option value="Abyssal Domain">Abyssal Domain</option>
+                                <option value="Cadia Riverlands">Cadia Riverlands</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-action" style="margin-top: 15px;">Publish Match Results</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
+
+        let currentStandingsData = [
+            { faction: "Moniyan Empire", gold: 4, silver: 1, bronze: 2 },
+            { faction: "Eruditio", gold: 2, silver: 2, bronze: 3 },
+            { faction: "Abyssal Domain", gold: 1, silver: 4, bronze: 0 },
+            { faction: "Cadia Riverlands", gold: 1, silver: 1, bronze: 2 }
+        ];
+
+        let currentEventsData = [];
+
+        const factionImageCandidates = {
+            "Moniyan Empire": ["./moniyan.png", "./moniyan.jpg"],
+            "Abyssal Domain": ["./abyssal.png", "./abyss.png", "./abyssal.jpg"],
+            "Cadia Riverlands": ["./cadia.png", "./cadia.jpg"],
+            "Eruditio": ["./eruditio.png", "./eruditio.jpg"]
+        };
+
+        function handleImageFallback(imgElem, list, fallbackCode) {
+            let idx = parseInt(imgElem.dataset.failIndex || "0");
+            if (idx < list.length) {
+                imgElem.dataset.failIndex = idx + 1;
+                imgElem.src = list[idx];
+            } else {
+                imgElem.style.display = 'none';
+                if (imgElem.parentElement) {
+                    imgElem.parentElement.innerText = fallbackCode;
+                }
             }
         }
-    }
 
-    function changeAccent(colorHex, glowRgba) {
-        document.documentElement.style.setProperty('--accent-color', colorHex);
-        document.documentElement.style.setProperty('--accent-glow', glowRgba);
-    }
-
-    function navigate(tabId, btnElement) {
-        document.querySelectorAll('.tab-viewport').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        if (btnElement) btnElement.classList.add('active');
-    }
-
-    function authenticateAdmin() {
-        if (document.getElementById("admin-pin").value === "mystarlink120616") {
-            document.getElementById("auth-card").style.display = "none";
-            document.getElementById("admin-controls").style.display = "block";
-        } else {
-            alert("Access Denied: Invalid Security Pin.");
-        }
-    }
-
-    function handleFormSubmit(e) {
-        e.preventDefault();
-        const eventName = document.getElementById("event-name").value;
-        const gold = document.getElementById("gold-winner").value;
-        const silver = document.getElementById("silver-winner").value;
-        const bronze = document.getElementById("bronze-winner").value;
-
-        if (gold === silver || gold === bronze || silver === bronze) {
-            alert("Validation Error: Each faction must be unique for Gold, Silver, and Bronze!");
-            return;
+        function navigate(tabId, btnElement) {
+            document.querySelectorAll('.tab-viewport').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if (btnElement) btnElement.classList.add('active');
         }
 
-        const payload = { event: eventName, gold: gold, silver: silver, bronze: bronze };
-
-        // 1. Immediately update UI locally
-        updateLocalStandings(gold, silver, bronze);
-        addLocalEventLog(eventName, gold, silver, bronze);
-
-        // 2. Transmit payload to backend
-        fetch(API_ENDPOINT, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain" },
-            body: JSON.stringify(payload)
-        })
-        .then(() => {
-            alert("Result recorded successfully and standings updated!");
-            document.getElementById("event-form").reset();
-            syncDataEngine();
-        })
-        .catch(err => {
-            console.warn("Backend sync failed, maintaining local state:", err);
-            alert("Result recorded locally! (Network sync pending)");
-            document.getElementById("event-form").reset();
-        });
-    }
-
-    function updateLocalStandings(gold, silver, bronze) {
-        currentStandingsData.forEach(item => {
-            if (item.faction === gold) item.gold = (parseInt(item.gold) || 0) + 1;
-            if (item.faction === silver) item.silver = (parseInt(item.silver) || 0) + 1;
-            if (item.faction === bronze) item.bronze = (parseInt(item.bronze) || 0) + 1;
-        });
-        renderStandings(currentStandingsData);
-    }
-
-    function addLocalEventLog(eventName, gold, silver, bronze) {
-        currentEventsData.unshift({ name: eventName, gold: gold, silver: silver, bronze: bronze });
-        renderLogs(currentEventsData);
-    }
-
-    function renderLogs(eventsList) {
-        const logsBody = document.getElementById("logs-tbody");
-        if (!eventsList || eventsList.length === 0) {
-            logsBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">No event logs recorded yet.</td></tr>`;
-            return;
-        }
-        logsBody.innerHTML = "";
-        eventsList.forEach(evt => {
-            logsBody.innerHTML += `
-                <tr>
-                    <td><strong>${evt.name || evt.event}</strong></td>
-                    <td class="badge-gold">${evt.gold}</td>
-                    <td class="badge-silver">${evt.silver}</td>
-                    <td class="badge-bronze">${evt.bronze}</td>
-                </tr>`;
-        });
-    }
-
-    function renderStandings(standingsList) {
-        const standingsBody = document.getElementById("standings-tbody");
-        standingsBody.innerHTML = "";
-
-        standingsList.forEach(s => {
-            let g = parseInt(s.gold || 0);
-            let sl = parseInt(s.silver || 0);
-            let b = parseInt(s.bronze || 0);
-            s.calculatedTotal = (g * 10) + (sl * 5) + (b * 2);
-        });
-
-        standingsList.sort((a, b) => b.calculatedTotal - a.calculatedTotal);
-
-        let highestTotal = Math.max(...standingsList.map(s => s.calculatedTotal || 0), 1);
-        let totalEventsAwarded = 0;
-        let totalMedalsCount = 0;
-
-        if (standingsList.length > 0) {
-            document.getElementById("kpi-leader").innerText = standingsList[0].faction;
+        function authenticateAdmin() {
+            if (document.getElementById("admin-pin").value === "mystarlink120616") {
+                document.getElementById("auth-card").style.display = "none";
+                document.getElementById("admin-controls").style.display = "block";
+            } else {
+                alert("Access Denied: Invalid Security Pin.");
+            }
         }
 
-        standingsList.forEach((row, i) => {
-            let g = parseInt(row.gold || 0);
-            let sl = parseInt(row.silver || 0);
-            let b = parseInt(row.bronze || 0);
-            
-            totalEventsAwarded += g; 
-            totalMedalsCount += (g + sl + b);
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const eventName = document.getElementById("event-name").value;
+            const gold = document.getElementById("gold-winner").value;
+            const silver = document.getElementById("silver-winner").value;
+            const bronze = document.getElementById("bronze-winner").value;
 
-            let pct = Math.round(((row.calculatedTotal || 0) / highestTotal) * 100);
-            let candidates = factionImageCandidates[row.faction] || [];
-            let candidatesJson = JSON.stringify(candidates).replace(/"/g, '&quot;');
-            let shortCode = row.faction.substring(0, 3).toUpperCase();
+            if (gold === silver || gold === bronze || silver === bronze) {
+                alert("Validation Error: Each faction must be unique for Gold, Silver, and Bronze!");
+                return;
+            }
 
-            standingsBody.innerHTML += `
-                <tr>
-                    <td><span class="badge-rank">0${i + 1}</span></td>
-                    <td>
-                        <div class="faction-cell">
-                            <div class="faction-logo-wrapper">
-                                <img class="faction-logo-img" 
-                                     src="${candidates[0] || ''}" 
-                                     onerror="handleImageFallback(this, ${candidatesJson}, '${shortCode}')" 
-                                     alt="${row.faction}">
-                            </div>
-                            <div>
-                                <strong>${row.faction}</strong>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar-fill" style="width: ${pct}%;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="badge-gold">${g}</td>
-                    <td class="badge-silver">${sl}</td>
-                    <td class="badge-bronze">${b}</td>
-                    <td><strong style="font-family: var(--font-mono); font-size: 1.05rem; color: var(--accent-color);">${row.calculatedTotal}</strong></td>
-                </tr>`;
-        });
+            const payload = { event: eventName, gold: gold, silver: silver, bronze: bronze };
 
-        document.getElementById("kpi-completed").innerText = totalEventsAwarded;
-        document.getElementById("kpi-medals").innerText = totalMedalsCount;
-    }
+            updateLocalStandings(gold, silver, bronze);
+            addLocalEventLog(eventName, gold, silver, bronze);
 
-    function syncDataEngine() {
-        renderStandings(currentStandingsData);
-
-        fetch(API_ENDPOINT)
-            .then(res => res.json())
-            .then(data => {
-                if (data.standings && data.standings.length > 0) {
-                    currentStandingsData = data.standings;
-                    renderStandings(currentStandingsData);
-                }
-
-                if (data.events && data.events.length > 0) {
-                    currentEventsData = data.events;
-                    renderLogs(currentEventsData);
-                }
+            fetch(API_ENDPOINT, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "text/plain" },
+                body: JSON.stringify(payload)
+            })
+            .then(() => {
+                alert("Result recorded successfully and standings updated!");
+                document.getElementById("event-form").reset();
             })
             .catch(err => {
-                console.warn("Using active local dataset:", err);
+                console.warn("Backend sync failed, maintaining local state:", err);
+                alert("Result recorded locally!");
+                document.getElementById("event-form").reset();
             });
-    }
+        }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        syncDataEngine();
-    });
-</script>
+        function updateLocalStandings(gold, silver, bronze) {
+            currentStandingsData.forEach(item => {
+                if (item.faction === gold) item.gold = (parseInt(item.gold) || 0) + 1;
+                if (item.faction === silver) item.silver = (parseInt(item.silver) || 0) + 1;
+                if (item.faction === bronze) item.bronze = (parseInt(item.bronze) || 0) + 1;
+            });
+            renderStandings(currentStandingsData);
+        }
+
+        function addLocalEventLog(eventName, gold, silver, bronze) {
+            currentEventsData.unshift({ name: eventName, gold: gold, silver: silver, bronze: bronze });
+            renderLogs(currentEventsData);
+        }
+
+        function renderLogs(eventsList) {
+            const logsBody = document.getElementById("logs-tbody");
+            if (!eventsList || eventsList.length === 0) {
+                logsBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">No event logs recorded yet.</td></tr>`;
+                return;
+            }
+            logsBody.innerHTML = "";
+            eventsList.forEach(evt => {
+                logsBody.innerHTML += `
+                    <tr>
+                        <td><strong>${evt.name || evt.event}</strong></td>
+                        <td class="badge-gold">${evt.gold}</td>
+                        <td class="badge-silver">${evt.silver}</td>
+                        <td class="badge-bronze">${evt.bronze}</td>
+                    </tr>`;
+            });
+        }
+
+        function renderStandings(standingsList) {
+            const standingsBody = document.getElementById("standings-tbody");
+            if (!standingsBody) return;
+            standingsBody.innerHTML = "";
+
+            standingsList.forEach(s => {
+                let g = parseInt(s.gold || 0);
+                let sl = parseInt(s.silver || 0);
+                let b = parseInt(s.bronze || 0);
+                s.calculatedTotal = (g * 10) + (sl * 5) + (b * 2);
+            });
+
+            standingsList.sort((a, b) => b.calculatedTotal - a.calculatedTotal);
+
+            let highestTotal = Math.max(...standingsList.map(s => s.calculatedTotal || 0), 1);
+            let totalEventsAwarded = 0;
+            let totalMedalsCount = 0;
+
+            const kpiLeader = document.getElementById("kpi-leader");
+            if (kpiLeader && standingsList.length > 0) {
+                kpiLeader.innerText = standingsList[0].faction;
+            }
+
+            standingsList.forEach((row, i) => {
+                let g = parseInt(row.gold || 0);
+                let sl = parseInt(row.silver || 0);
+                let b = parseInt(row.bronze || 0);
+                
+                totalEventsAwarded += g; 
+                totalMedalsCount += (g + sl + b);
+
+                let pct = Math.round(((row.calculatedTotal || 0) / highestTotal) * 100);
+                let candidates = factionImageCandidates[row.faction] || [];
+                let candidatesJson = JSON.stringify(candidates).replace(/"/g, '&quot;');
+                let shortCode = row.faction.substring(0, 3).toUpperCase();
+
+                standingsBody.innerHTML += `
+                    <tr>
+                        <td><span class="badge-rank">0${i + 1}</span></td>
+                        <td>
+                            <div class="faction-cell">
+                                <div class="faction-logo-wrapper">
+                                    <img class="faction-logo-img" 
+                                         src="${candidates[0] || ''}" 
+                                         onerror="handleImageFallback(this, ${candidatesJson}, '${shortCode}')" 
+                                         alt="${row.faction}">
+                                </div>
+                                <div>
+                                    <strong>${row.faction}</strong>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar-fill" style="width: ${pct}%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="badge-gold">${g}</td>
+                        <td class="badge-silver">${sl}</td>
+                        <td class="badge-bronze">${b}</td>
+                        <td><strong style="font-family: var(--font-mono); font-size: 1.05rem; color: var(--accent-color);">${row.calculatedTotal}</strong></td>
+                    </tr>`;
+            });
+
+            const kpiComp = document.getElementById("kpi-completed");
+            const kpiMed = document.getElementById("kpi-medals");
+            if (kpiComp) kpiComp.innerText = totalEventsAwarded;
+            if (kpiMed) kpiMed.innerText = totalMedalsCount;
+        }
+
+        function syncDataEngine() {
+            renderStandings(currentStandingsData);
+
+            fetch(API_ENDPOINT)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.standings && data.standings.length > 0) {
+                        currentStandingsData = data.standings;
+                        renderStandings(currentStandingsData);
+                    }
+
+                    if (data && data.events && data.events.length > 0) {
+                        currentEventsData = data.events;
+                        renderLogs(currentEventsData);
+                    }
+                })
+                .catch(err => {
+                    console.warn("Using active local dataset:", err);
+                });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            syncDataEngine();
+        });
+    </script>
+</body>
+</html>
