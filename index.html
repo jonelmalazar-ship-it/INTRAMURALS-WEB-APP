@@ -230,30 +230,86 @@
                     <form id="event-form" onsubmit="handleFormSubmit(event)">
                         <div class="form-group">
                             <label>Event Name / Discipline</label>
-                            <!-- RESTORED: Dropdown Selection for Sports Category -->
+                            <!-- UPDATED: Complete Athletics & Sports Dropdown -->
                             <select id="event-name" required>
                                 <option value="">-- Select Sports / Event Category --</option>
-                                <optgroup label="Ball Games">
-                                    <option value="Basketball Men Senior">Basketball Men Senior</option>
-                                    <option value="Basketball Women Senior">Basketball Women Senior</option>
-                                    <option value="Volleyball Men">Volleyball Men</option>
-                                    <option value="Volleyball Women">Volleyball Women</option>
-                                    <option value="Futsal / Soccer">Futsal / Soccer</option>
-                                    <option value="Sepak Takraw">Sepak Takraw</option>
+                                
+                                <optgroup label="Athletics - Running & Walking (Boys)">
+                                    <option value="100m Run (Boys)">100m Run (Boys)</option>
+                                    <option value="200m Run (Boys)">200m Run (Boys)</option>
+                                    <option value="400m Run (Boys)">400m Run (Boys)</option>
+                                    <option value="800m Run (Boys)">800m Run (Boys)</option>
+                                    <option value="1500m Run (Boys)">1500m Run (Boys)</option>
+                                    <option value="3km Run (Boys)">3km Run (Boys)</option>
+                                    <option value="5km Run (Boys)">5km Run (Boys)</option>
+                                    <option value="2km Walk (Boys)">2km Walk (Boys)</option>
                                 </optgroup>
-                                <optgroup label="Racket Games">
-                                    <option value="Badminton Singles Men">Badminton Singles Men</option>
-                                    <option value="Badminton Singles Women">Badminton Singles Women</option>
-                                    <option value="Badminton Doubles Mixed">Badminton Doubles Mixed</option>
-                                    <option value="Table Tennis Men">Table Tennis Men</option>
-                                    <option value="Table Tennis Women">Table Tennis Women</option>
+
+                                <optgroup label="Athletics - Running & Walking (Girls)">
+                                    <option value="100m Run (Girls)">100m Run (Girls)</option>
+                                    <option value="200m Run (Girls)">200m Run (Girls)</option>
+                                    <option value="400m Run (Girls)">400m Run (Girls)</option>
+                                    <option value="800m Run (Girls)">800m Run (Girls)</option>
+                                    <option value="1500m Run (Girls)">1500m Run (Girls)</option>
+                                    <option value="3km Run (Girls)">3km Run (Girls)</option>
+                                    <option value="2km Walk (Girls)">2km Walk (Girls)</option>
                                 </optgroup>
-                                <optgroup label="Board Games & Mind Sports">
-                                    <option value="Chess Men">Chess Men</option>
-                                    <option value="Chess Women">Chess Women</option>
+
+                                <optgroup label="Athletics - Relays (Boys & Girls)">
+                                    <option value="4x100m Relay (Boys)">4x100m Relay (Boys)</option>
+                                    <option value="4x100m Relay (Girls)">4x100m Relay (Girls)</option>
+                                    <option value="4x400m Relay (Boys)">4x400m Relay (Boys)</option>
+                                    <option value="4x400m Relay (Girls)">4x400m Relay (Girls)</option>
+                                    <option value="4x400m Mixed Relay">4x400m Mixed Relay</option>
+                                </optgroup>
+
+                                <optgroup label="Athletics - Jumps (Boys & Girls)">
+                                    <option value="Long Jump (Boys)">Long Jump (Boys)</option>
+                                    <option value="Long Jump (Girls)">Long Jump (Girls)</option>
+                                    <option value="Triple Jump (Boys)">Triple Jump (Boys)</option>
+                                    <option value="Triple Jump (Girls)">Triple Jump (Girls)</option>
+                                    <option value="High Jump (Boys)">High Jump (Boys)</option>
+                                    <option value="High Jump (Girls)">High Jump (Girls)</option>
+                                    <option value="Pole Vault (Boys)">Pole Vault (Boys)</option>
+                                    <option value="Pole Vault (Girls)">Pole Vault (Girls)</option>
+                                </optgroup>
+
+                                <optgroup label="Athletics - Throws (Boys & Girls)">
+                                    <option value="Discus Throw (Boys)">Discus Throw (Boys)</option>
+                                    <option value="Discus Throw (Girls)">Discus Throw (Girls)</option>
+                                    <option value="Javelin Throw (Boys)">Javelin Throw (Boys)</option>
+                                    <option value="Javelin Throw (Girls)">Javelin Throw (Girls)</option>
+                                    <option value="Shot Put (Boys)">Shot Put (Boys)</option>
+                                    <option value="Shot Put (Girls)">Shot Put (Girls)</option>
+                                </optgroup>
+
+                                <optgroup label="Ball Games & Team Sports">
+                                    <option value="Basketball (Boys)">Basketball (Boys)</option>
+                                    <option value="Basketball (Girls)">Basketball (Girls)</option>
+                                    <option value="Volleyball (Boys)">Volleyball (Boys)</option>
+                                    <option value="Volleyball (Girls)">Volleyball (Girls)</option>
+                                    <option value="Sepak Takraw (Boys)">Sepak Takraw (Boys)</option>
+                                    <option value="Sepak Takraw (Girls)">Sepak Takraw (Girls)</option>
+                                    <option value="Futsal / Soccer (Boys)">Futsal / Soccer (Boys)</option>
+                                    <option value="Futsal / Soccer (Girls)">Futsal / Soccer (Girls)</option>
+                                </optgroup>
+
+                                <optgroup label="Combat & Racket Sports">
+                                    <option value="Arnis (Boys)">Arnis (Boys)</option>
+                                    <option value="Arnis (Girls)">Arnis (Girls)</option>
+                                    <option value="Badminton Singles (Boys)">Badminton Singles (Boys)</option>
+                                    <option value="Badminton Singles (Girls)">Badminton Singles (Girls)</option>
+                                    <option value="Badminton Doubles (Boys)">Badminton Doubles (Boys)</option>
+                                    <option value="Badminton Doubles (Girls)">Badminton Doubles (Girls)</option>
+                                    <option value="Badminton Mixed Doubles">Badminton Mixed Doubles</option>
+                                    <option value="Table Tennis (Boys)">Table Tennis (Boys)</option>
+                                    <option value="Table Tennis (Girls)">Table Tennis (Girls)</option>
+                                </optgroup>
+
+                                <optgroup label="Board Games & eSports">
+                                    <option value="Chess (Boys)">Chess (Boys)</option>
+                                    <option value="Chess (Girls)">Chess (Girls)</option>
                                     <option value="Scrabble">Scrabble</option>
-                                </optgroup>
-                                <optgroup label="eSports & Special Events">
                                     <option value="Mobile Legends: Bang Bang">Mobile Legends: Bang Bang</option>
                                     <option value="Valorant">Valorant</option>
                                     <option value="Cheerdance Competition">Cheerdance Competition</option>
