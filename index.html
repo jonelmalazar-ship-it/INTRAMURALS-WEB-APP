@@ -3,380 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intramurals Leaderboard</title>
+    <title>ACHS INTRAMURALS 2026 | Operations Center</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0b0e14;
-            --card-bg: #151921;
-            --accent-color: #00f2fe;
-            --accent-glow: rgba(0, 242, 254, 0.25);
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --gold: #ffd700;
-            --silver: #c0c0c0;
-            --bronze: #cd7f32;
-            --font-mono: 'Courier New', Courier, monospace;
+            --bg-main: #05070a;
+            --panel-bg: rgba(11, 15, 25, 0.85);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --accent-color: #06b6d4;
+            --accent-glow: rgba(6, 182, 212, 0.45);
+            --accent-gold: #f59e0b;
+            --accent-silver: #94a3b8;
+            --accent-bronze: #d97706;
+            --text-primary: #f8fafc;
+            --text-secondary: #64748b;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-display: 'Chakra Petch', sans-serif;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-primary); min-height: 100vh; position: relative; overflow-x: hidden; }
+
+        #bg-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: radial-gradient(circle at 50% 30%, var(--accent-glow) 0%, rgba(5, 7, 10, 0.95) 100%); 
+            z-index: -1; 
         }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 20px;
+        .app-container { max-width: 1240px; margin: 0 auto; padding: 20px 15px; }
+        
+        .header-brand { text-align: left; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .brand-container { display: flex; align-items: center; gap: 15px; }
+        
+        .school-logo-wrapper {
+            width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; background: transparent; border: none;
+            filter: drop-shadow(0 0 12px var(--accent-color));
         }
+        .school-logo-img { width: 100%; height: 100%; object-fit: contain; }
+        
+        .header-brand h1 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .header-brand h1::before { content: ''; display: inline-block; width: 4px; height: 24px; background: var(--accent-color); box-shadow: 0 0 10px var(--accent-color); }
+        .header-brand p { color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-top: 4px; }
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
+        .header-controls { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .accent-picker { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-secondary); }
+        .dot-btn { width: 14px; height: 14px; border-radius: 50%; cursor: pointer; border: none; transition: transform 0.2s; }
+        .dot-btn:hover { transform: scale(1.25); }
+        .status-badge { border: 1px solid var(--accent-color); color: var(--accent-color); padding: 6px 12px; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.05em; border-radius: 2px; background: rgba(6, 182, 212, 0.05); }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 25px;
-        }
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 25px; }
+        .kpi-card { background: var(--panel-bg); border: 1px solid var(--panel-border); border-left: 3px solid var(--text-secondary); border-radius: 6px; padding: 15px; backdrop-filter: blur(12px); }
+        .kpi-card.active-leader { border-left-color: var(--accent-color); box-shadow: -5px 0 20px var(--accent-glow); }
+        .kpi-label { font-size: 0.65rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700; letter-spacing: 0.1em; }
+        .kpi-value { font-family: var(--font-mono); font-size: 1.4rem; font-weight: 800; color: #fff; margin-top: 4px; }
 
-        .logo-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: var(--text-primary);
-        }
+        .nav-pipeline { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 12px; overflow-x: auto; }
+        .nav-btn { padding: 8px 16px; background: transparent; border: 1px solid transparent; color: var(--text-secondary); border-radius: 4px; cursor: pointer; font-family: var(--font-display); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; transition: all 0.2s ease; white-space: nowrap; }
+        .nav-btn:hover { color: #fff; border-color: var(--panel-border); }
+        .nav-btn.active { background: rgba(255, 255, 255, 0.05); color: var(--accent-color); border-color: var(--accent-color); box-shadow: 0 0 12px var(--accent-glow); }
 
-        .nav-tabs {
-            display: flex;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 5px;
-            border-radius: 8px;
-        }
+        .tab-viewport { display: none; }
+        .tab-viewport.active { display: block; animation: fadeIn 0.2s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .nav-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
+        .glass-panel { background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 8px; padding: 20px; margin-bottom: 20px; backdrop-filter: blur(16px); }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--panel-border); padding-bottom: 10px; }
+        .panel-header h2 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        .nav-btn.active {
-            background: var(--card-bg);
-            color: var(--accent-color);
-            box-shadow: 0 0 10px var(--accent-glow);
-        }
-
-        .tab-viewport {
-            display: none;
-        }
-
-        .tab-viewport.active {
-            display: block;
-        }
-
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .kpi-card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .kpi-label {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-
-        .kpi-value {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--accent-color);
-        }
-
-        .table-container {
-            background: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            margin-bottom: 25px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-
-        th, td {
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        th {
-            background: rgba(0, 0, 0, 0.2);
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .badge-rank {
-            font-family: var(--font-mono);
-            font-weight: bold;
-            color: var(--text-secondary);
-        }
-
-        .faction-cell {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
+        .faction-cell { display: flex; align-items: center; gap: 12px; }
         .faction-logo-wrapper {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            overflow: hidden;
-            font-size: 0.8rem;
+            width: 36px; height: 42px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            background: transparent;
+            filter: drop-shadow(0 0 8px var(--accent-color));
         }
+        .faction-logo-img { width: 100%; height: 100%; object-fit: contain; }
 
-        .faction-logo-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+        label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.08em; }
+        input, select { width: 100%; padding: 10px; border-radius: 4px; border: 1px solid var(--panel-border); background: rgba(0, 0, 0, 0.7); color: #fff; font-size: 0.85rem; outline: none; }
+        input:focus, select:focus { border-color: var(--accent-color); }
 
-        .progress-bar-container {
-            width: 100px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            margin-top: 4px;
-            overflow: hidden;
-        }
+        .btn-action { padding: 10px 18px; border-radius: 4px; border: none; font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-primary { background: var(--accent-color); color: #000; }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid var(--panel-border); }
 
-        .progress-bar-fill {
-            height: 100%;
-            background: var(--accent-color);
-            transition: width 0.3s ease;
-        }
+        .data-table-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 500px; }
+        th { padding: 10px; font-size: 0.65rem; text-transform: uppercase; color: var(--text-secondary); border-bottom: 1px solid var(--panel-border); font-weight: 700; }
+        td { padding: 12px 10px; border-bottom: 1px solid var(--panel-border); font-size: 0.85rem; }
 
-        .badge-gold { color: var(--gold); font-weight: bold; }
-        .badge-silver { color: var(--silver); font-weight: bold; }
-        .badge-bronze { color: var(--bronze); font-weight: bold; }
+        .progress-bar-container { width: 100%; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; margin-top: 6px; min-width: 80px; }
+        .progress-bar-fill { height: 100%; background: var(--accent-color); border-radius: 2px; transition: width 0.5s ease; box-shadow: 0 0 8px var(--accent-color); }
+        .badge-rank { font-family: var(--font-mono); font-weight: 800; font-size: 0.8rem; color: var(--text-secondary); }
+        .badge-gold { color: var(--accent-gold); font-family: var(--font-mono); font-weight: 700; }
+        .badge-silver { color: var(--accent-silver); font-family: var(--font-mono); font-weight: 700; }
+        .badge-bronze { color: var(--accent-bronze); font-family: var(--font-mono); font-weight: 700; }
 
-        .form-card {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            margin-bottom: 6px;
-            letter-spacing: 0.5px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            outline: none;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--accent-color);
-        }
-
-        .btn-action {
-            background: var(--accent-color);
-            color: #000;
-            font-weight: bold;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-action:hover {
-            opacity: 0.9;
-            box-shadow: 0 0 15px var(--accent-glow);
+        @media (max-width: 768px) {
+            .header-brand h1 { font-size: 1.3rem; }
+            .kpi-value { font-size: 1.2rem; }
+            .glass-panel { padding: 15px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <div class="logo-title">INTRAMURALS 2026</div>
-            <div class="nav-tabs">
-                <button class="nav-btn active" onclick="navigate('tab-standings', this)">Leaderboard</button>
-                <button class="nav-btn" onclick="navigate('tab-admin', this)">Admin Portal</button>
+    <div id="bg-overlay"></div>
+
+    <div class="app-container">
+        <header class="header-brand">
+            <div class="brand-container">
+                <div class="school-logo-wrapper" id="school-logo-container">
+                    <img class="school-logo-img" 
+                         src="./images (1).png" 
+                         onerror="handleImageFallback(this, ['./images (1).png', './school-logo.png', './school.png'], 'ACHS')" 
+                         alt="ACHS Logo">
+                </div>
+                <div>
+                    <h1>ACHS INTRAMURALS 2026</h1>
+                    <p>Tournament Operations & Live Leaderboard Engine</p>
+                </div>
+            </div>
+            <div class="header-controls">
+                <div class="accent-picker">
+                    ACCENT
+                    <button class="dot-btn" style="background:#06b6d4;" title="Cyan" onclick="changeAccent('#06b6d4', 'rgba(6, 182, 212, 0.45)')"></button>
+                    <button class="dot-btn" style="background:#f59e0b;" title="Yellow" onclick="changeAccent('#f59e0b', 'rgba(245, 158, 11, 0.45)')"></button>
+                    <button class="dot-btn" style="background:#10b981;" title="Green" onclick="changeAccent('#10b981', 'rgba(16, 185, 129, 0.45)')"></button>
+                    <button class="dot-btn" style="background:#a855f7;" title="Purple" onclick="changeAccent('#a855f7', 'rgba(168, 85, 247, 0.45)')"></button>
+                    <button class="dot-btn" style="background:#ef4444;" title="Red" onclick="changeAccent('#ef4444', 'rgba(239, 68, 68, 0.45)')"></button>
+                </div>
+                <div class="status-badge" id="status-tag">SYSTEM STATUS: OPERATIONAL</div>
             </div>
         </header>
 
-        <!-- STANDINGS TAB -->
-        <div id="tab-standings" class="tab-viewport active">
-            <div class="kpi-grid">
-                <div class="kpi-card">
-                    <div class="kpi-label">Current Leader</div>
-                    <div class="kpi-value" id="kpi-leader">---</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Events Completed</div>
-                    <div class="kpi-value" id="kpi-completed">0</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Total Medals Awarded</div>
-                    <div class="kpi-value" id="kpi-medals">0</div>
-                </div>
+        <section class="kpi-grid">
+            <div class="kpi-card active-leader">
+                <div class="kpi-label">Tournament Leader</div>
+                <div class="kpi-value" id="kpi-leader">Moniyan Empire</div>
             </div>
-
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Faction / Team</th>
-                            <th>Gold (10)</th>
-                            <th>Silver (5)</th>
-                            <th>Bronze (2)</th>
-                            <th>Total Points</th>
-                        </tr>
-                    </thead>
-                    <tbody id="standings-tbody">
-                        <!-- Dynamic Standings Content -->
-                    </tbody>
-                </table>
+            <div class="kpi-card">
+                <div class="kpi-label">Events Completed</div>
+                <div class="kpi-value" id="kpi-completed">0</div>
             </div>
-
-            <h3 style="margin-bottom: 15px; color: var(--text-secondary); text-transform: uppercase; font-size: 0.9rem;">Recent Match Logs</h3>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Event Name</th>
-                            <th>Gold</th>
-                            <th>Silver</th>
-                            <th>Bronze</th>
-                        </tr>
-                    </thead>
-                    <tbody id="logs-tbody">
-                        <!-- Dynamic Logs Content -->
-                    </tbody>
-                </table>
+            <div class="kpi-card">
+                <div class="kpi-label">Total Medals Awarded</div>
+                <div class="kpi-value" id="kpi-medals">0</div>
             </div>
-        </div>
+        </section>
 
-        <!-- ADMIN TAB -->
-        <div id="tab-admin" class="tab-viewport">
-            <div id="auth-card" class="form-card" style="max-width: 400px; margin: 40px auto;">
-                <h3 style="margin-bottom: 15px;">Admin Authentication</h3>
+        <nav class="nav-pipeline">
+            <button class="nav-btn active" onclick="navigate('leaderboard', this)">Standings</button>
+            <button class="nav-btn" onclick="navigate('event-logs', this)">Event Logs</button>
+            <button class="nav-btn" onclick="navigate('admin-console', this)">Console Auth</button>
+        </nav>
+
+        <main id="leaderboard" class="tab-viewport active">
+            <section class="glass-panel">
+                <div class="panel-header">
+                    <h2>Overall Faction Rankings</h2>
+                </div>
+                <div class="data-table-wrapper">
+                    <table class="standings-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Faction Name</th>
+                                <th>Gold</th>
+                                <th>Silver</th>
+                                <th>Bronze</th>
+                                <th>Total Points</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standings-tbody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <main id="event-logs" class="tab-viewport">
+            <section class="glass-panel">
+                <div class="panel-header">
+                    <h2>Completed Events Log</h2>
+                </div>
+                <div class="data-table-wrapper">
+                    <table class="logs-table">
+                        <thead>
+                            <tr>
+                                <th>Event Category</th>
+                                <th>Gold Medalist</th>
+                                <th>Silver Medalist</th>
+                                <th>Bronze Medalist</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-tbody">
+                            <tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">No event logs recorded yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <main id="admin-console" class="tab-viewport">
+            <section id="auth-card" class="glass-panel" style="max-width: 380px; margin: 20px auto;">
+                <div class="panel-header">
+                    <h2>Admin Authentication</h2>
+                </div>
                 <div class="form-group">
-                    <label>Security PIN</label>
-                    <input type="password" id="admin-pin" placeholder="Enter PIN">
+                    <label>Security Key</label>
+                    <input type="password" id="admin-pin" placeholder="Enter Password" style="text-align: center;">
                 </div>
-                <button class="btn-action" style="width: 100%;" onclick="authenticateAdmin()">Authenticate</button>
-            </div>
+                <button class="btn-action btn-primary" style="width: 100%; margin-top: 10px;" onclick="authenticateAdmin()">Authenticate</button>
+            </section>
 
-            <div id="admin-controls" class="form-card" style="display: none;">
-                <h3 style="margin-bottom: 20px;">Record New Event Result</h3>
-                <form id="event-form" onsubmit="handleFormSubmit(event)">
-                    <div class="form-group">
-                        <label>Event Name / Discipline</label>
-                        <input type="text" id="event-name" placeholder="e.g. Basketball Men" required>
+            <div id="admin-controls" style="display: none;">
+                <section class="glass-panel">
+                    <div class="panel-header">
+                        <h2>Record New Event Result</h2>
                     </div>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <form id="event-form" onsubmit="handleFormSubmit(event)">
                         <div class="form-group">
-                            <label>Gold Winner (10 Pts)</label>
-                            <select id="gold-winner" required>
-                                <option value="">Select Faction</option>
-                                <option value="Moniyan Empire">Moniyan Empire</option>
-                                <option value="Eruditio">Eruditio</option>
-                                <option value="Abyssal Domain">Abyssal Domain</option>
-                                <option value="Cadia Riverlands">Cadia Riverlands</option>
+                            <label>Event Name / Discipline</label>
+                            <!-- RESTORED: Dropdown Selection for Sports Category -->
+                            <select id="event-name" required>
+                                <option value="">-- Select Sports / Event Category --</option>
+                                <optgroup label="Ball Games">
+                                    <option value="Basketball Men Senior">Basketball Men Senior</option>
+                                    <option value="Basketball Women Senior">Basketball Women Senior</option>
+                                    <option value="Volleyball Men">Volleyball Men</option>
+                                    <option value="Volleyball Women">Volleyball Women</option>
+                                    <option value="Futsal / Soccer">Futsal / Soccer</option>
+                                    <option value="Sepak Takraw">Sepak Takraw</option>
+                                </optgroup>
+                                <optgroup label="Racket Games">
+                                    <option value="Badminton Singles Men">Badminton Singles Men</option>
+                                    <option value="Badminton Singles Women">Badminton Singles Women</option>
+                                    <option value="Badminton Doubles Mixed">Badminton Doubles Mixed</option>
+                                    <option value="Table Tennis Men">Table Tennis Men</option>
+                                    <option value="Table Tennis Women">Table Tennis Women</option>
+                                </optgroup>
+                                <optgroup label="Board Games & Mind Sports">
+                                    <option value="Chess Men">Chess Men</option>
+                                    <option value="Chess Women">Chess Women</option>
+                                    <option value="Scrabble">Scrabble</option>
+                                </optgroup>
+                                <optgroup label="eSports & Special Events">
+                                    <option value="Mobile Legends: Bang Bang">Mobile Legends: Bang Bang</option>
+                                    <option value="Valorant">Valorant</option>
+                                    <option value="Cheerdance Competition">Cheerdance Competition</option>
+                                </optgroup>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Silver Winner (5 Pts)</label>
-                            <select id="silver-winner" required>
-                                <option value="">Select Faction</option>
-                                <option value="Moniyan Empire">Moniyan Empire</option>
-                                <option value="Eruditio">Eruditio</option>
-                                <option value="Abyssal Domain">Abyssal Domain</option>
-                                <option value="Cadia Riverlands">Cadia Riverlands</option>
-                            </select>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <div class="form-group">
+                                <label>Gold Winner (10 Pts)</label>
+                                <select id="gold-winner" required>
+                                    <option value="">Select Faction</option>
+                                    <option value="Moniyan Empire">Moniyan Empire</option>
+                                    <option value="Eruditio">Eruditio</option>
+                                    <option value="Abyssal Domain">Abyssal Domain</option>
+                                    <option value="Cadia Riverlands">Cadia Riverlands</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Silver Winner (5 Pts)</label>
+                                <select id="silver-winner" required>
+                                    <option value="">Select Faction</option>
+                                    <option value="Moniyan Empire">Moniyan Empire</option>
+                                    <option value="Eruditio">Eruditio</option>
+                                    <option value="Abyssal Domain">Abyssal Domain</option>
+                                    <option value="Cadia Riverlands">Cadia Riverlands</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Bronze Winner (2 Pts)</label>
+                                <select id="bronze-winner" required>
+                                    <option value="">Select Faction</option>
+                                    <option value="Moniyan Empire">Moniyan Empire</option>
+                                    <option value="Eruditio">Eruditio</option>
+                                    <option value="Abyssal Domain">Abyssal Domain</option>
+                                    <option value="Cadia Riverlands">Cadia Riverlands</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Bronze Winner (2 Pts)</label>
-                            <select id="bronze-winner" required>
-                                <option value="">Select Faction</option>
-                                <option value="Moniyan Empire">Moniyan Empire</option>
-                                <option value="Eruditio">Eruditio</option>
-                                <option value="Abyssal Domain">Abyssal Domain</option>
-                                <option value="Cadia Riverlands">Cadia Riverlands</option>
-                            </select>
-                        </div>
+                        <button type="submit" id="submit-btn" class="btn-action btn-primary" style="margin-top: 15px;">Publish Match Results</button>
+                    </form>
+                </section>
+
+                <section class="glass-panel">
+                    <div class="panel-header">
+                        <h2>Operations Maintenance</h2>
                     </div>
-                    <button type="submit" class="btn-action" style="margin-top: 15px;">Publish Match Results</button>
-                </form>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <button class="btn-action btn-secondary" onclick="window.print()">Export Printable PDF</button>
+                    </div>
+                </section>
             </div>
-        </div>
+        </main>
     </div>
 
     <script>
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
-
-        let currentStandingsData = [
-            { faction: "Moniyan Empire", gold: 4, silver: 1, bronze: 2 },
-            { faction: "Eruditio", gold: 2, silver: 2, bronze: 3 },
-            { faction: "Abyssal Domain", gold: 1, silver: 4, bronze: 0 },
-            { faction: "Cadia Riverlands", gold: 1, silver: 1, bronze: 2 }
-        ];
-
-        let currentEventsData = [];
 
         const factionImageCandidates = {
             "Moniyan Empire": ["./moniyan.png", "./moniyan.jpg", "./77501193...1286_n.jpg"],
@@ -384,6 +317,15 @@
             "Cadia Riverlands": ["./cadia.png", "./cadia.jpg", "./77479470...279_n.jpg"],
             "Eruditio": ["./eruditio.png", "./eruditio.jpg", "./7750366...9899_n.jpg"]
         };
+
+        // State storage for instant UI updates
+        let currentStandings = [
+            { faction: "Moniyan Empire", gold: 4, silver: 1, bronze: 2 },
+            { faction: "Eruditio", gold: 2, silver: 2, bronze: 3 },
+            { faction: "Abyssal Domain", gold: 1, silver: 4, bronze: 0 },
+            { faction: "Cadia Riverlands", gold: 1, silver: 1, bronze: 2 }
+        ];
+        let currentLogs = [];
 
         function handleImageFallback(imgElem, list, fallbackCode) {
             let idx = parseInt(imgElem.dataset.failIndex || "0");
@@ -421,73 +363,74 @@
 
         function handleFormSubmit(e) {
             e.preventDefault();
-            const eventName = document.getElementById("event-name").value;
-            const gold = document.getElementById("gold-winner").value;
-            const silver = document.getElementById("silver-winner").value;
-            const bronze = document.getElementById("bronze-winner").value;
+            const submitBtn = document.getElementById("submit-btn");
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Publishing...";
 
-            if (gold === silver || gold === bronze || silver === bronze) {
-                alert("Validation Error: Each faction must be unique for Gold, Silver, and Bronze!");
+            const payload = {
+                event: document.getElementById("event-name").value,
+                gold: document.getElementById("gold-winner").value,
+                silver: document.getElementById("silver-winner").value,
+                bronze: document.getElementById("bronze-winner").value
+            };
+
+            // Validation: Ensure winners are unique
+            if (payload.gold === payload.silver || payload.gold === payload.bronze || payload.silver === payload.bronze) {
+                alert("Error: Factions must be unique for Gold, Silver, and Bronze!");
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Publish Match Results";
                 return;
             }
 
-            const payload = { event: eventName, gold: gold, silver: silver, bronze: bronze };
-
-            updateLocalStandings(gold, silver, bronze);
-            addLocalEventLog(eventName, gold, silver, bronze);
+            // OPTIMISTIC UPDATE: Update UI immediately
+            updateLocalStandings(payload);
+            appendLog(payload);
 
             fetch(API_ENDPOINT, {
                 method: "POST",
                 mode: "no-cors",
-                headers: { "Content-Type": "text/plain" },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
-            })
-            .then(() => {
-                alert("Result recorded successfully and standings updated!");
+            }).then(() => {
+                alert("Result recorded successfully!");
                 document.getElementById("event-form").reset();
-            })
-            .catch(err => {
-                console.warn("Backend sync failed, maintaining local state:", err);
-                alert("Result recorded locally!");
-                document.getElementById("event-form").reset();
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Publish Match Results";
+                // Sync with server after delay
+                setTimeout(syncDataEngine, 2000);
+            }).catch(err => {
+                alert("Network error: Result updated locally.");
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Publish Match Results";
             });
         }
 
-        function updateLocalStandings(gold, silver, bronze) {
-            currentStandingsData.forEach(item => {
-                if (item.faction === gold) item.gold = (parseInt(item.gold) || 0) + 1;
-                if (item.faction === silver) item.silver = (parseInt(item.silver) || 0) + 1;
-                if (item.faction === bronze) item.bronze = (parseInt(item.bronze) || 0) + 1;
+        function updateLocalStandings(payload) {
+            currentStandings.forEach(item => {
+                if (item.faction === payload.gold) item.gold = (parseInt(item.gold) || 0) + 1;
+                if (item.faction === payload.silver) item.silver = (parseInt(item.silver) || 0) + 1;
+                if (item.faction === payload.bronze) item.bronze = (parseInt(item.bronze) || 0) + 1;
             });
-            renderStandings(currentStandingsData);
+            renderStandings(currentStandings);
         }
 
-        function addLocalEventLog(eventName, gold, silver, bronze) {
-            currentEventsData.unshift({ name: eventName, gold: gold, silver: silver, bronze: bronze });
-            renderLogs(currentEventsData);
-        }
-
-        function renderLogs(eventsList) {
+        function appendLog(evt) {
             const logsBody = document.getElementById("logs-tbody");
-            if (!eventsList || eventsList.length === 0) {
-                logsBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">No event logs recorded yet.</td></tr>`;
-                return;
-            }
-            logsBody.innerHTML = "";
-            eventsList.forEach(evt => {
-                logsBody.innerHTML += `
-                    <tr>
-                        <td><strong>${evt.name || evt.event}</strong></td>
-                        <td class="badge-gold">${evt.gold}</td>
-                        <td class="badge-silver">${evt.silver}</td>
-                        <td class="badge-bronze">${evt.bronze}</td>
-                    </tr>`;
-            });
+            if (currentLogs.length === 0) logsBody.innerHTML = "";
+            currentLogs.unshift(evt);
+            
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><strong>${evt.event}</strong></td>
+                <td class="badge-gold">${evt.gold}</td>
+                <td class="badge-silver">${evt.silver}</td>
+                <td class="badge-bronze">${evt.bronze}</td>
+            `;
+            logsBody.insertBefore(tr, logsBody.firstChild);
         }
 
         function renderStandings(standingsList) {
             const standingsBody = document.getElementById("standings-tbody");
-            if (!standingsBody) return;
             standingsBody.innerHTML = "";
 
             standingsList.forEach(s => {
@@ -503,9 +446,8 @@
             let totalEventsAwarded = 0;
             let totalMedalsCount = 0;
 
-            const kpiLeader = document.getElementById("kpi-leader");
-            if (kpiLeader && standingsList.length > 0) {
-                kpiLeader.innerText = standingsList[0].faction;
+            if (standingsList.length > 0) {
+                document.getElementById("kpi-leader").innerText = standingsList[0].faction;
             }
 
             standingsList.forEach((row, i) => {
@@ -543,34 +485,42 @@
                         <td class="badge-gold">${g}</td>
                         <td class="badge-silver">${sl}</td>
                         <td class="badge-bronze">${b}</td>
-                        <td><strong style="font-family: var(--font-mono); font-size: 1.05rem; color: var(--accent-color);">${row.calculatedTotal}</strong></td>
+                        <td><strong style="font-family: var(--font-mono); font-size: 1rem; color: var(--accent-color);">${row.calculatedTotal}</strong></td>
                     </tr>`;
             });
 
-            const kpiComp = document.getElementById("kpi-completed");
-            const kpiMed = document.getElementById("kpi-medals");
-            if (kpiComp) kpiComp.innerText = totalEventsAwarded;
-            if (kpiMed) kpiMed.innerText = totalMedalsCount;
+            document.getElementById("kpi-completed").innerText = totalEventsAwarded;
+            document.getElementById("kpi-medals").innerText = totalMedalsCount;
         }
 
         function syncDataEngine() {
-            renderStandings(currentStandingsData);
+            renderStandings(currentStandings);
 
             fetch(API_ENDPOINT)
                 .then(res => res.json())
                 .then(data => {
-                    if (data && data.standings && data.standings.length > 0) {
-                        currentStandingsData = data.standings;
-                        renderStandings(currentStandingsData);
+                    if (data.standings && data.standings.length > 0) {
+                        currentStandings = data.standings;
+                        renderStandings(currentStandings);
                     }
 
-                    if (data && data.events && data.events.length > 0) {
-                        currentEventsData = data.events;
-                        renderLogs(currentEventsData);
+                    if (data.events && data.events.length > 0) {
+                        currentLogs = data.events;
+                        const logsBody = document.getElementById("logs-tbody");
+                        logsBody.innerHTML = "";
+                        data.events.forEach(evt => {
+                            logsBody.innerHTML += `
+                                <tr>
+                                    <td><strong>${evt.name || evt.event}</strong></td>
+                                    <td class="badge-gold">${evt.gold}</td>
+                                    <td class="badge-silver">${evt.silver}</td>
+                                    <td class="badge-bronze">${evt.bronze}</td>
+                                </tr>`;
+                        });
                     }
                 })
                 .catch(err => {
-                    console.warn("Using active local dataset:", err);
+                    console.warn("Using local sync dataset:", err);
                 });
         }
 
