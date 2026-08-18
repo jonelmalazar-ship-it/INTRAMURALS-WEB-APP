@@ -230,7 +230,6 @@
                     <form id="event-form" onsubmit="handleFormSubmit(event)">
                         <div class="form-group">
                             <label>Event Name / Discipline</label>
-                            <!-- UPDATED: Complete Athletics & Sports Dropdown -->
                             <select id="event-name" required>
                                 <option value="">-- Select Sports / Event Category --</option>
                                 
@@ -365,7 +364,8 @@
     </div>
 
     <script>
-        const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw3Dj2eV8lmZt-3NwN-OkjhmDPs0t4mKkJHJp6tzZizyt2t5uL3FNJdXYoKuPFaVQoY/exec";
+        // PALITAN ITO NG IYONG BAGONG DEPLOYMENT URL (Important!)
+        const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbwU-C3BxTgbjmLRIEKnKrUc1RPpsooAmBV4ui-2Dp4Rh6Dp6vIsKkzXv4Pnz5Mr1oA/exec";
 
         const factionImageCandidates = {
             "Moniyan Empire": ["./moniyan.png", "./moniyan.jpg", "./77501193...1286_n.jpg"],
@@ -374,13 +374,7 @@
             "Eruditio": ["./eruditio.png", "./eruditio.jpg", "./7750366...9899_n.jpg"]
         };
 
-        // State storage for instant UI updates
-        let currentStandings = [
-            { faction: "Moniyan Empire", gold: 4, silver: 1, bronze: 2 },
-            { faction: "Eruditio", gold: 2, silver: 2, bronze: 3 },
-            { faction: "Abyssal Domain", gold: 1, silver: 4, bronze: 0 },
-            { faction: "Cadia Riverlands", gold: 1, silver: 1, bronze: 2 }
-        ];
+        let currentStandings = [];
         let currentLogs = [];
 
         function handleImageFallback(imgElem, list, fallbackCode) {
@@ -423,66 +417,39 @@
             submitBtn.disabled = true;
             submitBtn.innerText = "Publishing...";
 
-            const payload = {
-                event: document.getElementById("event-name").value,
-                gold: document.getElementById("gold-winner").value,
-                silver: document.getElementById("silver-winner").value,
-                bronze: document.getElementById("bronze-winner").value
-            };
+            const category = "General Sports";
+            const event = document.getElementById("event-name").value;
+            const gold = document.getElementById("gold-winner").value;
+            const silver = document.getElementById("silver-winner").value;
+            const bronze = document.getElementById("bronze-winner").value;
 
-            // Validation: Ensure winners are unique
-            if (payload.gold === payload.silver || payload.gold === payload.bronze || payload.silver === payload.bronze) {
+            if (gold === silver || gold === bronze || silver === bronze) {
                 alert("Error: Factions must be unique for Gold, Silver, and Bronze!");
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Publish Match Results";
                 return;
             }
 
-            // OPTIMISTIC UPDATE: Update UI immediately
-            updateLocalStandings(payload);
-            appendLog(payload);
+            // Direktang ipapasa via URL query parameters
+            const postUrl = `${API_ENDPOINT}?category=${encodeURIComponent(category)}&event=${encodeURIComponent(event)}&gold=${encodeURIComponent(gold)}&silver=${encodeURIComponent(silver)}&bronze=${encodeURIComponent(bronze)}`;
 
-            fetch(API_ENDPOINT, {
+            fetch(postUrl, {
                 method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            }).then(() => {
-                alert("Result recorded successfully!");
+                mode: "no-cors"
+            })
+            .then(() => {
+                alert("Result Saved Successfully!");
                 document.getElementById("event-form").reset();
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Publish Match Results";
-                // Sync with server after delay
-                setTimeout(syncDataEngine, 2000);
-            }).catch(err => {
-                alert("Network error: Result updated locally.");
+                setTimeout(syncDataEngine, 1500);
+            })
+            .catch(err => {
+                console.error("Error:", err);
+                alert("Submission failed. Check connection.");
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Publish Match Results";
             });
-        }
-
-        function updateLocalStandings(payload) {
-            currentStandings.forEach(item => {
-                if (item.faction === payload.gold) item.gold = (parseInt(item.gold) || 0) + 1;
-                if (item.faction === payload.silver) item.silver = (parseInt(item.silver) || 0) + 1;
-                if (item.faction === payload.bronze) item.bronze = (parseInt(item.bronze) || 0) + 1;
-            });
-            renderStandings(currentStandings);
-        }
-
-        function appendLog(evt) {
-            const logsBody = document.getElementById("logs-tbody");
-            if (currentLogs.length === 0) logsBody.innerHTML = "";
-            currentLogs.unshift(evt);
-            
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td><strong>${evt.event}</strong></td>
-                <td class="badge-gold">${evt.gold}</td>
-                <td class="badge-silver">${evt.silver}</td>
-                <td class="badge-bronze">${evt.bronze}</td>
-            `;
-            logsBody.insertBefore(tr, logsBody.firstChild);
         }
 
         function renderStandings(standingsList) {
@@ -493,7 +460,7 @@
                 let g = parseInt(s.gold || 0);
                 let sl = parseInt(s.silver || 0);
                 let b = parseInt(s.bronze || 0);
-                s.calculatedTotal = (g * 10) + (sl * 5) + (b * 2);
+                s.calculatedTotal = s.points !== undefined ? s.points : (g * 10) + (sl * 5) + (b * 2);
             });
 
             standingsList.sort((a, b) => b.calculatedTotal - a.calculatedTotal);
@@ -550,8 +517,6 @@
         }
 
         function syncDataEngine() {
-            renderStandings(currentStandings);
-
             fetch(API_ENDPOINT)
                 .then(res => res.json())
                 .then(data => {
@@ -567,7 +532,7 @@
                         data.events.forEach(evt => {
                             logsBody.innerHTML += `
                                 <tr>
-                                    <td><strong>${evt.name || evt.event}</strong></td>
+                                    <td><strong>${evt.event || evt.name}</strong></td>
                                     <td class="badge-gold">${evt.gold}</td>
                                     <td class="badge-silver">${evt.silver}</td>
                                     <td class="badge-bronze">${evt.bronze}</td>
@@ -576,7 +541,7 @@
                     }
                 })
                 .catch(err => {
-                    console.warn("Using local sync dataset:", err);
+                    console.warn("Sync error:", err);
                 });
         }
 
