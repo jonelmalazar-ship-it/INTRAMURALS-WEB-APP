@@ -167,7 +167,12 @@
         <main id="leaderboard" class="tab-viewport active">
             <section class="glass-panel">
                 <div class="panel-header">
-                    <h2>Overall Faction Rankings</h2>
+                    <div>
+                        <h2>Overall Faction Rankings</h2>
+                        <div style="font-size:.66rem;color:var(--text-secondary);margin-top:4px;letter-spacing:.06em;text-transform:uppercase">
+                            Ranking priority: Gold → Silver → Bronze
+                        </div>
+                    </div>
                 </div>
                 <div class="data-table-wrapper">
                     <table class="standings-table">
@@ -178,7 +183,6 @@
                                 <th>Gold</th>
                                 <th>Silver</th>
                                 <th>Bronze</th>
-                                <th>Total Points</th>
                             </tr>
                         </thead>
                         <tbody id="standings-tbody"></tbody>
@@ -317,7 +321,7 @@
                         </div>
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
                             <div class="form-group">
-                                <label>Gold Winner (10 Pts)</label>
+                                <label>Gold Winner</label>
                                 <select id="gold-winner">
                                     <option value="">-- None / No Winner --</option>
                                     <option value="Moniyan Empire">Moniyan Empire</option>
@@ -327,7 +331,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Silver Winner (5 Pts)</label>
+                                <label>Silver Winner</label>
                                 <select id="silver-winner">
                                     <option value="">-- None / No Winner --</option>
                                     <option value="Moniyan Empire">Moniyan Empire</option>
@@ -337,7 +341,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Bronze Winner (2 Pts)</label>
+                                <label>Bronze Winner</label>
                                 <select id="bronze-winner">
                                     <option value="">-- None / No Winner --</option>
                                     <option value="Moniyan Empire">Moniyan Empire</option>
@@ -455,35 +459,39 @@
             const standingsBody = document.getElementById("standings-tbody");
             standingsBody.innerHTML = "";
 
-            standingsList.forEach(s => {
-                let g = parseInt(s.gold || 0);
-                let sl = parseInt(s.silver || 0);
-                let b = parseInt(s.bronze || 0);
-                s.calculatedTotal = s.points !== undefined ? s.points : (g * 10) + (sl * 5) + (b * 2);
+            // Medal-based ranking priority:
+            // Gold first, then Silver, then Bronze.
+            const ranked = (standingsList || []).map(item => ({
+                ...item,
+                gold: parseInt(item.gold || 0, 10),
+                silver: parseInt(item.silver || 0, 10),
+                bronze: parseInt(item.bronze || 0, 10)
+            })).sort((a, b) => {
+                if (b.gold !== a.gold) return b.gold - a.gold;
+                if (b.silver !== a.silver) return b.silver - a.silver;
+                if (b.bronze !== a.bronze) return b.bronze - a.bronze;
+                return String(a.faction || "").localeCompare(String(b.faction || ""));
             });
 
-            standingsList.sort((a, b) => b.calculatedTotal - a.calculatedTotal);
-
-            let highestTotal = Math.max(...standingsList.map(s => s.calculatedTotal || 0), 1);
+            const highestGold = Math.max(...ranked.map(s => s.gold || 0), 1);
             let totalEventsAwarded = 0;
             let totalMedalsCount = 0;
 
-            if (standingsList.length > 0) {
-                document.getElementById("kpi-leader").innerText = standingsList[0].faction;
-            }
+            document.getElementById("kpi-leader").innerText =
+                ranked.length ? ranked[0].faction : "No Leader Yet";
 
-            standingsList.forEach((row, i) => {
-                let g = parseInt(row.gold || 0);
-                let sl = parseInt(row.silver || 0);
-                let b = parseInt(row.bronze || 0);
-                
-                totalEventsAwarded += g; 
-                totalMedalsCount += (g + sl + b);
+            ranked.forEach((row, i) => {
+                const g = row.gold;
+                const sl = row.silver;
+                const b = row.bronze;
 
-                let pct = Math.round(((row.calculatedTotal || 0) / highestTotal) * 100);
-                let candidates = factionImageCandidates[row.faction] || [];
-                let candidatesJson = JSON.stringify(candidates).replace(/"/g, '&quot;');
-                let shortCode = row.faction.substring(0, 3).toUpperCase();
+                totalEventsAwarded += g;
+                totalMedalsCount += g + sl + b;
+
+                const pct = Math.round((g / highestGold) * 100);
+                const candidates = factionImageCandidates[row.faction] || [];
+                const candidatesJson = JSON.stringify(candidates).replace(/"/g, '&quot;');
+                const shortCode = String(row.faction || "").substring(0, 3).toUpperCase();
 
                 standingsBody.innerHTML += `
                     <tr>
@@ -491,9 +499,9 @@
                         <td>
                             <div class="faction-cell">
                                 <div class="faction-logo-wrapper">
-                                    <img class="faction-logo-img" 
-                                         src="${candidates[0] || ''}" 
-                                         onerror="handleImageFallback(this, ${candidatesJson}, '${shortCode}')" 
+                                    <img class="faction-logo-img"
+                                         src="${candidates[0] || ''}"
+                                         onerror="handleImageFallback(this, ${candidatesJson}, '${shortCode}')"
                                          alt="${row.faction}">
                                 </div>
                                 <div>
@@ -507,7 +515,6 @@
                         <td class="badge-gold">${g}</td>
                         <td class="badge-silver">${sl}</td>
                         <td class="badge-bronze">${b}</td>
-                        <td><strong style="font-family: var(--font-mono); font-size: 1rem; color: var(--accent-color);">${row.calculatedTotal}</strong></td>
                     </tr>`;
             });
 
