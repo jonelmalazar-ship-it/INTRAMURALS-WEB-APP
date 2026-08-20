@@ -26,7 +26,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-main); color: var(--text-primary); min-height: 100vh; position: relative; overflow-x: hidden; }
 
-        /* PRO MOBILE LEGENDS ESPORTS BACKGROUND EFFECT */
         #bg-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: 
@@ -131,7 +130,6 @@
         .badge-bronze { color: var(--accent-bronze); font-family: var(--font-mono); font-weight: 700; }
         .badge-total { color: #fff; font-family: var(--font-mono); font-weight: 800; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; }
 
-        /* FLOATING AUDIO CONTROLLER FOR USER INTERACTION */
         .audio-user-trigger {
             position: fixed; bottom: 20px; right: 20px;
             background: rgba(10, 14, 26, 0.95);
@@ -143,12 +141,10 @@
             font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;
         }
 
-        /* MODAL STYLING FOR ADMIN AUTH & CHAMPION DECLARATION */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 1000; }
         .modal-card { background: #0b0f19; border: 2px solid var(--accent-gold); border-radius: 8px; padding: 25px; width: 90%; max-width: 500px; color: #fff; }
         .modal-card h3 { font-family: var(--font-display); color: var(--accent-gold); margin-bottom: 15px; font-size: 1.2rem; text-transform: uppercase; text-align: center; }
 
-        /* PRINT OFFICIAL RESULT / CERTIFICATE STYLING */
         #printable-declaration { display: none; }
         @media print {
             body * { visibility: hidden; }
@@ -181,12 +177,10 @@
     <div id="bg-overlay"></div>
     <div class="ml-particles"></div>
 
-    <!-- AUDIO PLAYER ELEMENT -->
     <audio id="global-bgm" loop preload="auto">
         <source id="bgm-source" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- FLOATING UNMUTE BUTTON FOR USERS -->
     <div class="audio-user-trigger" id="audio-enable-btn" onclick="userEnableAudio()">
         <span id="audio-icon">🔊</span> <span id="audio-text">Enable Audio Experience</span>
     </div>
@@ -221,7 +215,7 @@
         <section class="kpi-grid">
             <div class="kpi-card active-leader">
                 <div class="kpi-label">Tournament Leader</div>
-                <div class="kpi-value" id="kpi-leader">Moniyan Empire</div>
+                <div class="kpi-value" id="kpi-leader">Loading...</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-label">Events Completed</div>
@@ -239,6 +233,7 @@
             <button class="nav-btn" onclick="navigate('admin-console', this)">Console Auth</button>
         </nav>
 
+        <!-- TAB 1: STANDINGS / LEADERBOARD -->
         <main id="leaderboard" class="tab-viewport active">
             <section class="glass-panel">
                 <div class="panel-header">
@@ -261,12 +256,15 @@
                                 <th>Total</th>
                             </tr>
                         </thead>
-                        <tbody id="standings-tbody"></tbody>
+                        <tbody id="standings-tbody">
+                            <tr><td colspan="6" style="text-align:center; color:var(--text-secondary);">Loading Live Rankings...</td></tr>
+                        </tbody>
                     </table>
                 </div>
             </section>
         </main>
 
+        <!-- TAB 2: EVENT LOGS -->
         <main id="event-logs" class="tab-viewport">
             <section class="glass-panel">
                 <div class="panel-header">
@@ -290,6 +288,7 @@
             </section>
         </main>
 
+        <!-- TAB 3: ADMIN CONSOLE -->
         <main id="admin-console" class="tab-viewport">
             <section id="auth-card" class="glass-panel" style="max-width: 380px; margin: 20px auto;">
                 <div class="panel-header">
@@ -303,7 +302,7 @@
             </section>
 
             <div id="admin-controls" style="display: none;">
-                <!-- NEW BACKGROUND MUSIC CONTROL PANEL IN ADMIN CONSOLE -->
+                <!-- LIVE AUDIO BROADCAST CONTROL -->
                 <section class="glass-panel" style="border: 1px solid var(--accent-gold);">
                     <div class="panel-header">
                         <h2>🎵 Live Esports BGM Broadcast Control</h2>
@@ -337,26 +336,22 @@
                             <label>Event Name / Discipline</label>
                             <select id="event-name" required>
                                 <option value="">-- Select Sports / Event Category --</option>
-
                                 <optgroup label="Special & Ceremonial Events">
                                     <option value="Mr. and Ms. Intrams 2026">Mr. and Ms. Intrams 2026</option>
                                     <option value="Banner Raising">Banner Raising</option>
                                     <option value="Best in Costume Team">Best in Costume Team</option>
                                 </optgroup>
-                                
                                 <optgroup label="Basketball Categories">
                                     <option value="Basketball Boys - Midget Division (Grade 7-9)">Basketball Boys - Midget Division (Grade 7-9)</option>
                                     <option value="Basketball Boys - Junior Division (Grade 10-12)">Basketball Boys - Junior Division (Grade 10-12)</option>
                                     <option value="Basketball (Girls)">Basketball (Girls)</option>
                                 </optgroup>
-
                                 <optgroup label="Sociocultural & Performing Arts">
                                     <option value="Singing Contest - Vocal Solo Mixed">Singing Contest - Vocal Solo Mixed</option>
                                     <option value="Singing Contest - Duet">Singing Contest - Duet</option>
                                     <option value="Hiphop Dance">Hiphop Dance</option>
                                     <option value="Cheerdance Competition">Cheerdance Competition</option>
                                 </optgroup>
-
                                 <optgroup label="Athletics - Running & Walking (Boys)">
                                     <option value="100m Run (Boys)">100m Run (Boys)</option>
                                     <option value="200m Run (Boys)">200m Run (Boys)</option>
@@ -367,7 +362,6 @@
                                     <option value="5km Run (Boys)">5km Run (Boys)</option>
                                     <option value="2km Walk (Boys)">2km Walk (Boys)</option>
                                 </optgroup>
-
                                 <optgroup label="Athletics - Running & Walking (Girls)">
                                     <option value="100m Run (Girls)">100m Run (Girls)</option>
                                     <option value="200m Run (Girls)">200m Run (Girls)</option>
@@ -377,7 +371,6 @@
                                     <option value="3km Run (Girls)">3km Run (Girls)</option>
                                     <option value="2km Walk (Girls)">2km Walk (Girls)</option>
                                 </optgroup>
-
                                 <optgroup label="Athletics - Relays (Boys & Girls)">
                                     <option value="4x100m Relay (Boys)">4x100m Relay (Boys)</option>
                                     <option value="4x100m Relay (Girls)">4x100m Relay (Girls)</option>
@@ -385,7 +378,6 @@
                                     <option value="4x400m Relay (Girls)">4x400m Relay (Girls)</option>
                                     <option value="4x400m Mixed Relay">4x400m Mixed Relay</option>
                                 </optgroup>
-
                                 <optgroup label="Athletics - Jumps (Boys & Girls)">
                                     <option value="Long Jump (Boys)">Long Jump (Boys)</option>
                                     <option value="Long Jump (Girls)">Long Jump (Girls)</option>
@@ -396,7 +388,6 @@
                                     <option value="Pole Vault (Boys)">Pole Vault (Boys)</option>
                                     <option value="Pole Vault (Girls)">Pole Vault (Girls)</option>
                                 </optgroup>
-
                                 <optgroup label="Athletics - Throws (Boys & Girls)">
                                     <option value="Discus Throw (Boys)">Discus Throw (Boys)</option>
                                     <option value="Discus Throw (Girls)">Discus Throw (Girls)</option>
@@ -405,7 +396,6 @@
                                     <option value="Shot Put (Boys)">Shot Put (Boys)</option>
                                     <option value="Shot Put (Girls)">Shot Put (Girls)</option>
                                 </optgroup>
-
                                 <optgroup label="Ball Games & Team Sports">
                                     <option value="Volleyball (Boys)">Volleyball (Boys)</option>
                                     <option value="Volleyball (Girls)">Volleyball (Girls)</option>
@@ -414,7 +404,6 @@
                                     <option value="Futsal / Soccer (Boys)">Futsal / Soccer (Boys)</option>
                                     <option value="Futsal / Soccer (Girls)">Futsal / Soccer (Girls)</option>
                                 </optgroup>
-
                                 <optgroup label="Combat & Racket Sports">
                                     <option value="Arnis (Boys)">Arnis (Boys)</option>
                                     <option value="Arnis (Girls)">Arnis (Girls)</option>
@@ -426,7 +415,6 @@
                                     <option value="Table Tennis (Boys)">Table Tennis (Boys)</option>
                                     <option value="Table Tennis (Girls)">Table Tennis (Girls)</option>
                                 </optgroup>
-
                                 <optgroup label="Board Games & eSports">
                                     <option value="Chess (Boys)">Chess (Boys)</option>
                                     <option value="Chess (Girls)">Chess (Girls)</option>
@@ -485,7 +473,7 @@
         </main>
     </div>
 
-    <!-- 3-ADMIN AUTHENTICATION MODAL -->
+    <!-- 3-ADMIN AUTH MODAL -->
     <div class="modal-overlay" id="champ-auth-modal">
         <div class="modal-card">
             <h3>3-Admin Final Authorization</h3>
@@ -511,7 +499,7 @@
         </div>
     </div>
 
-    <!-- PRINTABLE OFFICIAL RESULT & SIGNATURE SHEET -->
+    <!-- PRINTABLE SHEET -->
     <div id="printable-declaration">
         <div class="print-header">
             <div class="print-title">ACHS INTRAMURALS 2026</div>
@@ -563,18 +551,18 @@
     </div>
 
     <script>
-        const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbzpOipOmwOQS45wN3KHJqT39iEsCwDTRq8Zx6jGIY9beADFtaEhOFT896y13poNNAHY/exec";
+        // DITO ILAGAY ANG IYONG GOOGLE APPS SCRIPT WEB APP URL
+        const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw6nmABGn6FIWhTsiGzF5qaYgkr8bQN2pWYjX5vK7dkkkmw1zsdPjKWPkaKaKaTMvrM/exec";
 
         const factionImageCandidates = {
-            "Moniyan Empire": ["./moniyan.png", "./moniyan.jpg", "./77501193...1286_n.jpg"],
-            "Abyssal Domain": ["./abyssal.png", "./abyss.png", "./abyssal.jpg", "./77512704...006_n.jpg"],
-            "Cadia Riverlands": ["./cadia.png", "./cadia.jpg", "./77479470...279_n.jpg"],
-            "Eruditio": ["./eruditio.png", "./eruditio.jpg", "./7750366...9899_n.jpg"]
+            "Moniyan Empire": ["./moniyan.png", "./moniyan.jpg"],
+            "Abyssal Domain": ["./abyssal.png", "./abyss.png", "./abyssal.jpg"],
+            "Cadia Riverlands": ["./cadia.png", "./cadia.jpg"],
+            "Eruditio": ["./eruditio.png", "./eruditio.jpg"]
         };
 
         let currentStandings = [];
         let currentLogs = [];
-        let audioState = { playing: false, track: "" };
 
         function handleImageFallback(imgElem, list, fallbackCode) {
             let idx = parseInt(imgElem.dataset.failIndex || "0");
@@ -610,14 +598,13 @@
             }
         }
 
-        /* LIVE AUDIO REALTIME CONTROLLER */
         function userEnableAudio() {
             const player = document.getElementById("global-bgm");
             if (player.paused) {
                 player.play().then(() => {
                     document.getElementById("audio-icon").innerText = "🔊";
                     document.getElementById("audio-text").innerText = "BGM Playing";
-                }).catch(e => console.log("Audio play blocked by browser:", e));
+                }).catch(e => console.log("Audio blocked:", e));
             } else {
                 player.pause();
                 document.getElementById("audio-icon").innerText = "🔇";
@@ -673,7 +660,7 @@
             const bronze = document.getElementById("bronze-winner").value || "";
 
             if (!gold && !silver && !bronze) {
-                alert("Pumili ng kahit isang panalo (Gold, Silver, o Bronze).");
+                alert("Pumili ng kahit isang panalo.");
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Publish Match Results";
                 return;
@@ -681,10 +668,7 @@
 
             const postUrl = `${API_ENDPOINT}?category=${encodeURIComponent(category)}&event=${encodeURIComponent(event)}&gold=${encodeURIComponent(gold)}&silver=${encodeURIComponent(silver)}&bronze=${encodeURIComponent(bronze)}`;
 
-            fetch(postUrl, {
-                method: "POST",
-                mode: "no-cors"
-            })
+            fetch(postUrl, { method: "POST", mode: "no-cors" })
             .then(() => {
                 alert("Result Saved Successfully!");
                 document.getElementById("event-form").reset();
@@ -720,8 +704,7 @@
             let totalEventsAwarded = 0;
             let totalMedalsCount = 0;
 
-            document.getElementById("kpi-leader").innerText =
-                ranked.length ? ranked[0].faction : "No Leader Yet";
+            document.getElementById("kpi-leader").innerText = ranked.length ? ranked[0].faction : "No Leader Yet";
 
             ranked.forEach((row, i) => {
                 const g = row.gold;
@@ -767,14 +750,8 @@
             document.getElementById("kpi-medals").innerText = totalMedalsCount;
         }
 
-        /* CHAMPION DECLARATION & 3-ADMIN AUTH FUNCTIONS */
-        function openChampionAuthModal() {
-            document.getElementById("champ-auth-modal").style.display = "flex";
-        }
-
-        function closeChampionAuthModal() {
-            document.getElementById("champ-auth-modal").style.display = "none";
-        }
+        function openChampionAuthModal() { document.getElementById("champ-auth-modal").style.display = "flex"; }
+        function closeChampionAuthModal() { document.getElementById("champ-auth-modal").style.display = "none"; }
 
         function processChampionDeclaration() {
             const p1 = document.getElementById("pass-admin1").value;
@@ -827,7 +804,7 @@
 
                 window.print();
             } else {
-                alert("Authentication Failed: One or more admin passwords are incorrect.");
+                alert("Authentication Failed: Passwords do not match.");
             }
         }
 
@@ -855,19 +832,15 @@
                         });
                     }
 
-                    // Sync Audio State from API if present
                     if (data.audio) {
                         applyAudioState(data.audio.status === 'play', data.audio.track);
                     }
                 })
-                .catch(err => {
-                    console.warn("Sync error:", err);
-                });
+                .catch(err => console.warn("Sync error:", err));
         }
 
         document.addEventListener("DOMContentLoaded", () => {
             syncDataEngine();
-            // Polling every 5 seconds to sync results and music live across all connected users
             setInterval(syncDataEngine, 5000);
         });
     </script>
