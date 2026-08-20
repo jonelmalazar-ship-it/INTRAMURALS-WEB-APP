@@ -148,12 +148,6 @@
             100% { transform: scale(1.05); box-shadow: 0 0 25px rgba(245, 158, 11, 0.8); }
         }
 
-        /* HIDDEN YOUTUBE PLAYER CONTAINER */
-        #yt-player-hidden {
-            position: absolute; width: 1px; height: 1px;
-            left: -9999px; top: -9999px; opacity: 0; pointer-events: none;
-        }
-
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 1000; }
         .modal-card { background: #0b0f19; border: 2px solid var(--accent-gold); border-radius: 8px; padding: 25px; width: 90%; max-width: 500px; color: #fff; }
         .modal-card h3 { font-family: var(--font-display); color: var(--accent-gold); margin-bottom: 15px; font-size: 1.2rem; text-transform: uppercase; text-align: center; }
@@ -190,13 +184,15 @@
     <div id="bg-overlay"></div>
     <div class="ml-particles"></div>
 
-    <!-- HIDDEN YOUTUBE PLAYER CONTAINER -->
-    <div id="yt-player-hidden"><div id="yt-player"></div></div>
+    <!-- DIRECT HTML5 AUDIO ELEMENT (GUARANTEED TO WORK) -->
+    <audio id="bgm-player" loop preload="auto">
+        <source id="bgm-source" src="https://archive.org/download/naruto-main-theme/Naruto%20Main%20Theme.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- FLOATING MANUAL AUDIO TRIGGER -->
-    <div class="audio-user-trigger" id="audio-enable-btn" onclick="userToggleAudio()">
+    <button class="audio-user-trigger" id="audio-enable-btn" onclick="userToggleAudio()">
         <span id="audio-icon">▶️</span> <span id="audio-text">PLAY NARUTO BGM</span>
-    </div>
+    </button>
 
     <div class="app-container">
         <header class="header-brand">
@@ -315,19 +311,17 @@
             </section>
 
             <div id="admin-controls" style="display: none;">
-                <!-- LIVE AUDIO BROADCAST CONTROL VIA YOUTUBE STREAMING -->
+                <!-- LIVE AUDIO CONTROL -->
                 <section class="glass-panel" style="border: 1px solid var(--accent-gold);">
                     <div class="panel-header">
-                        <h2>🎵 Live Esports BGM Broadcast Control (YouTube Stream Engine)</h2>
+                        <h2>🎵 Live Esports BGM Broadcast Control</h2>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; align-items: end;">
                         <div class="form-group">
-                            <label>Select Track (Naruto & MLBB Esports)</label>
+                            <label>Select Track</label>
                             <select id="bgm-track-select">
-                                <option value="daPo686j740">🔥 Naruto - Main Theme (Battle Hype)</option>
-                                <option value="1m8413z3mB0">⚡ Naruto Shippuden - Spin and Burst</option>
-                                <option value="hqG-mK0J724">⚔️ MLBB 5th Anniversary Theme</option>
-                                <option value="JmK3C49wz5E">🏆 MLBB M3 World Championship Theme</option>
+                                <option value="https://archive.org/download/naruto-main-theme/Naruto%20Main%20Theme.mp3">🔥 Naruto - Main Theme</option>
+                                <option value="https://archive.org/download/naruto-spin-and-burst/SpinAndBurst.mp3">⚡ Naruto Shippuden - Spin and Burst</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -563,9 +557,6 @@
         </div>
     </div>
 
-    <!-- YOUTUBE IFRAME API SCRIPT -->
-    <script src="https://www.youtube.com/iframe_api"></script>
-
     <script>
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw6nmABGn6FIWhTsiGzF5qaYgkr8bQN2pWYjX5vK7dkkkmw1zsdPjKWPkaKaKaTMvrM/exec";
 
@@ -576,78 +567,48 @@
             "Eruditio": ["./eruditio.png", "./eruditio.jpg"]
         };
 
-        let currentStandings = [];
-        let currentLogs = [];
-        let ytPlayer = null;
-        let isAudioPlaying = false;
-        let currentTrackId = "daPo686j740"; // Default: Naruto Theme
-
-        // YouTube API Initialization
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('yt-player', {
-                height: '1',
-                width: '1',
-                videoId: currentTrackId,
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'loop': 1,
-                    'playlist': currentTrackId
-                },
-                events: {
-                    'onReady': onPlayerReady
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            console.log("YouTube BGM Engine Ready!");
-        }
+        const audioPlayer = document.getElementById("bgm-player");
+        const audioSource = document.getElementById("bgm-source");
 
         function userToggleAudio() {
-            if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') return;
-
-            if (isAudioPlaying) {
-                ytPlayer.pauseVideo();
-                isAudioPlaying = false;
+            if (audioPlayer.paused) {
+                audioPlayer.play().then(() => {
+                    document.getElementById("audio-icon").innerText = "🔊";
+                    document.getElementById("audio-text").innerText = "BGM PLAYING";
+                }).catch(e => {
+                    alert("Paki-click muna sa kahit anong bahagi ng screen para mag-play ang audio.");
+                });
+            } else {
+                audioPlayer.pause();
                 document.getElementById("audio-icon").innerText = "▶️";
                 document.getElementById("audio-text").innerText = "PLAY NARUTO BGM";
-            } else {
-                ytPlayer.playVideo();
-                isAudioPlaying = true;
-                document.getElementById("audio-icon").innerText = "🔊";
-                document.getElementById("audio-text").innerText = "BGM PLAYING";
             }
         }
 
         function adminUpdateAudio(status) {
-            const trackId = document.getElementById("bgm-track-select").value;
-            const actionUrl = `${API_ENDPOINT}?audioStatus=${encodeURIComponent(status)}&audioTrack=${encodeURIComponent(trackId)}`;
+            const trackUrl = document.getElementById("bgm-track-select").value;
+            const actionUrl = `${API_ENDPOINT}?audioStatus=${encodeURIComponent(status)}&audioTrack=${encodeURIComponent(trackUrl)}`;
             
             fetch(actionUrl, { method: "POST", mode: "no-cors" })
                 .then(() => {
-                    alert(`Audio state updated to: ${status.toUpperCase()}`);
-                    applyAudioState(status === 'play', trackId);
+                    applyAudioState(status === 'play', trackUrl);
                 })
                 .catch(err => console.error("Audio Sync Error:", err));
         }
 
-        function applyAudioState(shouldPlay, trackId) {
-            if (!ytPlayer || typeof ytPlayer.loadVideoById !== 'function') return;
-
-            if (currentTrackId !== trackId && trackId) {
-                currentTrackId = trackId;
-                ytPlayer.loadVideoById(trackId);
+        function applyAudioState(shouldPlay, trackUrl) {
+            if (trackUrl && audioSource.src !== trackUrl) {
+                audioSource.src = trackUrl;
+                audioPlayer.load();
             }
 
             if (shouldPlay) {
-                ytPlayer.playVideo();
-                isAudioPlaying = true;
-                document.getElementById("audio-icon").innerText = "🔊";
-                document.getElementById("audio-text").innerText = "LIVE BGM PLAYING";
+                audioPlayer.play().then(() => {
+                    document.getElementById("audio-icon").innerText = "🔊";
+                    document.getElementById("audio-text").innerText = "LIVE BGM PLAYING";
+                }).catch(e => console.log("Autoplay blocked until user gesture."));
             } else {
-                ytPlayer.pauseVideo();
-                isAudioPlaying = false;
+                audioPlayer.pause();
                 document.getElementById("audio-icon").innerText = "🔇";
                 document.getElementById("audio-text").innerText = "BGM PAUSED";
             }
@@ -853,12 +814,10 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.standings && data.standings.length > 0) {
-                        currentStandings = data.standings;
-                        renderStandings(currentStandings);
+                        renderStandings(data.standings);
                     }
 
                     if (data.events && data.events.length > 0) {
-                        currentLogs = data.events;
                         const logsBody = document.getElementById("logs-tbody");
                         logsBody.innerHTML = "";
                         data.events.forEach(evt => {
