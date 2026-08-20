@@ -177,8 +177,9 @@
     <div id="bg-overlay"></div>
     <div class="ml-particles"></div>
 
+    <!-- AUDIO PLAYER WITH WORKING DEFAULT NARUTO MP3 -->
     <audio id="global-bgm" loop preload="auto">
-        <source id="bgm-source" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
+        <source id="bgm-source" src="https://files.catbox.moe/k3b02u.mp3" type="audio/mpeg">
     </audio>
 
     <div class="audio-user-trigger" id="audio-enable-btn" onclick="userEnableAudio()">
@@ -302,19 +303,19 @@
             </section>
 
             <div id="admin-controls" style="display: none;">
-                <!-- LIVE AUDIO BROADCAST CONTROL -->
+                <!-- LIVE AUDIO BROADCAST CONTROL WITH WORKING NARUTO & MLBB SOUNDTRACKS -->
                 <section class="glass-panel" style="border: 1px solid var(--accent-gold);">
                     <div class="panel-header">
                         <h2>🎵 Live Esports BGM Broadcast Control</h2>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; align-items: end;">
                         <div class="form-group">
-                            <label>Select Mobile Legends Track</label>
+                            <label>Select Track (Naruto & MLBB Esports)</label>
                             <select id="bgm-track-select">
-                                <option value="https://files.catbox.moe/k3b02u.mp3">Naruto Main Theme (High Energy Battle)</option>
-                                <option value="https://files.catbox.moe/p9o437.mp3">MLBB All-Star Cyber Anthem</option>
-                                <option value="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3">MLBB Arena Orchestral Theme</option>
-                                <option value="https://cdn.freesound.org/previews/612/612621_5674468-lq.mp3">MLBB Grand Final Orchestral Theme</option>    
+                                <option value="https://files.catbox.moe/k3b02u.mp3">🔥 Naruto Main Theme (High Energy Battle)</option>
+                                <option value="https://files.catbox.moe/39k0ms.mp3">⚡ Naruto Shippuden - Strongest Enemy (Hype)</option>
+                                <option value="https://files.catbox.moe/p9o437.mp3">⚔️ MLBB All-Star Cyber Anthem</option>
+                                <option value="https://cdn.freesound.org/previews/612/612621_5674468-lq.mp3">🏆 MLBB Grand Final Orchestral Theme</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -551,7 +552,7 @@
     </div>
 
     <script>
-        // DITO ILAGAY ANG IYONG GOOGLE APPS SCRIPT WEB APP URL
+        // SIGURADUHING TAMA ANG IYONG GOOGLE APPS SCRIPT WEB APP URL DITO
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw6nmABGn6FIWhTsiGzF5qaYgkr8bQN2pWYjX5vK7dkkkmw1zsdPjKWPkaKaKaTMvrM/exec";
 
         const factionImageCandidates = {
@@ -636,7 +637,7 @@
             if (isPlaying) {
                 player.play().then(() => {
                     document.getElementById("audio-icon").innerText = "🔊";
-                    document.getElementById("audio-text").innerText = "Live Esports BGM";
+                    document.getElementById("audio-text").innerText = "Live BGM Playing";
                 }).catch(() => {
                     document.getElementById("audio-text").innerText = "Click to Enable Audio";
                 });
