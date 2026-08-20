@@ -131,6 +131,18 @@
         .badge-bronze { color: var(--accent-bronze); font-family: var(--font-mono); font-weight: 700; }
         .badge-total { color: #fff; font-family: var(--font-mono); font-weight: 800; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; }
 
+        /* FLOATING AUDIO CONTROLLER FOR USER INTERACTION */
+        .audio-user-trigger {
+            position: fixed; bottom: 20px; right: 20px;
+            background: rgba(10, 14, 26, 0.95);
+            border: 1px solid var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-glow);
+            border-radius: 30px; padding: 10px 18px;
+            display: flex; align-items: center; gap: 10px;
+            z-index: 999; cursor: pointer;
+            font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;
+        }
+
         /* MODAL STYLING FOR ADMIN AUTH & CHAMPION DECLARATION */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 1000; }
         .modal-card { background: #0b0f19; border: 2px solid var(--accent-gold); border-radius: 8px; padding: 25px; width: 90%; max-width: 500px; color: #fff; }
@@ -154,6 +166,7 @@
             .losing-sig-section { margin-top: 40px; border: 1px solid #666; padding: 15px; }
             .losing-sig-title { font-size: 10pt; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; text-align: center; }
             .losing-sig-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; text-align: center; }
+            .audio-user-trigger { display: none !important; }
         }
 
         @media (max-width: 768px) {
@@ -167,6 +180,16 @@
 
     <div id="bg-overlay"></div>
     <div class="ml-particles"></div>
+
+    <!-- AUDIO PLAYER ELEMENT -->
+    <audio id="global-bgm" loop preload="auto">
+        <source id="bgm-source" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- FLOATING UNMUTE BUTTON FOR USERS -->
+    <div class="audio-user-trigger" id="audio-enable-btn" onclick="userEnableAudio()">
+        <span id="audio-icon">🔊</span> <span id="audio-text">Enable Audio Experience</span>
+    </div>
 
     <div class="app-container">
         <header class="header-brand">
@@ -280,6 +303,31 @@
             </section>
 
             <div id="admin-controls" style="display: none;">
+                <!-- NEW BACKGROUND MUSIC CONTROL PANEL IN ADMIN CONSOLE -->
+                <section class="glass-panel" style="border: 1px solid var(--accent-gold);">
+                    <div class="panel-header">
+                        <h2>🎵 Live Esports BGM Broadcast Control</h2>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; align-items: end;">
+                        <div class="form-group">
+                            <label>Select Mobile Legends Track</label>
+                            <select id="bgm-track-select">
+                                <option value="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3">MLBB Arena Orchestral Theme</option>
+                                <option value="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a8d11d.mp3">5v5 Esports Cyber Action Anthem</option>
+                                <option value="https://cdn.pixabay.com/download/audio/2021/09/06/audio_8b30906323.mp3">Hero Select Hype Beats</option>
+                                <option value="https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939ee935d.mp3">Grand Final Victory Theme</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Playback Control</label>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn-action btn-gold" style="flex:1" onclick="adminUpdateAudio('play')">▶ PLAY ALL</button>
+                                <button class="btn-action btn-secondary" style="flex:1" onclick="adminUpdateAudio('pause')">⏸ PAUSE</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <section class="glass-panel">
                     <div class="panel-header">
                         <h2>Record New Event Result</h2>
@@ -510,9 +558,7 @@
 
         <div class="losing-sig-section">
             <div class="losing-sig-title">Conforme & Acknowledgement of Losing Factions</div>
-            <div class="losing-sig-grid" id="losing-signatures-target">
-                <!-- Dynamically generated losing team signature blocks -->
-            </div>
+            <div class="losing-sig-grid" id="losing-signatures-target"></div>
         </div>
     </div>
 
@@ -528,6 +574,7 @@
 
         let currentStandings = [];
         let currentLogs = [];
+        let audioState = { playing: false, track: "" };
 
         function handleImageFallback(imgElem, list, fallbackCode) {
             let idx = parseInt(imgElem.dataset.failIndex || "0");
@@ -560,6 +607,56 @@
                 document.getElementById("admin-controls").style.display = "block";
             } else {
                 alert("Access Denied: Invalid Security Pin.");
+            }
+        }
+
+        /* LIVE AUDIO REALTIME CONTROLLER */
+        function userEnableAudio() {
+            const player = document.getElementById("global-bgm");
+            if (player.paused) {
+                player.play().then(() => {
+                    document.getElementById("audio-icon").innerText = "🔊";
+                    document.getElementById("audio-text").innerText = "BGM Playing";
+                }).catch(e => console.log("Audio play blocked by browser:", e));
+            } else {
+                player.pause();
+                document.getElementById("audio-icon").innerText = "🔇";
+                document.getElementById("audio-text").innerText = "Sound Muted";
+            }
+        }
+
+        function adminUpdateAudio(status) {
+            const trackUrl = document.getElementById("bgm-track-select").value;
+            const actionUrl = `${API_ENDPOINT}?audioStatus=${encodeURIComponent(status)}&audioTrack=${encodeURIComponent(trackUrl)}`;
+            
+            fetch(actionUrl, { method: "POST", mode: "no-cors" })
+                .then(() => {
+                    alert(`Audio state updated to: ${status.toUpperCase()}`);
+                    applyAudioState(status === 'play', trackUrl);
+                })
+                .catch(err => console.error("Audio Sync Error:", err));
+        }
+
+        function applyAudioState(isPlaying, trackUrl) {
+            const player = document.getElementById("global-bgm");
+            const src = document.getElementById("bgm-source");
+
+            if (src.src !== trackUrl && trackUrl) {
+                src.src = trackUrl;
+                player.load();
+            }
+
+            if (isPlaying) {
+                player.play().then(() => {
+                    document.getElementById("audio-icon").innerText = "🔊";
+                    document.getElementById("audio-text").innerText = "Live Esports BGM";
+                }).catch(() => {
+                    document.getElementById("audio-text").innerText = "Click to Enable Audio";
+                });
+            } else {
+                player.pause();
+                document.getElementById("audio-icon").innerText = "🔇";
+                document.getElementById("audio-text").innerText = "BGM Paused by Admin";
             }
         }
 
@@ -687,11 +784,9 @@
             if (p1 === "jonel2026" && p2 === "neneth2026" && p3 === "raquel2026") {
                 closeChampionAuthModal();
                 
-                // Prepare print view
                 const leader = document.getElementById("kpi-leader").innerText;
                 document.getElementById("print-champ-name-target").innerText = leader;
 
-                // Populate print standings table
                 const printBody = document.getElementById("print-standings-tbody");
                 printBody.innerHTML = "";
                 const rows = document.querySelectorAll("#standings-tbody tr");
@@ -719,7 +814,6 @@
                         </tr>`;
                 });
 
-                // Populate signature block for losing teams
                 const losingTarget = document.getElementById("losing-signatures-target");
                 losingTarget.innerHTML = "";
                 losingTeams.forEach(team => {
@@ -760,6 +854,11 @@
                                 </tr>`;
                         });
                     }
+
+                    // Sync Audio State from API if present
+                    if (data.audio) {
+                        applyAudioState(data.audio.status === 'play', data.audio.track);
+                    }
                 })
                 .catch(err => {
                     console.warn("Sync error:", err);
@@ -768,6 +867,8 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             syncDataEngine();
+            // Polling every 5 seconds to sync results and music live across all connected users
+            setInterval(syncDataEngine, 5000);
         });
     </script>
 </body>
