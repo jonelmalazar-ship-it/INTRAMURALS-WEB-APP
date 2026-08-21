@@ -292,7 +292,6 @@
                                 <th>Gold Medalist</th>
                                 <th>Silver Medalist</th>
                                 <th>Bronze Medalist</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="logs-tbody">
@@ -526,6 +525,28 @@
 
                 <section class="glass-panel">
                     <div class="panel-header">
+                        <h2>Manage / Edit Results</h2>
+                    </div>
+                    <div class="data-table-wrapper">
+                        <table class="logs-table">
+                            <thead>
+                                <tr>
+                                    <th>Event Category</th>
+                                    <th>Gold</th>
+                                    <th>Silver</th>
+                                    <th>Bronze</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-logs-tbody">
+                                <tr><td colspan="5" style="text-align:center; color:var(--text-secondary);">No event logs recorded yet.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="glass-panel">
+                    <div class="panel-header">
                         <h2>Operations & Official Championship</h2>
                     </div>
                     <div style="display: flex; gap: 12px; flex-wrap: wrap;">
@@ -627,6 +648,7 @@
         let currentStandings = [];
         let currentLogs = [];
         let audioState = { playing: false, track: "" };
+        let isAdminAuthenticated = false;
 
         
         function normalizeEventName(name) {
@@ -664,8 +686,10 @@
 
         function authenticateAdmin() {
             if (document.getElementById("admin-pin").value === "mystarlink120616") {
+                isAdminAuthenticated = true;
                 document.getElementById("auth-card").style.display = "none";
                 document.getElementById("admin-controls").style.display = "block";
+                renderAdminLogs(currentLogs);
             } else {
                 alert("Access Denied: Invalid Security Pin.");
             }
@@ -847,6 +871,53 @@
             document.getElementById("kpi-medals").innerText = totalMedalsCount;
         }
 
+        /* PUBLIC event log (read-only, no edit affordance) */
+        function renderPublicLogs(events) {
+            const logsBody = document.getElementById("logs-tbody");
+            if (!events || !events.length) {
+                logsBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">No event logs recorded yet.</td></tr>`;
+                return;
+            }
+            logsBody.innerHTML = "";
+            events.forEach(evt => {
+                const normalizedEvent = normalizeEventName(evt.event || evt.name);
+                logsBody.innerHTML += `
+                    <tr>
+                        <td><strong>${normalizedEvent}</strong></td>
+                        <td class="badge-gold">${evt.gold || ""}</td>
+                        <td class="badge-silver">${evt.silver || ""}</td>
+                        <td class="badge-bronze">${evt.bronze || ""}</td>
+                    </tr>`;
+            });
+        }
+
+        /* ADMIN-ONLY event log with edit buttons — only rendered after password auth */
+        function renderAdminLogs(events) {
+            if (!isAdminAuthenticated) return;
+            const adminBody = document.getElementById("admin-logs-tbody");
+            if (!adminBody) return;
+            if (!events || !events.length) {
+                adminBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-secondary);">No event logs recorded yet.</td></tr>`;
+                return;
+            }
+            adminBody.innerHTML = "";
+            events.forEach((evt, index) => {
+                const normalizedEvent = normalizeEventName(evt.event || evt.name);
+                adminBody.innerHTML += `
+                    <tr>
+                        <td><strong>${normalizedEvent}</strong></td>
+                        <td class="badge-gold">${evt.gold || ""}</td>
+                        <td class="badge-silver">${evt.silver || ""}</td>
+                        <td class="badge-bronze">${evt.bronze || ""}</td>
+                        <td>
+                            <button class="btn-action btn-secondary"
+                                    style="padding:6px 10px;font-size:.68rem;"
+                                    onclick="openResultEditor(${index})">✎ Edit</button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
         /* CHAMPION DECLARATION & 3-ADMIN AUTH FUNCTIONS */
         function openChampionAuthModal() {
             document.getElementById("champ-auth-modal").style.display = "flex";
@@ -913,6 +984,17 @@
 
         
         function openResultEditor(index) {
+            /* Defense in depth: even if this ever got called without auth,
+               refuse and re-prompt for the admin password before editing. */
+            if (!isAdminAuthenticated) {
+                const pin = prompt("Admin password required to edit a result:");
+                if (pin !== "mystarlink120616") {
+                    alert("Access Denied: Invalid Security Pin.");
+                    return;
+                }
+                isAdminAuthenticated = true;
+            }
+
             const evt = currentLogs[index];
             if (!evt) return;
 
@@ -975,25 +1057,10 @@
                         renderStandings(currentStandings);
                     }
 
-                    if (data.events && data.events.length > 0) {
+                    if (data.events) {
                         currentLogs = data.events || [];
-                        const logsBody = document.getElementById("logs-tbody");
-                        logsBody.innerHTML = "";
-                        data.events.forEach((evt, index) => {
-                            const normalizedEvent = normalizeEventName(evt.event || evt.name);
-                            logsBody.innerHTML += `
-                                <tr>
-                                    <td><strong>${normalizedEvent}</strong></td>
-                                    <td class="badge-gold">${evt.gold || ""}</td>
-                                    <td class="badge-silver">${evt.silver || ""}</td>
-                                    <td class="badge-bronze">${evt.bronze || ""}</td>
-                                    <td>
-                                        <button class="btn-action btn-secondary"
-                                                style="padding:6px 10px;font-size:.68rem;"
-                                                onclick="openResultEditor(${index})">✎ Edit</button>
-                                    </td>
-                                </tr>`;
-                        });
+                        renderPublicLogs(currentLogs);
+                        renderAdminLogs(currentLogs);
                     }
 
                     // Sync Audio State from API if present
