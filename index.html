@@ -292,6 +292,7 @@
                                 <th>Gold Medalist</th>
                                 <th>Silver Medalist</th>
                                 <th>Bronze Medalist</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="logs-tbody">
@@ -478,10 +479,14 @@
                                     <option value="Chess (Boys)">Chess (Boys)</option>
                                     <option value="Chess (Girls)">Chess (Girls)</option>
                                     <option value="Scrabble">Scrabble</option>
-                                    <option value="Mobile Legends: Bang Bang">Mobile Legends: Bang Bang</option>
+                                    <option value="Mobile Legends: Bang Bang - Mythic">Mobile Legends: Bang Bang - Mythic</option>
+                                    <option value="Mobile Legends: Bang Bang - Open">Mobile Legends: Bang Bang - Open</option>
                                     <option value="Valorant">Valorant</option>
                                 </optgroup>
                             </select>
+<div id="mlbb-division-note" style="font-size:.66rem;color:var(--text-secondary);margin-top:5px;line-height:1.45;">
+        Mobile Legends divisions: <strong>Mythic</strong> and <strong>Open</strong>. Existing unclassified MLBB results are treated as <strong>Open</strong>.
+    </div>
                         </div>
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
                             <div class="form-group">
@@ -623,6 +628,15 @@
         let currentLogs = [];
         let audioState = { playing: false, track: "" };
 
+        
+        function normalizeEventName(name) {
+            const value = String(name || "").trim();
+            if (value === "Mobile Legends: Bang Bang") return "Mobile Legends: Bang Bang - Open";
+            if (value === "Mobile Legends - Winner") return "Mobile Legends: Bang Bang - Open";
+            if (value === "MLBB") return "Mobile Legends: Bang Bang - Open";
+            return value;
+        }
+
         function handleImageFallback(imgElem, list, fallbackCode) {
             let idx = parseInt(imgElem.dataset.failIndex || "0");
             if (idx < list.length) {
@@ -733,7 +747,7 @@
             submitBtn.innerText = "Publishing...";
 
             const category = "General Sports";
-            const event = document.getElementById("event-name").value;
+            const event = normalizeEventName(document.getElementById("event-name").value);
             const gold = document.getElementById("gold-winner").value || "";
             const silver = document.getElementById("silver-winner").value || "";
             const bronze = document.getElementById("bronze-winner").value || "";
@@ -897,6 +911,61 @@
             }
         }
 
+        
+        function openResultEditor(index) {
+            const evt = currentLogs[index];
+            if (!evt) return;
+
+            document.getElementById("edit-result-index").value = index;
+            document.getElementById("edit-event-name").value = normalizeEventName(evt.event || evt.name || "");
+            document.getElementById("edit-gold").value = evt.gold || "";
+            document.getElementById("edit-silver").value = evt.silver || "";
+            document.getElementById("edit-bronze").value = evt.bronze || "";
+            document.getElementById("edit-result-status").textContent = "";
+            document.getElementById("result-edit-modal").style.display = "flex";
+        }
+
+        function closeResultEditor() {
+            document.getElementById("result-edit-modal").style.display = "none";
+        }
+
+        function saveEditedResult() {
+            const index = parseInt(document.getElementById("edit-result-index").value, 10);
+            const event = normalizeEventName(document.getElementById("edit-event-name").value.trim());
+            const gold = document.getElementById("edit-gold").value || "";
+            const silver = document.getElementById("edit-silver").value || "";
+            const bronze = document.getElementById("edit-bronze").value || "";
+            const status = document.getElementById("edit-result-status");
+
+            if (!event || (!gold && !silver && !bronze)) {
+                status.textContent = "Enter the event and at least one medalist.";
+                return;
+            }
+
+            status.textContent = "Saving changes...";
+
+            const actionUrl =
+                `${API_ENDPOINT}?action=edit&index=${encodeURIComponent(index)}` +
+                `&event=${encodeURIComponent(event)}` +
+                `&gold=${encodeURIComponent(gold)}` +
+                `&silver=${encodeURIComponent(silver)}` +
+                `&bronze=${encodeURIComponent(bronze)}`;
+
+            fetch(actionUrl, { method: "POST", mode: "no-cors" })
+                .then(() => {
+                    status.textContent = "Saved. Refreshing results...";
+                    setTimeout(() => {
+                        closeResultEditor();
+                        syncDataEngine();
+                    }, 800);
+                })
+                .catch(err => {
+                    console.error("Edit result error:", err);
+                    status.textContent =
+                        "Edit failed. Add action=edit support to the Google Apps Script backend.";
+                });
+        }
+
         function syncDataEngine() {
             fetch(API_ENDPOINT)
                 .then(res => res.json())
@@ -907,16 +976,22 @@
                     }
 
                     if (data.events && data.events.length > 0) {
-                        currentLogs = data.events;
+                        currentLogs = data.events || [];
                         const logsBody = document.getElementById("logs-tbody");
                         logsBody.innerHTML = "";
-                        data.events.forEach(evt => {
+                        data.events.forEach((evt, index) => {
+                            const normalizedEvent = normalizeEventName(evt.event || evt.name);
                             logsBody.innerHTML += `
                                 <tr>
-                                    <td><strong>${evt.event || evt.name}</strong></td>
-                                    <td class="badge-gold">${evt.gold}</td>
-                                    <td class="badge-silver">${evt.silver}</td>
-                                    <td class="badge-bronze">${evt.bronze}</td>
+                                    <td><strong>${normalizedEvent}</strong></td>
+                                    <td class="badge-gold">${evt.gold || ""}</td>
+                                    <td class="badge-silver">${evt.silver || ""}</td>
+                                    <td class="badge-bronze">${evt.bronze || ""}</td>
+                                    <td>
+                                        <button class="btn-action btn-secondary"
+                                                style="padding:6px 10px;font-size:.68rem;"
+                                                onclick="openResultEditor(${index})">✎ Edit</button>
+                                    </td>
                                 </tr>`;
                         });
                     }
@@ -938,5 +1013,54 @@
             setInterval(syncDataEngine, 5000);
         });
     </script>
+
+    <div class="modal-overlay" id="result-edit-modal">
+        <div class="modal-card" style="max-width:620px;">
+            <h3>EDIT EVENT RESULT</h3>
+            <input type="hidden" id="edit-result-index">
+            <div class="form-group">
+                <label>Event / Division</label>
+                <input id="edit-event-name" type="text">
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                <div class="form-group">
+                    <label>Gold</label>
+                    <select id="edit-gold">
+                        <option value="">None / No Winner</option>
+                        <option value="Moniyan Empire">Moniyan Empire</option>
+                        <option value="Eruditio">Eruditio</option>
+                        <option value="Abyssal Domain">Abyssal Domain</option>
+                        <option value="Cadia Riverlands">Cadia Riverlands</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Silver</label>
+                    <select id="edit-silver">
+                        <option value="">None / No Winner</option>
+                        <option value="Moniyan Empire">Moniyan Empire</option>
+                        <option value="Eruditio">Eruditio</option>
+                        <option value="Abyssal Domain">Abyssal Domain</option>
+                        <option value="Cadia Riverlands">Cadia Riverlands</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Bronze</label>
+                    <select id="edit-bronze">
+                        <option value="">None / No Winner</option>
+                        <option value="Moniyan Empire">Moniyan Empire</option>
+                        <option value="Eruditio">Eruditio</option>
+                        <option value="Abyssal Domain">Abyssal Domain</option>
+                        <option value="Cadia Riverlands">Cadia Riverlands</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px;">
+                <button class="btn-action btn-secondary" onclick="closeResultEditor()">Cancel</button>
+                <button class="btn-action btn-primary" onclick="saveEditedResult()">Save Changes</button>
+            </div>
+            <div id="edit-result-status" style="margin-top:10px;font-size:.72rem;color:var(--text-secondary);"></div>
+        </div>
+    </div>
+
 </body>
 </html>
