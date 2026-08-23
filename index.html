@@ -977,7 +977,14 @@
                             <span style="font-size: 7pt; font-weight: normal;">Team Captain / Representative Signature</span>
                         </div>`;
                 });
-
+// 1. Awtomatikong kukunin ang kasalukuyang Tally/Standings Table rows
+    const mainTableBody = document.querySelector("#standings-table tbody") || document.querySelector("tbody");
+    const printBody = document.getElementById("print-standings-tbody");
+    
+    if (mainTableBody && printBody) {
+      // 2. Kopyahin ang mismong mga resulta at rankings papunta sa Print Preview Table
+      printBody.innerHTML = mainTableBody.innerHTML;
+    }
                 window.print();
             } else {
                 alert("Authentication Failed: One or more admin passwords are incorrect.");
