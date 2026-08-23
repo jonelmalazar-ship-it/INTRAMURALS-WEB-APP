@@ -26,22 +26,21 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-main); color: var(--text-primary); min-height: 100vh; position: relative; overflow-x: hidden; }
 
-        /* PRO MOBILE LEGENDS ESPORTS BACKGROUND EFFECT */
-        #bg-overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: 
+        #bg-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background:
                 radial-gradient(circle at 50% 20%, rgba(6, 182, 212, 0.25) 0%, transparent 60%),
                 radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.15) 0%, transparent 50%),
                 linear-gradient(to bottom, rgba(5, 7, 10, 0.85), rgba(5, 7, 10, 0.95)),
                 repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(6, 182, 212, 0.03) 3px, rgba(6, 182, 212, 0.03) 4px);
             background-size: cover, cover, cover, 100% 8px;
-            z-index: -1; 
+            z-index: -1;
         }
 
         .ml-particles {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: -1;
-            background-image: 
+            background-image:
                 radial-gradient(2px 2px at 20px 30px, var(--accent-color), rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 40px 70px, var(--accent-gold), rgba(0,0,0,0)),
                 radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0));
@@ -57,10 +56,10 @@
         }
 
         .app-container { max-width: 1240px; margin: 0 auto; padding: 20px 15px; }
-        
+
         .header-brand { text-align: left; margin-bottom: 20px; border-bottom: 1px solid var(--panel-border); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .brand-container { display: flex; align-items: center; gap: 15px; }
-        
+
         .school-logo-wrapper {
             width: 50px; height: 50px;
             display: flex; align-items: center; justify-content: center;
@@ -68,7 +67,7 @@
             filter: drop-shadow(0 0 12px var(--accent-color));
         }
         .school-logo-img { width: 100%; height: 100%; object-fit: contain; }
-        
+
         .header-brand h1 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; display: flex; align-items: center; gap: 10px; }
         .header-brand h1::before { content: ''; display: inline-block; width: 4px; height: 24px; background: var(--accent-color); box-shadow: 0 0 10px var(--accent-color); }
         .header-brand p { color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-top: 4px; }
@@ -98,40 +97,23 @@
         .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--panel-border); padding-bottom: 10px; }
         .panel-header h2 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        .faction-cell { display: flex; align-items: center; gap: 12px; }
-        .faction-logo-wrapper {
-            width: 36px; height: 42px;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-            background: transparent;
-            filter: drop-shadow(0 0 8px var(--accent-color));
-        }
-        .faction-logo-img { width: 100%; height: 100%; object-fit: contain; }
-
         .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
         label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 0.08em; }
         input, select { width: 100%; padding: 10px; border-radius: 4px; border: 1px solid var(--panel-border); background: rgba(0, 0, 0, 0.7); color: #fff; font-size: 0.85rem; outline: none; }
         input:focus, select:focus { border-color: var(--accent-color); }
 
-        .btn-action { padding: 10px 18px; border-radius: 4px; border: none; font-family: var(--font-display); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-action { padding: 8px 14px; border-radius: 4px; border: none; font-family: var(--font-display); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-action:disabled { opacity: 0.5; cursor: not-allowed; }
         .btn-primary { background: var(--accent-color); color: #000; }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
         .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid var(--panel-border); }
-        .btn-gold { background: var(--accent-gold); color: #000; box-shadow: 0 0 12px rgba(245, 158, 11, 0.4); }
+        .btn-danger { background: #ef4444; color: #fff; }
+        .btn-warning { background: var(--accent-gold); color: #000; }
 
         .data-table-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
         table { width: 100%; border-collapse: collapse; text-align: left; min-width: 500px; }
         th { padding: 10px; font-size: 0.65rem; text-transform: uppercase; color: var(--text-secondary); border-bottom: 1px solid var(--panel-border); font-weight: 700; }
         td { padding: 12px 10px; border-bottom: 1px solid var(--panel-border); font-size: 0.85rem; }
 
-        .progress-bar-container { width: 100%; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; margin-top: 6px; min-width: 80px; }
-        .progress-bar-fill { height: 100%; background: var(--accent-color); border-radius: 2px; transition: width 0.5s ease; box-shadow: 0 0 8px var(--accent-color); }
-        .badge-rank { font-family: var(--font-mono); font-weight: 800; font-size: 0.8rem; color: var(--text-secondary); }
-        .badge-gold { color: var(--accent-gold); font-family: var(--font-mono); font-weight: 700; }
-        .badge-silver { color: var(--accent-silver); font-family: var(--font-mono); font-weight: 700; }
-        .badge-bronze { color: var(--accent-bronze); font-family: var(--font-mono); font-weight: 700; }
-        .badge-total { color: #fff; font-family: var(--font-mono); font-weight: 800; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; }
-
-        /* TRACK SWITCH LIST STYLING */
         .track-switch-list { display: flex; flex-direction: column; gap: 10px; }
         .track-switch-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--panel-border); border-radius: 6px; transition: border-color 0.2s; }
         .track-switch-row:has(.track-switch-input:checked) { border-color: var(--accent-color); box-shadow: 0 0 10px var(--accent-glow); }
@@ -143,7 +125,6 @@
         .track-switch input:checked + .track-switch-slider { background: var(--accent-color); box-shadow: 0 0 8px var(--accent-glow); }
         .track-switch input:checked + .track-switch-slider:before { transform: translateX(20px); }
 
-        /* FLOATING AUDIO CONTROLLER FOR USER INTERACTION */
         .audio-user-trigger {
             position: fixed; bottom: 20px; right: 20px;
             background: rgba(10, 14, 26, 0.95);
@@ -155,31 +136,10 @@
             font-family: var(--font-display); font-size: 0.8rem; font-weight: 700;
         }
 
-        /* MODAL STYLING FOR ADMIN AUTH & CHAMPION DECLARATION */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-card { background: #0b0f19; border: 2px solid var(--accent-gold); border-radius: 8px; padding: 25px; width: 90%; max-width: 500px; color: #fff; }
-        .modal-card h3 { font-family: var(--font-display); color: var(--accent-gold); margin-bottom: 15px; font-size: 1.2rem; text-transform: uppercase; text-align: center; }
+        .admin-only-cell { display: none; }
 
-        /* PRINT OFFICIAL RESULT / CERTIFICATE STYLING */
-        #printable-declaration { display: none; }
-        @media print {
-            body * { visibility: hidden; }
-            #printable-declaration, #printable-declaration * { visibility: visible; }
-            #printable-declaration { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 30px; color: #000; background: #fff; font-family: 'Inter', sans-serif; }
-            .print-header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 20px; }
-            .print-title { font-size: 22pt; font-weight: 800; text-transform: uppercase; margin-bottom: 5pt; }
-            .print-subtitle { font-size: 12pt; text-transform: uppercase; color: #444; }
-            .print-champ-box { border: 3px double #000; padding: 20px; text-align: center; margin: 20px 0; background: #f9f9f9; }
-            .print-champ-name { font-size: 26pt; font-weight: 900; color: #000; text-transform: uppercase; }
-            .print-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-            .print-table th, .print-table td { border: 1px solid #000; padding: 8px; text-align: center; font-size: 10pt; }
-            .signatures-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 40px; text-align: center; }
-            .sig-box { border-top: 1px solid #000; padding-top: 5px; font-size: 9pt; font-weight: bold; }
-            .losing-sig-section { margin-top: 40px; border: 1px solid #666; padding: 15px; }
-            .losing-sig-title { font-size: 10pt; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; text-align: center; }
-            .losing-sig-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; text-align: center; }
-            .audio-user-trigger { display: none !important; }
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-card { background: #0b0f19; border: 1px solid var(--accent-gold); border-radius: 8px; padding: 25px; width: 90%; max-width: 480px; box-shadow: 0 0 20px rgba(245, 158, 11, 0.2); }
 
         @media (max-width: 768px) {
             .header-brand h1 { font-size: 1.3rem; }
@@ -193,12 +153,10 @@
     <div id="bg-overlay"></div>
     <div class="ml-particles"></div>
 
-    <!-- AUDIO PLAYER ELEMENT -->
     <audio id="global-bgm" loop preload="auto">
         <source id="bgm-source" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- FLOATING UNMUTE BUTTON FOR USERS -->
     <div class="audio-user-trigger" id="audio-enable-btn" onclick="userEnableAudio()">
         <span id="audio-icon">🔊</span> <span id="audio-text">Enable Audio Experience</span>
     </div>
@@ -207,9 +165,9 @@
         <header class="header-brand">
             <div class="brand-container">
                 <div class="school-logo-wrapper" id="school-logo-container">
-                    <img class="school-logo-img" 
-                         src="./images (1).png" 
-                         onerror="handleImageFallback(this, ['./images (1).png', './school-logo.png', './school.png'], 'ACHS')" 
+                    <img class="school-logo-img"
+                         src="./images (1).png"
+                         onerror="handleImageFallback(this)"
                          alt="ACHS Logo">
                 </div>
                 <div>
@@ -226,14 +184,14 @@
                     <button class="dot-btn" style="background:#a855f7;" title="Purple" onclick="changeAccent('#a855f7', 'rgba(168, 85, 247, 0.45)')"></button>
                     <button class="dot-btn" style="background:#ef4444;" title="Red" onclick="changeAccent('#ef4444', 'rgba(239, 68, 68, 0.45)')"></button>
                 </div>
-                <div class="status-badge" id="status-tag">SYSTEM STATUS: OPERATIONAL</div>
+                <div class="status-badge" id="status-tag">ROLE: GUEST (VIEW ONLY)</div>
             </div>
         </header>
 
         <section class="kpi-grid">
             <div class="kpi-card active-leader">
                 <div class="kpi-label">Tournament Leader</div>
-                <div class="kpi-value" id="kpi-leader">Moniyan Empire</div>
+                <div class="kpi-value" id="kpi-leader">-</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-label">Events Completed</div>
@@ -262,7 +220,7 @@
                     </div>
                 </div>
                 <div class="data-table-wrapper">
-                    <table class="standings-table">
+                    <table>
                         <thead>
                             <tr>
                                 <th>Rank</th>
@@ -285,17 +243,18 @@
                     <h2>Completed Events Log</h2>
                 </div>
                 <div class="data-table-wrapper">
-                    <table class="logs-table">
+                    <table>
                         <thead>
                             <tr>
                                 <th>Event Category</th>
                                 <th>Gold Medalist</th>
                                 <th>Silver Medalist</th>
                                 <th>Bronze Medalist</th>
+                                <th class="admin-only-cell" id="logs-admin-header">Admin Operations</th>
                             </tr>
                         </thead>
                         <tbody id="logs-tbody">
-                            <tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">No event logs recorded yet.</td></tr>
+                            <tr><td colspan="5" style="text-align:center; color:var(--text-secondary);">No event logs recorded yet.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -311,11 +270,10 @@
                     <label>Security Key</label>
                     <input type="password" id="admin-pin" placeholder="Enter Password" style="text-align: center;">
                 </div>
-                <button class="btn-action btn-primary" style="width: 100%; margin-top: 10px;" onclick="authenticateAdmin()">Authenticate</button>
+                <button class="btn-action btn-primary" id="auth-btn" style="width: 100%; margin-top: 10px;" onclick="authenticateAdmin()">Authenticate</button>
             </section>
 
             <div id="admin-controls" style="display: none;">
-                <!-- NEW BACKGROUND MUSIC CONTROL PANEL IN ADMIN CONSOLE -->
                 <section class="glass-panel" style="border: 1px solid var(--accent-gold);">
                     <div class="panel-header">
                         <h2>🎵 Live Esports BGM Broadcast Control</h2>
@@ -344,27 +302,6 @@
                                     <span class="track-switch-slider"></span>
                                 </label>
                             </div>
-                            <div class="track-switch-row">
-                                <span class="track-switch-name">5v5 Esports Cyber Action Anthem</span>
-                                <label class="track-switch">
-                                    <input type="checkbox" class="track-switch-input" data-track="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a8d11d.mp3" onchange="handleTrackSwitch(this)">
-                                    <span class="track-switch-slider"></span>
-                                </label>
-                            </div>
-                            <div class="track-switch-row">
-                                <span class="track-switch-name">Hero Select Hype Beats</span>
-                                <label class="track-switch">
-                                    <input type="checkbox" class="track-switch-input" data-track="https://cdn.pixabay.com/download/audio/2021/09/06/audio_8b30906323.mp3" onchange="handleTrackSwitch(this)">
-                                    <span class="track-switch-slider"></span>
-                                </label>
-                            </div>
-                            <div class="track-switch-row">
-                                <span class="track-switch-name">Grand Final Victory Theme</span>
-                                <label class="track-switch">
-                                    <input type="checkbox" class="track-switch-input" data-track="https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939ee935d.mp3" onchange="handleTrackSwitch(this)">
-                                    <span class="track-switch-slider"></span>
-                                </label>
-                            </div>
                         </div>
                         <button class="btn-action btn-secondary" style="width: 100%; margin-top: 12px;" onclick="pauseAllTracks()">⏸ PAUSE ALL (STOP BROADCAST)</button>
                     </div>
@@ -390,18 +327,17 @@
                                     <option value="Fun Run (Boys)">Fun Run (Boys)</option>
                                     <option value="Fun Run (Girls)">Fun Run (Girls)</option>
                                 </optgroup>
-                                
+
                                 <optgroup label="Basketball Categories">
                                     <option value="Basketball Boys - Midget Division (Grade 7-9)">Basketball Boys - Midget Division (Grade 7-9)</option>
                                     <option value="Basketball Boys - Junior Division (Grade 10-12)">Basketball Boys - Junior Division (Grade 10-12)</option>
                                     <option value="Basketball (Girls)">Basketball (Girls)</option>
                                 </optgroup>
 
-                                <optgroup label="Sociocultural & Performing Arts">
-                                    <option value="Singing Contest - Vocal Solo Mixed">Singing Contest - Vocal Solo Mixed</option>
-                                    <option value="Singing Contest - Duet">Singing Contest - Duet</option>
+                                <optgroup label="Festival of Talents">
                                     <option value="Hiphop Dance">Hiphop Dance</option>
-                                    <option value="Cheerdance Competition">Cheerdance Competition</option>
+                                    <option value="Vocal Duet">Vocal Duet</option>
+                                    <option value="Vocal Solo">Vocal Solo</option>
                                 </optgroup>
 
                                 <optgroup label="Athletics - Running & Walking (Boys)">
@@ -483,651 +419,518 @@
                                     <option value="Valorant">Valorant</option>
                                 </optgroup>
                             </select>
-<div id="mlbb-division-note" style="font-size:.66rem;color:var(--text-secondary);margin-top:5px;line-height:1.45;">
-        Mobile Legends divisions: <strong>Mythic</strong> and <strong>Open</strong>. Existing unclassified MLBB results are treated as <strong>Open</strong>.
-    </div>
-                        </div>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                            <div class="form-group">
-                                <label>Gold Winner</label>
-                                <select id="gold-winner">
-                                    <option value="">-- None / No Winner --</option>
-                                    <option value="Moniyan Empire">Moniyan Empire</option>
-                                    <option value="Eruditio">Eruditio</option>
-                                    <option value="Abyssal Domain">Abyssal Domain</option>
-                                    <option value="Cadia Riverlands">Cadia Riverlands</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Silver Winner</label>
-                                <select id="silver-winner">
-                                    <option value="">-- None / No Winner --</option>
-                                    <option value="Moniyan Empire">Moniyan Empire</option>
-                                    <option value="Eruditio">Eruditio</option>
-                                    <option value="Abyssal Domain">Abyssal Domain</option>
-                                    <option value="Cadia Riverlands">Cadia Riverlands</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Bronze Winner</label>
-                                <select id="bronze-winner">
-                                    <option value="">-- None / No Winner --</option>
-                                    <option value="Moniyan Empire">Moniyan Empire</option>
-                                    <option value="Eruditio">Eruditio</option>
-                                    <option value="Abyssal Domain">Abyssal Domain</option>
-                                    <option value="Cadia Riverlands">Cadia Riverlands</option>
-                                </select>
+                            <div style="font-size:.66rem;color:var(--text-secondary);margin-top:5px;line-height:1.45;">
+                                Mobile Legends divisions: <strong>Mythic</strong> and <strong>Open</strong>.
                             </div>
                         </div>
-                        <button type="submit" id="submit-btn" class="btn-action btn-primary" style="margin-top: 15px;">Publish Match Results</button>
+                        <div class="form-group">
+                            <label>Gold Medalist Team</label>
+                            <select id="gold-winner" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Silver Medalist Team</label>
+                            <select id="silver-winner" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Bronze Medalist Team</label>
+                            <select id="bronze-winner" required></select>
+                        </div>
+                        <button type="submit" id="submit-btn" class="btn-action btn-primary" style="width: 100%; margin-top: 10px;">Save Event Result</button>
                     </form>
-                </section>
-
-                <section class="glass-panel">
-                    <div class="panel-header">
-                        <h2>Manage / Edit Results</h2>
-                    </div>
-                    <div class="data-table-wrapper">
-                        <table class="logs-table">
-                            <thead>
-                                <tr>
-                                    <th>Event Category</th>
-                                    <th>Gold</th>
-                                    <th>Silver</th>
-                                    <th>Bronze</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="admin-logs-tbody">
-                                <tr><td colspan="5" style="text-align:center; color:var(--text-secondary);">No event logs recorded yet.</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-
-                <section class="glass-panel">
-                    <div class="panel-header">
-                        <h2>Operations & Official Championship</h2>
-                    </div>
-                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                        <button class="btn-action btn-gold" onclick="openChampionAuthModal()">🏆 DECLARE OVERALL CHAMPION</button>
-                        <button class="btn-action btn-secondary" onclick="window.print()">Export Printable PDF</button>
-                    </div>
                 </section>
             </div>
         </main>
     </div>
 
-    <!-- 3-ADMIN AUTHENTICATION MODAL -->
-    <div class="modal-overlay" id="champ-auth-modal">
+    <div id="edit-modal" class="modal-overlay">
         <div class="modal-card">
-            <h3>3-Admin Final Authorization</h3>
-            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 15px; text-align: center;">Enter passwords of all 3 authorized administrators to confirm championship results.</p>
-            
+            <h3 style="font-family: var(--font-display); color: var(--accent-gold); margin-bottom: 15px; text-transform: uppercase;">Edit Event Record</h3>
+            <input type="hidden" id="edit-log-index">
             <div class="form-group">
-                <label>JONEL T. MALAZAR (Admin 1)</label>
-                <input type="password" id="pass-admin1" placeholder="Enter PIN">
+                <label>Event Category</label>
+                <input type="text" id="edit-event-name" required>
             </div>
             <div class="form-group">
-                <label>NENETH F. FORONDA (Admin 2)</label>
-                <input type="password" id="pass-admin2" placeholder="Enter PIN">
+                <label>Gold Medalist</label>
+                <select id="edit-gold-winner" required></select>
             </div>
             <div class="form-group">
-                <label>RAQUEL C. BERMAS (Admin 3)</label>
-                <input type="password" id="pass-admin3" placeholder="Enter PIN">
+                <label>Silver Medalist</label>
+                <select id="edit-silver-winner" required></select>
             </div>
-
+            <div class="form-group">
+                <label>Bronze Medalist</label>
+                <select id="edit-bronze-winner" required></select>
+            </div>
+            <div id="edit-status" style="margin-top:8px;font-size:.72rem;color:var(--text-secondary);"></div>
             <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button class="btn-action btn-gold" style="flex: 1;" onclick="processChampionDeclaration()">Confirm & Print Result</button>
-                <button class="btn-action btn-secondary" onclick="closeChampionAuthModal()">Cancel</button>
+                <button class="btn-action btn-primary" style="flex: 1;" onclick="saveEditedLog()">Save Changes</button>
+                <button class="btn-action btn-danger" onclick="closeEditModal()">Cancel</button>
             </div>
-        </div>
-    </div>
-
-    <!-- PRINTABLE OFFICIAL RESULT & SIGNATURE SHEET -->
-    <div id="printable-declaration">
-        <div class="print-header">
-            <div class="print-title">ACHS INTRAMURALS 2026</div>
-            <div class="print-subtitle">Official Final Results & Championship Declaration</div>
-        </div>
-
-        <div class="print-champ-box">
-            <div style="font-size: 12pt; text-transform: uppercase; letter-spacing: 2px;">OVERALL CHAMPION</div>
-            <div class="print-champ-name" id="print-champ-name-target">MONIYAN EMPIRE</div>
-        </div>
-
-        <h4 style="margin-top: 20px; text-transform: uppercase;">Final Medal Tally</h4>
-        <table class="print-table">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Faction Name</th>
-                    <th>Gold</th>
-                    <th>Silver</th>
-                    <th>Bronze</th>
-                    <th>Total Medals</th>
-                </tr>
-            </thead>
-            <tbody id="print-standings-tbody"></tbody>
-        </table>
-
-        <div style="margin-top: 30px;">
-            <div style="font-size: 10pt; font-weight: bold; text-transform: uppercase; margin-bottom: 10px;">Certified & Approved By (Executive Board):</div>
-            <div class="signatures-grid">
-                <div class="sig-box">
-                    JONEL T. MALAZAR<br>
-                    <span style="font-weight: normal; font-size: 8pt;">Tournament Director</span>
-                </div>
-                <div class="sig-box">
-                    NENETH F. FORONDA<br>
-                    <span style="font-weight: normal; font-size: 8pt;">Overall Co-Chairperson</span>
-                </div>
-                <div class="sig-box">
-                    RAQUEL C. BERMAS<br>
-                    <span style="font-weight: normal; font-size: 8pt;">School Administrator</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="losing-sig-section">
-            <div class="losing-sig-title">Conforme & Acknowledgement of Losing Factions</div>
-            <div class="losing-sig-grid" id="losing-signatures-target"></div>
         </div>
     </div>
 
     <script>
+        // ── BACKEND CONNECTION ──────────────────────────────────────────
+        // All data (standings, events, audio state) lives in the Google
+        // Sheet behind this Apps Script Web App, not in this page. Every
+        // visitor polls it every 5s, so everyone sees the same live data.
         const API_ENDPOINT = "https://script.google.com/macros/s/AKfycbw6nmABGn6FIWhTsiGzF5qaYgkr8bQN2pWYjX5vK7dkkkmw1zsdPjKWPkaKaKaTMvrM/exec";
 
-        const factionImageCandidates = {
-            "Moniyan Empire": ["./moniyan.png", "./moniyan.jpg", "./77501193...1286_n.jpg"],
-            "Abyssal Domain": ["./abyssal.png", "./abyss.png", "./abyssal.jpg", "./77512704...006_n.jpg"],
-            "Cadia Riverlands": ["./cadia.png", "./cadia.jpg", "./77479470...279_n.jpg"],
-            "Eruditio": ["./eruditio.png", "./eruditio.jpg", "./7750366...9899_n.jpg"]
-        };
+        // Canonical faction names — MUST match exactly what Code.gs uses
+        // (it hardcodes this same list when building/rebuilding Standings).
+        // If these don't match character-for-character, medal tallies for
+        // a mismatched name silently won't count.
+        const factions = ["Moniyan Empire", "Eruditio", "Abyssal Domain", "Cadia Riverlands"];
 
         let currentStandings = [];
         let currentLogs = [];
-        let audioState = { playing: false, track: "" };
-        let isAdminAuthenticated = false;
 
-        
-        function normalizeEventName(name) {
-            const value = String(name || "").trim();
-            if (value === "Mobile Legends: Bang Bang") return "Mobile Legends: Bang Bang - Open";
-            if (value === "Mobile Legends - Winner") return "Mobile Legends: Bang Bang - Open";
-            if (value === "MLBB") return "Mobile Legends: Bang Bang - Open";
-            return value;
+        // adminToken starts null on every page load/refresh. It's only
+        // set inside authenticateAdmin(), after the backend verifies the
+        // password and returns a real, time-limited token. Every admin
+        // action below sends this token, and the backend independently
+        // re-checks it — so editing/deleting/publishing is blocked at
+        // the server, not just hidden in the UI.
+        let adminToken = null;
+        function isAdminAuthenticated() { return !!adminToken; }
+
+        function initApp() {
+            populateFactionSelects();
+            syncDataEngine();
+            setInterval(syncDataEngine, 5000);
         }
 
-        function handleImageFallback(imgElem, list, fallbackCode) {
-            let idx = parseInt(imgElem.dataset.failIndex || "0");
-            if (idx < list.length) {
-                imgElem.dataset.failIndex = idx + 1;
-                imgElem.src = list[idx];
-            } else {
-                imgElem.style.display = 'none';
-                if (imgElem.parentElement) {
-                    imgElem.parentElement.innerText = fallbackCode;
-                }
-            }
+        function populateFactionSelects() {
+            const selects = ['gold-winner', 'silver-winner', 'bronze-winner', 'edit-gold-winner', 'edit-silver-winner', 'edit-bronze-winner'];
+            selects.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.innerHTML = '<option value="">-- Select Faction --</option>';
+                factions.forEach(f => {
+                    el.innerHTML += `<option value="${f}">${f}</option>`;
+                });
+            });
         }
 
-        function changeAccent(colorHex, glowRgba) {
-            document.documentElement.style.setProperty('--accent-color', colorHex);
-            document.documentElement.style.setProperty('--accent-glow', glowRgba);
-        }
-
-        function navigate(tabId, btnElement) {
+        function navigate(tabId, btn) {
             document.querySelectorAll('.tab-viewport').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            if (btnElement) btnElement.classList.add('active');
+            btn.classList.add('active');
         }
 
+        // ── ADMIN LOGIN ─────────────────────────────────────────────────
         function authenticateAdmin() {
-            if (document.getElementById("admin-pin").value === "mystarlink120616") {
-                isAdminAuthenticated = true;
-                document.getElementById("auth-card").style.display = "none";
-                document.getElementById("admin-controls").style.display = "block";
-                renderAdminLogs(currentLogs);
-            } else {
-                alert("Access Denied: Invalid Security Pin.");
-            }
-        }
+            const pinInput = document.getElementById('admin-pin');
+            const password = pinInput.value;
+            const btn = document.getElementById('auth-btn');
 
-        /* LIVE AUDIO REALTIME CONTROLLER */
-        function userEnableAudio() {
-            const player = document.getElementById("global-bgm");
-            if (player.paused) {
-                player.play().then(() => {
-                    document.getElementById("audio-icon").innerText = "🔊";
-                    document.getElementById("audio-text").innerText = "BGM Playing";
-                }).catch(e => console.log("Audio play blocked by browser:", e));
-            } else {
-                player.pause();
-                document.getElementById("audio-icon").innerText = "🔇";
-                document.getElementById("audio-text").innerText = "Sound Muted";
-            }
-        }
-
-        function handleTrackSwitch(checkbox) {
-            const allSwitches = document.querySelectorAll('.track-switch-input');
-            if (checkbox.checked) {
-                allSwitches.forEach(sw => { if (sw !== checkbox) sw.checked = false; });
-                broadcastAudio('play', checkbox.dataset.track);
-            } else {
-                broadcastAudio('pause', checkbox.dataset.track);
-            }
-        }
-
-        function pauseAllTracks() {
-            document.querySelectorAll('.track-switch-input').forEach(sw => sw.checked = false);
-            broadcastAudio('pause', '');
-        }
-
-        function broadcastAudio(status, trackUrl) {
-            const actionUrl = `${API_ENDPOINT}?audioStatus=${encodeURIComponent(status)}&audioTrack=${encodeURIComponent(trackUrl)}`;
-
-            fetch(actionUrl, { method: "POST", mode: "no-cors" })
-                .then(() => {
-                    applyAudioState(status === 'play', trackUrl);
-                })
-                .catch(err => console.error("Audio Sync Error:", err));
-        }
-
-        function syncTrackSwitches(activeTrackUrl) {
-            document.querySelectorAll('.track-switch-input').forEach(sw => {
-                sw.checked = (sw.dataset.track === activeTrackUrl);
-            });
-        }
-
-        function applyAudioState(isPlaying, trackUrl) {
-            const player = document.getElementById("global-bgm");
-            const src = document.getElementById("bgm-source");
-
-            if (src.src !== trackUrl && trackUrl) {
-                src.src = trackUrl;
-                player.load();
-            }
-
-            if (isPlaying) {
-                player.play().then(() => {
-                    document.getElementById("audio-icon").innerText = "🔊";
-                    document.getElementById("audio-text").innerText = "Live Esports BGM";
-                }).catch(() => {
-                    document.getElementById("audio-text").innerText = "Click to Enable Audio";
-                });
-            } else {
-                player.pause();
-                document.getElementById("audio-icon").innerText = "🔇";
-                document.getElementById("audio-text").innerText = "BGM Paused by Admin";
-            }
-        }
-
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            const submitBtn = document.getElementById("submit-btn");
-            submitBtn.disabled = true;
-            submitBtn.innerText = "Publishing...";
-
-            const category = "General Sports";
-            const event = normalizeEventName(document.getElementById("event-name").value);
-            const gold = document.getElementById("gold-winner").value || "";
-            const silver = document.getElementById("silver-winner").value || "";
-            const bronze = document.getElementById("bronze-winner").value || "";
-
-            if (!gold && !silver && !bronze) {
-                alert("Pumili ng kahit isang panalo (Gold, Silver, o Bronze).");
-                submitBtn.disabled = false;
-                submitBtn.innerText = "Publish Match Results";
+            if (!password) {
+                alert('Enter your Admin password.');
                 return;
             }
 
-            const postUrl = `${API_ENDPOINT}?category=${encodeURIComponent(category)}&event=${encodeURIComponent(event)}&gold=${encodeURIComponent(gold)}&silver=${encodeURIComponent(silver)}&bronze=${encodeURIComponent(bronze)}`;
+            btn.disabled = true;
+            btn.innerText = 'Verifying...';
 
-            fetch(postUrl, {
-                method: "POST",
-                mode: "no-cors"
-            })
-            .then(() => {
-                alert("Result Saved Successfully!");
-                document.getElementById("event-form").reset();
-                submitBtn.disabled = false;
-                submitBtn.innerText = "Publish Match Results";
-                setTimeout(syncDataEngine, 1500);
-            })
-            .catch(err => {
-                console.error("Error:", err);
-                alert("Submission failed. Check connection.");
-                submitBtn.disabled = false;
-                submitBtn.innerText = "Publish Match Results";
-            });
-        }
+            const loginUrl = `${API_ENDPOINT}?action=login&role=ADMIN&password=${encodeURIComponent(password)}`;
 
-        function renderStandings(standingsList) {
-            const standingsBody = document.getElementById("standings-tbody");
-            standingsBody.innerHTML = "";
+            fetch(loginUrl)
+                .then(res => res.json())
+                .then(data => {
+                    btn.disabled = false;
+                    btn.innerText = 'Authenticate';
 
-            const ranked = (standingsList || []).map(item => ({
-                ...item,
-                gold: parseInt(item.gold || 0, 10),
-                silver: parseInt(item.silver || 0, 10),
-                bronze: parseInt(item.bronze || 0, 10)
-            })).sort((a, b) => {
-                if (b.gold !== a.gold) return b.gold - a.gold;
-                if (b.silver !== a.silver) return b.silver - a.silver;
-                if (b.bronze !== a.bronze) return b.bronze - a.bronze;
-                return String(a.faction || "").localeCompare(String(b.faction || ""));
-            });
+                    if (data.status === 'success' && data.token) {
+                        adminToken = data.token;
+                        pinInput.value = '';
+                        document.getElementById('auth-card').style.display = 'none';
+                        document.getElementById('admin-controls').style.display = 'block';
 
-            const highestGold = Math.max(...ranked.map(s => s.gold || 0), 1);
-            let totalEventsAwarded = 0;
-            let totalMedalsCount = 0;
+                        const statusTag = document.getElementById('status-tag');
+                        statusTag.innerText = 'ROLE: ADMIN (AUTHENTICATED)';
+                        statusTag.style.borderColor = 'var(--accent-gold)';
+                        statusTag.style.color = 'var(--accent-gold)';
 
-            document.getElementById("kpi-leader").innerText =
-                ranked.length ? ranked[0].faction : "No Leader Yet";
-
-            ranked.forEach((row, i) => {
-                const g = row.gold;
-                const sl = row.silver;
-                const b = row.bronze;
-                const totalMedals = g + sl + b;
-
-                totalEventsAwarded += g;
-                totalMedalsCount += totalMedals;
-
-                const pct = Math.round((g / highestGold) * 100);
-                const candidates = factionImageCandidates[row.faction] || [];
-                const candidatesJson = JSON.stringify(candidates).replace(/"/g, '&quot;');
-                const shortCode = String(row.faction || "").substring(0, 3).toUpperCase();
-
-                standingsBody.innerHTML += `
-                    <tr>
-                        <td><span class="badge-rank">0${i + 1}</span></td>
-                        <td>
-                            <div class="faction-cell">
-                                <div class="faction-logo-wrapper">
-                                    <img class="faction-logo-img"
-                                         src="${candidates[0] || ''}"
-                                         onerror="handleImageFallback(this, ${candidatesJson}, '${shortCode}')"
-                                         alt="${row.faction}">
-                                </div>
-                                <div>
-                                    <strong>${row.faction}</strong>
-                                    <div class="progress-bar-container">
-                                        <div class="progress-bar-fill" style="width: ${pct}%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="badge-gold">${g}</td>
-                        <td class="badge-silver">${sl}</td>
-                        <td class="badge-bronze">${b}</td>
-                        <td><span class="badge-total">${totalMedals}</span></td>
-                    </tr>`;
-            });
-
-            document.getElementById("kpi-completed").innerText = totalEventsAwarded;
-            document.getElementById("kpi-medals").innerText = totalMedalsCount;
-        }
-
-        /* PUBLIC event log (read-only, no edit affordance) */
-        function renderPublicLogs(events) {
-            const logsBody = document.getElementById("logs-tbody");
-            if (!events || !events.length) {
-                logsBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-secondary);">No event logs recorded yet.</td></tr>`;
-                return;
-            }
-            logsBody.innerHTML = "";
-            events.forEach(evt => {
-                const normalizedEvent = normalizeEventName(evt.event || evt.name);
-                logsBody.innerHTML += `
-                    <tr>
-                        <td><strong>${normalizedEvent}</strong></td>
-                        <td class="badge-gold">${evt.gold || ""}</td>
-                        <td class="badge-silver">${evt.silver || ""}</td>
-                        <td class="badge-bronze">${evt.bronze || ""}</td>
-                    </tr>`;
-            });
-        }
-
-        /* ADMIN-ONLY event log with edit buttons — only rendered after password auth */
-        function renderAdminLogs(events) {
-            if (!isAdminAuthenticated) return;
-            const adminBody = document.getElementById("admin-logs-tbody");
-            if (!adminBody) return;
-            if (!events || !events.length) {
-                adminBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-secondary);">No event logs recorded yet.</td></tr>`;
-                return;
-            }
-            adminBody.innerHTML = "";
-            events.forEach((evt, index) => {
-                const normalizedEvent = normalizeEventName(evt.event || evt.name);
-                adminBody.innerHTML += `
-                    <tr>
-                        <td><strong>${normalizedEvent}</strong></td>
-                        <td class="badge-gold">${evt.gold || ""}</td>
-                        <td class="badge-silver">${evt.silver || ""}</td>
-                        <td class="badge-bronze">${evt.bronze || ""}</td>
-                        <td>
-                            <button class="btn-action btn-secondary"
-                                    style="padding:6px 10px;font-size:.68rem;"
-                                    onclick="openResultEditor(${index})">✎ Edit</button>
-                        </td>
-                    </tr>`;
-            });
-        }
-
-        /* CHAMPION DECLARATION & 3-ADMIN AUTH FUNCTIONS */
-        function openChampionAuthModal() {
-            document.getElementById("champ-auth-modal").style.display = "flex";
-        }
-
-        function closeChampionAuthModal() {
-            document.getElementById("champ-auth-modal").style.display = "none";
-        }
-
-        function processChampionDeclaration() {
-            const p1 = document.getElementById("pass-admin1").value;
-            const p2 = document.getElementById("pass-admin2").value;
-            const p3 = document.getElementById("pass-admin3").value;
-
-            if (p1 === "jonel2026" && p2 === "neneth2026" && p3 === "raquel2026") {
-                closeChampionAuthModal();
-                
-                const leader = document.getElementById("kpi-leader").innerText;
-                document.getElementById("print-champ-name-target").innerText = leader;
-
-                const printBody = document.getElementById("print-standings-tbody");
-                printBody.innerHTML = "";
-                const rows = document.querySelectorAll("#standings-tbody tr");
-                let losingTeams = [];
-
-                rows.forEach((tr, idx) => {
-                    const cells = tr.querySelectorAll("td");
-                    const rank = cells[0].innerText;
-                    const factionName = tr.querySelector("strong").innerText;
-                    const g = cells[2].innerText;
-                    const s = cells[3].innerText;
-                    const b = cells[4].innerText;
-                    const tot = cells[5].innerText;
-
-                    if (idx > 0) losingTeams.push(factionName);
-
-                    printBody.innerHTML += `
-                        <tr>
-                            <td>${rank}</td>
-                            <td><strong>${factionName}</strong></td>
-                            <td>${g}</td>
-                            <td>${s}</td>
-                            <td>${b}</td>
-                            <td><strong>${tot}</strong></td>
-                        </tr>`;
-                });
-
-                const losingTarget = document.getElementById("losing-signatures-target");
-                losingTarget.innerHTML = "";
-                losingTeams.forEach(team => {
-                    losingTarget.innerHTML += `
-                        <div class="sig-box" style="margin-top: 30px;">
-                            ____________________________<br>
-                            <strong>${team}</strong><br>
-                            <span style="font-size: 7pt; font-weight: normal;">Team Captain / Representative Signature</span>
-                        </div>`;
-                });
-
-                window.print();
-            } else {
-                alert("Authentication Failed: One or more admin passwords are incorrect.");
-            }
-        }
-
-        
-        function openResultEditor(index) {
-            /* Defense in depth: even if this ever got called without auth,
-               refuse and re-prompt for the admin password before editing. */
-            if (!isAdminAuthenticated) {
-                const pin = prompt("Admin password required to edit a result:");
-                if (pin !== "mystarlink120616") {
-                    alert("Access Denied: Invalid Security Pin.");
-                    return;
-                }
-                isAdminAuthenticated = true;
-            }
-
-            const evt = currentLogs[index];
-            if (!evt) return;
-
-            document.getElementById("edit-result-index").value = index;
-            document.getElementById("edit-event-name").value = normalizeEventName(evt.event || evt.name || "");
-            document.getElementById("edit-gold").value = evt.gold || "";
-            document.getElementById("edit-silver").value = evt.silver || "";
-            document.getElementById("edit-bronze").value = evt.bronze || "";
-            document.getElementById("edit-result-status").textContent = "";
-            document.getElementById("result-edit-modal").style.display = "flex";
-        }
-
-        function closeResultEditor() {
-            document.getElementById("result-edit-modal").style.display = "none";
-        }
-
-        function saveEditedResult() {
-            const index = parseInt(document.getElementById("edit-result-index").value, 10);
-            const event = normalizeEventName(document.getElementById("edit-event-name").value.trim());
-            const gold = document.getElementById("edit-gold").value || "";
-            const silver = document.getElementById("edit-silver").value || "";
-            const bronze = document.getElementById("edit-bronze").value || "";
-            const status = document.getElementById("edit-result-status");
-
-            if (!event || (!gold && !silver && !bronze)) {
-                status.textContent = "Enter the event and at least one medalist.";
-                return;
-            }
-
-            status.textContent = "Saving changes...";
-
-            const actionUrl =
-                `${API_ENDPOINT}?action=edit&index=${encodeURIComponent(index)}` +
-                `&event=${encodeURIComponent(event)}` +
-                `&gold=${encodeURIComponent(gold)}` +
-                `&silver=${encodeURIComponent(silver)}` +
-                `&bronze=${encodeURIComponent(bronze)}`;
-
-            fetch(actionUrl, { method: "POST", mode: "no-cors" })
-                .then(() => {
-                    status.textContent = "Saved. Refreshing results...";
-                    setTimeout(() => {
-                        closeResultEditor();
-                        syncDataEngine();
-                    }, 800);
+                        applyAdminVisibility();
+                        renderLogs();
+                    } else {
+                        alert('Access Denied: ' + (data.message || 'Invalid password.'));
+                    }
                 })
                 .catch(err => {
-                    console.error("Edit result error:", err);
-                    status.textContent =
-                        "Edit failed. Add action=edit support to the Google Apps Script backend.";
+                    btn.disabled = false;
+                    btn.innerText = 'Authenticate';
+                    console.error('Login error:', err);
+                    alert('Could not reach the server. Check your connection.');
                 });
         }
 
+        function applyAdminVisibility() {
+            const authed = isAdminAuthenticated();
+            document.getElementById('logs-admin-header').style.display = authed ? 'table-cell' : 'none';
+        }
+
+        // ── PUBLISH NEW RESULT ──────────────────────────────────────────
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            if (!isAdminAuthenticated()) {
+                alert('Kailangan mag-login muna bilang Admin.');
+                return;
+            }
+
+            const eventName = document.getElementById('event-name').value;
+            const gold = document.getElementById('gold-winner').value;
+            const silver = document.getElementById('silver-winner').value;
+            const bronze = document.getElementById('bronze-winner').value;
+
+            if (gold === silver || gold === bronze || silver === bronze) {
+                alert('Validation Error: Teams cannot win multiple medals in the same event!');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Saving...';
+
+            const postUrl =
+                `${API_ENDPOINT}?action=publish` +
+                `&category=${encodeURIComponent('General Sports')}` +
+                `&event=${encodeURIComponent(eventName)}` +
+                `&gold=${encodeURIComponent(gold)}` +
+                `&silver=${encodeURIComponent(silver)}` +
+                `&bronze=${encodeURIComponent(bronze)}` +
+                `&token=${encodeURIComponent(adminToken)}`;
+
+            fetch(postUrl)
+                .then(res => res.json())
+                .then(data => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = 'Save Event Result';
+
+                    if (data.status === 'success') {
+                        document.getElementById('event-form').reset();
+                        alert('Event Result Saved Successfully!');
+                        syncDataEngine();
+                    } else if (data.code === 'AUTH_REQUIRED') {
+                        alert('Session expired. Please log in again as Admin.');
+                        adminToken = null;
+                        applyAdminVisibility();
+                        renderLogs();
+                    } else {
+                        alert('Save failed: ' + (data.message || 'Unknown error.'));
+                    }
+                })
+                .catch(err => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = 'Save Event Result';
+                    console.error('Publish error:', err);
+                    alert('Could not reach the server. Check your connection.');
+                });
+        }
+
+        // ── SYNC FROM BACKEND (public, no login needed) ─────────────────
         function syncDataEngine() {
             fetch(API_ENDPOINT)
                 .then(res => res.json())
                 .then(data => {
-                    if (data.standings && data.standings.length > 0) {
-                        currentStandings = data.standings;
-                        renderStandings(currentStandings);
-                    }
+                    currentStandings = data.standings || [];
+                    currentLogs = (data.events || []).map(evt => ({
+                        eventName: evt.event || evt.name || '',
+                        gold: evt.gold || '',
+                        silver: evt.silver || '',
+                        bronze: evt.bronze || ''
+                    }));
 
-                    if (data.events) {
-                        currentLogs = data.events || [];
-                        renderPublicLogs(currentLogs);
-                        renderAdminLogs(currentLogs);
-                    }
+                    renderStandings();
+                    renderLogs();
 
-                    // Sync Audio State from API if present
                     if (data.audio) {
-                        applyAudioState(data.audio.status === 'play', data.audio.track);
-                        syncTrackSwitches(data.audio.status === 'play' ? data.audio.track : '');
+                        syncAudioFromServer(data.audio.status === 'play', data.audio.track);
+                    }
+                })
+                .catch(err => console.warn('Sync error:', err));
+        }
+
+        function renderStandings() {
+            let tally = {};
+            factions.forEach(f => tally[f] = { gold: 0, silver: 0, bronze: 0, total: 0 });
+
+            let totalMedals = 0;
+
+            currentStandings.forEach(row => {
+                const name = row.faction;
+                if (!tally[name]) return;
+                tally[name].gold = Number(row.gold) || 0;
+                tally[name].silver = Number(row.silver) || 0;
+                tally[name].bronze = Number(row.bronze) || 0;
+                tally[name].total = tally[name].gold + tally[name].silver + tally[name].bronze;
+                totalMedals += tally[name].total;
+            });
+
+            let sorted = Object.keys(tally).map(key => ({ name: key, ...tally[key] }));
+            sorted.sort((a, b) => b.gold - a.gold || b.silver - a.silver || b.bronze - a.bronze);
+
+            const tbody = document.getElementById('standings-tbody');
+            tbody.innerHTML = '';
+
+            sorted.forEach((team, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>#${index + 1}</td>
+                        <td><b>${team.name}</b></td>
+                        <td style="color:var(--accent-gold); font-weight:800;">${team.gold}</td>
+                        <td style="color:var(--accent-silver); font-weight:800;">${team.silver}</td>
+                        <td style="color:var(--accent-bronze); font-weight:800;">${team.bronze}</td>
+                        <td><span style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px; font-family:var(--font-mono); font-weight:800;">${team.total}</span></td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('kpi-leader').innerText = sorted[0] && sorted[0].total > 0 ? sorted[0].name : 'TBD';
+            document.getElementById('kpi-completed').innerText = currentLogs.length;
+            document.getElementById('kpi-medals').innerText = totalMedals;
+        }
+
+        function renderLogs() {
+            const tbody = document.getElementById('logs-tbody');
+            tbody.innerHTML = '';
+
+            if (currentLogs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-secondary);">No event logs recorded yet.</td></tr>';
+                return;
+            }
+
+            const authed = isAdminAuthenticated();
+
+            currentLogs.forEach((log, index) => {
+                const actionCell = `
+                    <td class="admin-only-cell" style="display: ${authed ? 'table-cell' : 'none'};">
+                        <button class="btn-action btn-warning" onclick="openEditModal(${index})">Edit</button>
+                        <button class="btn-action btn-danger" onclick="deleteLog(${index})">Delete</button>
+                    </td>
+                `;
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><b>${log.eventName}</b></td>
+                        <td style="color:var(--accent-gold);">${log.gold}</td>
+                        <td style="color:var(--accent-silver);">${log.silver}</td>
+                        <td style="color:var(--accent-bronze);">${log.bronze}</td>
+                        ${actionCell}
+                    </tr>
+                `;
+            });
+        }
+
+        // ── DELETE ──────────────────────────────────────────────────────
+        function deleteLog(index) {
+            if (!isAdminAuthenticated()) {
+                alert('Kailangan mag-login muna bilang Admin.');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to delete this event record?')) {
+                return;
+            }
+
+            const deleteUrl =
+                `${API_ENDPOINT}?action=delete&index=${encodeURIComponent(index)}` +
+                `&token=${encodeURIComponent(adminToken)}`;
+
+            fetch(deleteUrl)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        syncDataEngine();
+                    } else if (data.code === 'AUTH_REQUIRED') {
+                        alert('Session expired. Please log in again as Admin.');
+                        adminToken = null;
+                        applyAdminVisibility();
+                        renderLogs();
+                    } else {
+                        alert('Delete failed: ' + (data.message || 'Unknown error.'));
                     }
                 })
                 .catch(err => {
-                    console.warn("Sync error:", err);
+                    console.error('Delete error:', err);
+                    alert('Could not reach the server. Check your connection.');
                 });
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            syncDataEngine();
-            // Polling every 5 seconds to sync results and music live across all connected users
-            setInterval(syncDataEngine, 5000);
-        });
+        // ── EDIT ────────────────────────────────────────────────────────
+        function openEditModal(index) {
+            if (!isAdminAuthenticated()) {
+                alert('Kailangan mag-login muna bilang Admin.');
+                return;
+            }
+
+            const log = currentLogs[index];
+            if (!log) return;
+
+            document.getElementById('edit-log-index').value = index;
+            document.getElementById('edit-event-name').value = log.eventName;
+            document.getElementById('edit-gold-winner').value = log.gold;
+            document.getElementById('edit-silver-winner').value = log.silver;
+            document.getElementById('edit-bronze-winner').value = log.bronze;
+            document.getElementById('edit-status').textContent = '';
+
+            document.getElementById('edit-modal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+
+        function saveEditedLog() {
+            if (!isAdminAuthenticated()) {
+                alert('Session expired. Please log in again as Admin.');
+                closeEditModal();
+                return;
+            }
+
+            const index = document.getElementById('edit-log-index').value;
+            const eventName = document.getElementById('edit-event-name').value;
+            const gold = document.getElementById('edit-gold-winner').value;
+            const silver = document.getElementById('edit-silver-winner').value;
+            const bronze = document.getElementById('edit-bronze-winner').value;
+            const status = document.getElementById('edit-status');
+
+            if (gold === silver || gold === bronze || silver === bronze) {
+                status.textContent = 'Teams cannot win multiple medals in the same event.';
+                return;
+            }
+
+            status.textContent = 'Saving changes...';
+
+            const editUrl =
+                `${API_ENDPOINT}?action=edit&index=${encodeURIComponent(index)}` +
+                `&event=${encodeURIComponent(eventName)}` +
+                `&gold=${encodeURIComponent(gold)}` +
+                `&silver=${encodeURIComponent(silver)}` +
+                `&bronze=${encodeURIComponent(bronze)}` +
+                `&token=${encodeURIComponent(adminToken)}`;
+
+            fetch(editUrl)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        status.textContent = 'Saved.';
+                        setTimeout(() => {
+                            closeEditModal();
+                            syncDataEngine();
+                        }, 400);
+                    } else if (data.code === 'AUTH_REQUIRED') {
+                        status.textContent = 'Session expired. Please log in again as Admin.';
+                        adminToken = null;
+                        applyAdminVisibility();
+                    } else {
+                        status.textContent = 'Edit failed: ' + (data.message || 'Unknown error.');
+                    }
+                })
+                .catch(err => {
+                    console.error('Edit error:', err);
+                    status.textContent = 'Could not reach the server. Check your connection.';
+                });
+        }
+
+        // ── AUDIO BROADCAST ─────────────────────────────────────────────
+        function handleTrackSwitch(checkbox) {
+            if (!isAdminAuthenticated()) {
+                checkbox.checked = false;
+                alert('Kailangan mag-login muna bilang Admin.');
+                return;
+            }
+
+            const tracks = document.querySelectorAll('.track-switch-input');
+            tracks.forEach(t => { if (t !== checkbox) t.checked = false; });
+
+            broadcastAudio(checkbox.checked ? 'play' : 'pause', checkbox.getAttribute('data-track'));
+        }
+
+        function pauseAllTracks() {
+            if (!isAdminAuthenticated()) {
+                alert('Kailangan mag-login muna bilang Admin.');
+                return;
+            }
+            document.querySelectorAll('.track-switch-input').forEach(t => t.checked = false);
+            broadcastAudio('pause', '');
+        }
+
+        function broadcastAudio(status, trackUrl) {
+            const url =
+                `${API_ENDPOINT}?audioStatus=${encodeURIComponent(status)}` +
+                `&audioTrack=${encodeURIComponent(trackUrl)}` +
+                `&token=${encodeURIComponent(adminToken)}`;
+
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status !== 'audio_success') {
+                        if (data.code === 'AUTH_REQUIRED') {
+                            alert('Session expired. Please log in again as Admin.');
+                            adminToken = null;
+                            applyAdminVisibility();
+                        } else {
+                            console.warn('Audio broadcast rejected:', data.message);
+                        }
+                    }
+                })
+                .catch(err => console.error('Audio broadcast error:', err));
+        }
+
+        // Applies whatever audio state the server reports (set by any
+        // admin, from any device) to THIS browser's player.
+        let lastAppliedTrack = null;
+        function syncAudioFromServer(shouldPlay, trackUrl) {
+            const audio = document.getElementById('global-bgm');
+            const source = document.getElementById('bgm-source');
+
+            if (trackUrl && trackUrl !== lastAppliedTrack) {
+                source.src = trackUrl;
+                audio.load();
+                lastAppliedTrack = trackUrl;
+            }
+
+            document.querySelectorAll('.track-switch-input').forEach(sw => {
+                sw.checked = shouldPlay && sw.getAttribute('data-track') === trackUrl;
+            });
+
+            if (shouldPlay) {
+                audio.play().then(() => {
+                    document.getElementById('audio-text').innerText = 'Audio Playing';
+                }).catch(() => {
+                    document.getElementById('audio-text').innerText = 'Click to Enable Audio';
+                });
+            } else {
+                audio.pause();
+                document.getElementById('audio-text').innerText = 'Enable Audio Experience';
+            }
+        }
+
+        function userEnableAudio() {
+            const audio = document.getElementById('global-bgm');
+            if (audio.paused) {
+                audio.play();
+                document.getElementById('audio-text').innerText = 'Audio Playing';
+            } else {
+                audio.pause();
+                document.getElementById('audio-text').innerText = 'Enable Audio Experience';
+            }
+        }
+
+        function changeAccent(color, glow) {
+            document.documentElement.style.setProperty('--accent-color', color);
+            document.documentElement.style.setProperty('--accent-glow', glow);
+        }
+
+        function handleImageFallback(img) {
+            img.style.display = 'none';
+        }
+
+        window.onload = initApp;
     </script>
-
-    <div class="modal-overlay" id="result-edit-modal">
-        <div class="modal-card" style="max-width:620px;">
-            <h3>EDIT EVENT RESULT</h3>
-            <input type="hidden" id="edit-result-index">
-            <div class="form-group">
-                <label>Event / Division</label>
-                <input id="edit-event-name" type="text">
-            </div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
-                <div class="form-group">
-                    <label>Gold</label>
-                    <select id="edit-gold">
-                        <option value="">None / No Winner</option>
-                        <option value="Moniyan Empire">Moniyan Empire</option>
-                        <option value="Eruditio">Eruditio</option>
-                        <option value="Abyssal Domain">Abyssal Domain</option>
-                        <option value="Cadia Riverlands">Cadia Riverlands</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Silver</label>
-                    <select id="edit-silver">
-                        <option value="">None / No Winner</option>
-                        <option value="Moniyan Empire">Moniyan Empire</option>
-                        <option value="Eruditio">Eruditio</option>
-                        <option value="Abyssal Domain">Abyssal Domain</option>
-                        <option value="Cadia Riverlands">Cadia Riverlands</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Bronze</label>
-                    <select id="edit-bronze">
-                        <option value="">None / No Winner</option>
-                        <option value="Moniyan Empire">Moniyan Empire</option>
-                        <option value="Eruditio">Eruditio</option>
-                        <option value="Abyssal Domain">Abyssal Domain</option>
-                        <option value="Cadia Riverlands">Cadia Riverlands</option>
-                    </select>
-                </div>
-            </div>
-            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px;">
-                <button class="btn-action btn-secondary" onclick="closeResultEditor()">Cancel</button>
-                <button class="btn-action btn-primary" onclick="saveEditedResult()">Save Changes</button>
-            </div>
-            <div id="edit-result-status" style="margin-top:10px;font-size:.72rem;color:var(--text-secondary);"></div>
-        </div>
-    </div>
-
 </body>
 </html>
