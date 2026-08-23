@@ -68,6 +68,15 @@
         }
         .school-logo-img { width: 100%; height: 100%; object-fit: contain; }
 
+        .faction-cell { display: flex; align-items: center; gap: 12px; }
+        .faction-logo-wrapper {
+            width: 36px; height: 42px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            background: transparent;
+            filter: drop-shadow(0 0 8px var(--accent-color));
+        }
+        .faction-logo-img { width: 100%; height: 100%; object-fit: contain; }
+
         .header-brand h1 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; display: flex; align-items: center; gap: 10px; }
         .header-brand h1::before { content: ''; display: inline-block; width: 4px; height: 24px; background: var(--accent-color); box-shadow: 0 0 10px var(--accent-color); }
         .header-brand p { color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-top: 4px; }
@@ -483,6 +492,30 @@
         // a mismatched name silently won't count.
         const factions = ["Moniyan Empire", "Eruditio", "Abyssal Domain", "Cadia Riverlands"];
 
+        // Faces tried in order for each faction's glowing crest. Update
+        // the filenames here to match whatever image files you actually
+        // upload alongside this HTML file.
+        const factionImageCandidates = {
+            "Moniyan Empire": ["./moniyan.png", "./moniyan.jpg"],
+            "Abyssal Domain": ["./abyssal.png", "./abyss.png", "./abyssal.jpg"],
+            "Cadia Riverlands": ["./cadia.png", "./cadia.jpg"],
+            "Eruditio": ["./eruditio.png", "./eruditio.jpg"]
+        };
+
+        function handleFactionLogoFallback(imgElem, list, fallbackCode) {
+            let idx = parseInt(imgElem.dataset.failIndex || "0");
+            if (idx < list.length) {
+                imgElem.dataset.failIndex = idx + 1;
+                imgElem.src = list[idx];
+            } else {
+                imgElem.style.display = 'none';
+                if (imgElem.parentElement) {
+                    imgElem.parentElement.innerText = fallbackCode;
+                }
+            }
+        }
+
+
         let currentStandings = [];
         let currentLogs = [];
 
@@ -677,10 +710,24 @@
             tbody.innerHTML = '';
 
             sorted.forEach((team, index) => {
+                const candidates = factionImageCandidates[team.name] || [];
+                const candidatesJson = JSON.stringify(candidates).replace(/"/g, '&quot;');
+                const shortCode = String(team.name || "").substring(0, 3).toUpperCase();
+
                 tbody.innerHTML += `
                     <tr>
                         <td>#${index + 1}</td>
-                        <td><b>${team.name}</b></td>
+                        <td>
+                            <div class="faction-cell">
+                                <div class="faction-logo-wrapper">
+                                    <img class="faction-logo-img"
+                                         src="${candidates[0] || ''}"
+                                         onerror="handleFactionLogoFallback(this, ${candidatesJson}, '${shortCode}')"
+                                         alt="${team.name}">
+                                </div>
+                                <b>${team.name}</b>
+                            </div>
+                        </td>
                         <td style="color:var(--accent-gold); font-weight:800;">${team.gold}</td>
                         <td style="color:var(--accent-silver); font-weight:800;">${team.silver}</td>
                         <td style="color:var(--accent-bronze); font-weight:800;">${team.bronze}</td>
