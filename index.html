@@ -976,16 +976,8 @@
                             <strong>${team}</strong><br>
                             <span style="font-size: 7pt; font-weight: normal;">Team Captain / Representative Signature</span>
                         </div>`;
-                });// Ligtas na pagkopya ng rows para hindi mag-hang
-    const sourceRows = document.querySelectorAll("table:not(.print-table) tbody tr");
-    const printBody = document.getElementById("print-standings-tbody");
-    
-    if (printBody && sourceRows.length > 0) {
-      printBody.innerHTML = "";
-      sourceRows.forEach(row => {
-        printBody.appendChild(row.cloneNode(true));
-      });
-    }
+                });
+
                 window.print();
             } else {
                 alert("Authentication Failed: One or more admin passwords are incorrect.");
